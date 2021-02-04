@@ -260,6 +260,7 @@ ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFE
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
+
 CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
 
 GRANT ALL PRIVILEGES ON DATABASE jupitor TO jupitor;
