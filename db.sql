@@ -21,13 +21,9 @@ GRANT TEMPORARY, CONNECT ON DATABASE jupitor TO PUBLIC;
 
 GRANT ALL ON DATABASE jupitor TO jupitor;
 
-
-
-
 -- Table: public.address
 
 -- DROP TABLE public.address;
-
 CREATE TABLE public.address
 (
     address_id integer NOT NULL DEFAULT nextval('address_address_id_seq'::regclass),
