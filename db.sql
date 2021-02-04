@@ -1,3 +1,29 @@
+DROP TABLE IF EXISTS country CASCADE;
+DROP TABLE IF EXISTS city CASCADE;
+DROP TABLE IF EXISTS address CASCADE;
+DROP TABLE IF EXISTS personal_information CASCADE;
+DROP TABLE IF EXISTS admin CASCADE;
+DROP TABLE IF EXISTS branch CASCADE;
+DROP TABLE IF EXISTS department CASCADE;
+DROP TABLE IF EXISTS emergency_contact_details CASCADE;
+DROP TABLE IF EXISTS employee_status CASCADE;
+DROP TABLE IF EXISTS job_type CASCADE;
+DROP TABLE IF EXISTS pay_grade CASCADE;
+DROP TABLE IF EXISTS employee CASCADE;
+DROP TABLE IF EXISTS employee_leave CASCADE;
+DROP TABLE IF EXISTS employee_phone_number CASCADE;
+DROP TABLE IF EXISTS leave CASCADE;
+DROP TABLE IF EXISTS leave_record CASCADE;
+DROP TABLE IF EXISTS country CASCADE;
+DROP TABLE IF EXISTS supervisor CASCADE;
+
+
+CREATE DATABASE jupitor;
+
+
+
+
+
 
 CREATE TABLE country
 (
@@ -264,4 +290,42 @@ CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
 
 GRANT ALL PRIVILEGES ON DATABASE jupitor TO jupitor;
+
+
+
+GRANT ALL ON TABLE public.address TO jupitor;
+
+GRANT ALL ON TABLE public.admin TO jupitor;
+
+GRANT ALL ON TABLE public.branch TO jupitor;
+
+GRANT ALL ON TABLE public.city TO jupitor;
+
+GRANT ALL ON TABLE public.country TO jupitor;
+
+GRANT ALL ON TABLE public.department TO jupitor;
+
+GRANT ALL ON TABLE public.emergency_contact_details TO jupitor;
+
+GRANT ALL ON TABLE public.employee TO jupitor;
+
+GRANT ALL ON TABLE public.employee_leave TO jupitor;
+
+GRANT ALL ON TABLE public.employee_phone_number TO jupitor;
+
+GRANT ALL ON TABLE public.employee_status TO jupitor;
+
+GRANT ALL ON TABLE public.job_type TO jupitor;
+
+GRANT ALL ON TABLE public.leave TO jupitor;
+
+GRANT ALL ON TABLE public.leave_record TO jupitor;
+
+GRANT ALL ON TABLE public.pay_grade TO jupitor;
+
+GRANT ALL ON TABLE public.personal_information TO jupitor;
+
+GRANT ALL ON TABLE public.session TO jupitor;
+
+GRANT ALL ON TABLE public.supervisor TO jupitor;
 
