@@ -11,7 +11,14 @@ router.get('/logout', ifNotLoggedIn,RootController.logout)
 
 
 
+router.post('/login', ifLoggedIn, RootController.login)
+
+
+
 router.use('/admin', require('./admin'))
+router.use('/HR', require('./HR'))
+router.use('/employee', require('./employee'));
+//router.use('/supervisor', require('./supervisor'));
 
 module.exports=router
 

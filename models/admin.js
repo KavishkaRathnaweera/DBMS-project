@@ -37,6 +37,12 @@ class admin{
             return HR;
   
       }
+      static async findAdmin(id){
+            const [admin]=await sql`
+            select * from admin where employee_id=${id}`
+
+            return admin;
+      }
      
 
 

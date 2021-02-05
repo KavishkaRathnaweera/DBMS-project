@@ -12,7 +12,7 @@ class userServices {
         }
 
 
-        const user= await User.findUser(isValidID)
+        const user= await User.findEmployee(isValidID)
         if(!user){
             throw new Error.BadRequest('EMP ID is not registered');
         }
