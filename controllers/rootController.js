@@ -1,4 +1,5 @@
 const {loginValidator}=require("../validaters/loginValidater")
+const {registerValidator}=require("../validaters/registerValidator")
 const userServices=require('../services/userServices')
 
 class RootController{
@@ -58,21 +59,58 @@ class RootController{
 
 
     static async signupPage(req,res){
-        res.render('register',{
+
+
+        res.render('signup',{
             user:'',
             NIC:'',
             first_name:'',
             middle_name:'',
             last_name:'',
-            address_no:'',
-            street:'',
-            state:'',
-            phone_number:'',
+            gender:'',
+            birthday:'',
+            address_id:'',
             email:'',
-            user_name:'',
             password:'',
-            error:''
+            branch_id:'',
+            job_title:'',
+            dept_name:'',
+            paygrade_level:'',
+            e_status_name:'',
+            error:'',
+            success:''
+
         })
+    }
+
+    static async signup(req,res){
+        try {
+            const {error, value} =await registerValidator.validate(req.body)
+            if(error) throw error;
+            await userServices.register(value)
+            res.redirect('/login?success=admin register sucessfull')
+
+        } catch (error) {
+            res.render('signup',{
+                user:'',
+                NIC:req.body.NIC,
+                first_name:req.body.first_name,
+                middle_name:req.body.middle_name,
+                last_name:req.body.last_name,
+                gender:req.body.gender,
+                birthday:req.body.birthday,
+                address_id:req.body.address_id,
+                email:req.body.email,
+                password:req.body.password,
+                branch_id:req.body.branch_id,
+                job_title:req.body.job_title,
+                dept_name:req.body.dept_name,
+                paygrade_level:req.body.paygrade_level,
+                e_status_name:req.body.e_status_name,
+                error:error,
+                success:""
+            })
+        }
     }
 
    

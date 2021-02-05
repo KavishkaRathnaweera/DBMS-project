@@ -35,6 +35,23 @@ class User{
             return user;
       }
 
+      static async register(NIC,first_name, middle_name, last_name, gender, birthday, address_id, email, password, branch_id, job_title, dept_name, paygrade_level, e_status_name){
+      
+            const [user] =await sql.begin(async sql=>{
+              const [personal_information] =await sql`
+                              insert into Personal_information (NIC, first_name, middle_name, last_name, gender, birth_day ,address_id, email, password) values (${NIC}, ${first_name}, ${middle_name}, ${last_name}, ${gender}, ${birthday}, ${address_id},  ${email}, ${password}) 
+                              returning *`
+              const [employee]=await sql`
+                              insert into Employee (employee_id ,branch_id, job_title, dept_name, paygrade_level, e_status_name) values(${personal_information.employee_id},${branch_id}, ${job_title}, ${dept_name}, ${paygrade_level}, ${e_status_name})
+                              `
+              return [personal_information];
+             })
+                return user;
+      
+          }
+
+
+
 
 }
 

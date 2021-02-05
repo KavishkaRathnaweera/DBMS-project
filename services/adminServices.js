@@ -1,6 +1,5 @@
 const Error =require('../helpers/error')
 const Admin=require('../models/admin')
-const user=require('../models/user')
 const bcrypt=require('bcrypt');
 const User = require('../models/user');
 
@@ -34,9 +33,9 @@ class adminServices{
 
 
 
-    static async adminRegister({NIC, first_name, middle_name, last_name, gender, birthday, address_id, email, user_name, password, securityKey}){
+    static async adminRegister({NIC, first_name, middle_name, last_name, gender, birthday, address_id, email,password, securityKey}){
             
-                const isEmailRegistered=await user.findUserByEmail(email);
+                const isEmailRegistered=await User.findUserByEmail(email);
                 if(isEmailRegistered){
                     throw new Error.BadRequest("email is already registered")
                 }
@@ -52,7 +51,7 @@ class adminServices{
     }
 
     static async addHR({NIC,first_name, middle_name, last_name, gender, birthday, address_id, email, password, branch_id, job_title, dept_name, paygrade_level, e_status_name}){
-                const isEmailRegistered=await user.findUserByEmail(email);
+                const isEmailRegistered=await User.findUserByEmail(email);
                 if(isEmailRegistered){
                     throw new Error.BadRequest("email is already registered")
                 }
