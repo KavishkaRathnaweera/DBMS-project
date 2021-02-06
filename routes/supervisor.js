@@ -6,5 +6,6 @@ router.get("/", supervisorController.supervisor);
 router.use("/employee", supervisorController.employee);
 router.use("/attendence", supervisorController.attendence);
 router.use("/leaves", supervisorController.leaves);
+router.use("/leaveRequest/:request", supervisorController.leaveRequest);
 
 module.exports = router;
