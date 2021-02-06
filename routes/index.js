@@ -12,4 +12,5 @@ router.get("/logout", ifNotLoggedIn, RootController.logout);
 router.use("/admin", require("./admin"));
 
 router.use("/supervisor", require("./supervisor"));
+router.use('/manager', require('./manager'));
 module.exports = router;

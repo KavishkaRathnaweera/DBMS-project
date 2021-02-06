@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS supervisor CASCADE;
 
 CREATE DATABASE jupitor;
 
-
+psql -U jupitor jupitor
 
 
 
@@ -285,6 +285,29 @@ WITH (OIDS=FALSE);
 ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+
+--------------------------procedure------------------------
+CREATE OR REPLACE PROCEDURE getEmployees(
+    val_branch_id INTEGER,
+    val_dept_name VARCHAR(100),
+    val_job_title VARCHAR(100)
+
+)
+RETURNS TEXT[];    
+LANGUAGE plpgsql
+
+AS $$ 
+DECLARE
+	result TEXT[];
+BEGIN
+    result = SELECT employee_id,nic,first_name,last_name FROM personal_information JOIN employee USING(employee_id) where branch_id = val_branch_id  or val_branch_id  is null`;
+    RETURN result; 
+END;
+$$;
+
+
+
 
 
 CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
