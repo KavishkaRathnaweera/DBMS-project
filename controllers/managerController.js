@@ -69,9 +69,9 @@ class  MnagerController{
             var branch = req.body.branchSelect;//if ekk dala balanna ona manager da hr da access karanne kiyala.
             var department = req.body.deptSelect;
             var jobtype = req.body.jobTypeSelect;
-            console.log(branch);
-            console.log(department);
-            console.log(jobtype);
+            // console.log(branch);
+            // console.log(department);
+            // console.log(jobtype);
             employeeList= await managerServices.getEmployeeList(branch,department,jobtype);
             res.redirect('/manager/search');
         }
