@@ -60,7 +60,7 @@ class  AdminController{
             try{
                     const {error, value}= await adminLoginValidator.validate(req.body)
                     if(error) throw error;
-                    const admin=await userServices.login(value)
+                    const admin=await adminServices.login(value)
                     req.session.user={}
                     req.session.user.type='admin'
                     req.session.user.uid=admin.employee_id,
