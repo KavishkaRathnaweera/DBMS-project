@@ -30,7 +30,5 @@ router.use('/HR', require('./HR'))
 
 router.use('/employee', require('./employee'));
 router.use("/supervisor", require("./supervisor"));
-
-
-
+router.use('/manager', require('./manager'));
 module.exports = router;

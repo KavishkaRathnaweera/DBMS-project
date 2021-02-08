@@ -14,12 +14,13 @@ DROP TABLE IF EXISTS employee_leave CASCADE;
 DROP TABLE IF EXISTS employee_phone_number CASCADE;
 DROP TABLE IF EXISTS leave CASCADE;
 DROP TABLE IF EXISTS leave_record CASCADE;
+DROP TABLE IF EXISTS country CASCADE;
 DROP TABLE IF EXISTS supervisor CASCADE;
-DROP TABLE IF EXISTS "session" CASCADE;
+
 
 CREATE DATABASE jupitor;
 
-
+psql -U jupitor jupitor
 
 
 
@@ -269,9 +270,9 @@ CREATE TABLE leave_record
 
 CREATE TABLE supervisor
 (
-    employee_id varchar(50)  NOT NULL,
-    supervisor_id varchar(50) ,
-    CONSTRAINT supervisor_pkey PRIMARY KEY (employee_id)
+    employee_id integer NOT NULL,
+    supervisor_id integer NOT NULL,
+    CONSTRAINT supervisor_pkey PRIMARY KEY (employee_id,supervisor_id)
 );
 
 CREATE TABLE "session" (
@@ -284,6 +285,52 @@ WITH (OIDS=FALSE);
 ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+
+CREATE OR REPLACE PROCEDURE addToSupervisorT(
+    employee_ids integer[],
+    val_supervisor_id int
+
+)
+
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    arraylength int := array_length(materials, 1);
+    i int;
+BEGIN
+    for  i in 1..arraylength
+    loop
+           INSERT INTO supervisor VALUES(employee_ids[i], val_supervisor_id ) ON CONFLICT DO NOTHING;
+    end loop;
+    commit;
+
+END;
+$$;
+
+
+CREATE TRIGGER removeSupervisor
+    AFTER UPDATE
+    OF supervisor
+    ON employee
+    FOR EACH ROW
+    EXECUTE PROCEDURE deleteSupervisorGroup();
+
+
+CREATE OR REPLACE FUNCTION deleteSupervisorGroup()
+  RETURNS TRIGGER 
+  LANGUAGE PLPGSQL
+  AS
+$$
+BEGIN
+	IF (NOT NEW.supervisor) AND OLD.supervisor THEN
+		DELETE FROM supervisor WHERE supervisor_id = OLD.employee_id;
+	END IF;
+
+	RETURN NEW;
+END;
+$$
+
 
 
 CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
