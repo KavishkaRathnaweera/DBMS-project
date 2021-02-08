@@ -1,3 +1,4 @@
+const sql = require("../connection");
 const OrganizationServices = require("../services/organizationServices");
 const {adminRegisterValidator,addHRvalidator,} = require("../validaters/registerValidator");
 const hrService = require("../services/hrService");
@@ -8,6 +9,17 @@ class HRController {
     // res.render("HR/index", {});
     res.redirect("/HR/home");
   }
+  static async index(req,res){
+        res.render('HR/index',{
+            user:req.session.user
+        })
+    }
+    static async abc(req,res){
+        const a=1;
+        const r= await sql`select * from get_leaverequests('jjj')`;
+        res.send(r)
+        console.log(r)
+    }
 
   static async addEmployeePage(req, res) {
     try {
@@ -38,6 +50,9 @@ class HRController {
   static async viewEmployee(req, res) {
     res.render("HR/viewEmployee", {});
   }
+
+
+
 
   static async submitEmployee(req, res) {
     const branches = await OrganizationServices.getAllBranches();

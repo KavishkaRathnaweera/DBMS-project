@@ -52,66 +52,40 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <% for (var i = 0; i < employeeLst.length; i++) { %>
                                         <tr>
-                                            <td>1.</td>
-                                            <td>180335F</td>
-                                            <td>Sandaruwan</td>
-                                            <td>Kumarasinghe</td>
-                                            <td>
+                                            <td>1</td>
+                                            <td><%= employeeLst[i].employee_id  %></td>
+                                            <td><%= employeeLst[i].first_name  %></td>
+                                            <td><%= employeeLst[i].last_name  %></td>
+                                            <td><% if(employeeLst[i].count_leaves >= 39){ %>
                                                 <div class="progress progress-xs">
-                                                    <div class="progress-bar bg-success" style="width: 55%">
+                                                    <div class="progress-bar bg-danger" style="width: 61%">
                                                     </div>
                                                 </div>
-                                            </td>
-                                            <td><span class="badge bg-success">55%</span></td>
-                                            <td><button type="button" class="btn btn-block btn-outline-success">view
-                                                    details</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>180335F</td>
-                                            <td>Sandaruwan</td>
-                                            <td>Kumarasinghe</td>
-                                            <td>
+                                                <% } else { %>
                                                 <div class="progress progress-xs">
-                                                    <div class="progress-bar bg-danger" style="width: 70%"></div>
-                                                </div>
+                                                    <div class="progress-bar bg-success" style="width: 39%">
+                                                    </div>
+                                                </div><% } %>
                                             </td>
-                                            <td><span class="badge bg-danger">70%</span></td>
-                                            <td><button type="button" class="btn btn-block btn-outline-success">view
+                                            <td><% if(employeeLst[i].count_leaves >= 39){ %>
+                                                <span class="badge bg-danger"><%= employeeLst[i].count_leaves %>%</span>
+                                                <% } else { %>
+                                                <span
+                                                    class="badge bg-success"><%= employeeLst[i].count_leaves %>%</span>
+                                                <% } %>
+                                            </td>
+                                            <td><% if(employeeLst[i].count_leaves >= 39){ %>
+                                                <button type="button" class="btn btn-block btn-outline-danger">view
+                                                    details</button> <% } else { %>
+                                                <button type="button" class="btn btn-block btn-outline-success">view
                                                     details</button>
+                                                <% } %>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>180335F</td>
-                                            <td>Sandaruwan</td>
-                                            <td>Kumarasinghe</td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped active">
-                                                    <div class="progress-bar bg-success" style="width: 30%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-success">30%</span></td>
-                                            <td><button type="button" class="btn btn-block btn-outline-success">view
-                                                    details</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4.</td>
-                                            <td>180335F</td>
-                                            <td>Sandaruwan</td>
-                                            <td>Kumarasinghe</td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped active">
-                                                    <div class="progress-bar bg-danger" style="width: 90%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-danger">90%</span></td>
-                                            <td><button type="button" class="btn btn-block btn-outline-success">view
-                                                    details</button>
-                                            </td>
-                                        </tr>
+                                        <% } %>
+
                                     </tbody>
                                 </table>
                             </div>

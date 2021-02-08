@@ -1,7 +1,7 @@
 const Error =require('../helpers/error')
 const Admin=require('../models/admin')
-const user=require('../models/user')
 const bcrypt=require('bcrypt');
+const idChecker=require("../helpers/idChecker")
 const User = require('../models/user');
 
 class adminServices{
@@ -18,7 +18,7 @@ class adminServices{
         if(!user){
             throw new Error.BadRequest('EMP ID is not registered');
         }
-        const admin=await admin.findAdmin(isValidID)
+        const admin=await Admin.findAdmin(isValidID)
         if(!admin){
             throw new Error.BadRequest('you dont have permission to login');
         }
@@ -34,9 +34,9 @@ class adminServices{
 
 
 
-    static async adminRegister({NIC, first_name, middle_name, last_name, gender, birthday, address_id, email, user_name, password, securityKey}){
+    static async adminRegister({NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,password, securityKey}){
             
-                const isEmailRegistered=await user.findUserByEmail(email);
+                const isEmailRegistered=await User.findUserByEmail(email);
                 if(isEmailRegistered){
                     throw new Error.BadRequest("email is already registered")
                 }
@@ -47,12 +47,12 @@ class adminServices{
               
                 const hashpwd= await bcrypt.hash(password, 10)
         
-                const admin=await Admin.adminRegister(NIC, first_name, middle_name, last_name, gender, birthday, address_id, email,  hashpwd)
+                const admin=await Admin.adminRegister(NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,  hashpwd)
                 return admin;
     }
 
-    static async addHR({NIC,first_name, middle_name, last_name, gender, birthday, address_id, email, password, branch_id, job_title, dept_name, paygrade_level, e_status_name}){
-                const isEmailRegistered=await user.findUserByEmail(email);
+    static async addHR({NIC,first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country,email, password, branch_name, job_title, dept_name, paygrade_level, e_status_name}){
+                const isEmailRegistered=await User.findUserByEmail(email);
                 if(isEmailRegistered){
                     throw new Error.BadRequest("email is already registered")
                 }
@@ -61,7 +61,7 @@ class adminServices{
                     throw new Error.BadRequest("NIC is already registered")
                 }
                 const hashpwd=await bcrypt.hash(password, 10);
-                const HR=await  Admin.addHR(NIC,first_name, middle_name, last_name, gender, birthday, address_id, email, hashpwd, branch_id, job_title, dept_name, paygrade_level, e_status_name);
+                const HR=await  Admin.addHR(NIC,first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email, hashpwd, branch_name, job_title, dept_name, paygrade_level, e_status_name);
                 return HR
     }
     
