@@ -3,13 +3,12 @@ const managerServices =require('../services/managerServices');
 
 var user="Manager";
 var userBranch="Sri Lanka";
-var userBranchID=1;
 var userDepartment="Software dept";
 var emloyeeData = [];
 var editAccess = true;
 var checkSupervisorADD = false;
 var employeeList = [];
-var deptEmployees=[];
+var canBeSupervisors=[];
 var supervisorGroup=[];
 var supervisor_id;
 var supervisor_name;
@@ -55,7 +54,6 @@ class  MnagerController{
             res.render('./manager/searchEmployee', {
                 user:user,
                 userBranch:userBranch,
-                userBranchID:userBranchID,
                 userDepartment:userDepartment,
                 branches:branches,
                 departments:departments,
@@ -70,14 +68,8 @@ class  MnagerController{
             res.render('./manager/viewData', {
             })
         }
-        static async getEmployeeToEdit(req,res){
-            res.render('./manager/searchEmployee', {
-                
-            })
-        }
-
         static async getEmployeeList(req,res){
-            var branch = req.body.branchSelect;//if ekk dala balanna ona manager da hr da access karanne kiyala.
+            var branch = req.body.branchSelect;
             var department = req.body.deptSelect;
             var jobtype = req.body.jobTypeSelect;
             // console.log(branch);
@@ -98,11 +90,11 @@ class  MnagerController{
         }
         static async addSupervisorView(req,res){
             // employeeList= await managerServices.getEmployeeList(branch,department,jobtype);
-            deptEmployees= await managerServices.getEmployeeList(userBranchID,userDepartment,"allJobtypes",user);
+            canBeSupervisors= await managerServices.getCanbeSupervisors(userBranch,userDepartment,user);
           
             res.render('./manager/addSupervisor', {
                 checkSupervisorADD:checkSupervisorADD,
-                deptEmployees: deptEmployees,
+                canBeSupervisors: canBeSupervisors,
                 supervisorGroup:supervisorGroup,
                 supervisor_id:supervisor_id,
                 supervisor_name:supervisor_name,
@@ -110,7 +102,7 @@ class  MnagerController{
             })
         }
         static async viewSupervisor(req,res){
-            const supervisorList= await managerServices.getSupervisorList();
+            const supervisorList= await managerServices.getSupervisorList(userBranch,userDepartment,user);
             res.render('./manager/viewSupervisor', {
                 supervisorList:supervisorList,
                 searchSupervisorErr:searchSupervisorErr,
@@ -122,7 +114,7 @@ class  MnagerController{
             if(selected_supervisor!=''){
                 supervisor_id=parseInt(selected_supervisor);
                 supervisorGroup=await managerServices.getSupervisorGroup(supervisor_id);
-                employeeListToAddSupervisor = await managerServices.getEmployeesToaddSupervisorT(userBranchID,userDepartment,user);//get all employees not in supervisor table
+                employeeListToAddSupervisor = await managerServices.getEmployeesToaddSupervisorT(userBranch,userDepartment,user);//get all employees not in supervisor table
                 checkSupervisorADD=true;
             }
             res.redirect('/manager/addSupervisor');
@@ -165,9 +157,11 @@ class  MnagerController{
         static async viewSupervisorsearch(req,res){
             const employee_id = req.body.e_id; 
             const result = await managerServices.findSupervisor(employee_id);
-            if(result.count !== 0) {
+            if(result.length !== 0) {
                 const supervisor_id = result[0].supervisor_id;
+                searchSupervisormsg.pop();
                 searchSupervisormsg.push({employee_id,supervisor_id});
+                console.log(searchSupervisormsg);
                 searchSupervisorErr=false;
             }
             else{
@@ -179,6 +173,7 @@ class  MnagerController{
    
         static async viewSupervisorDelete(req,res){
             try{
+                searchSupervisormsg.pop();
                 await managerServices.SupervisorDelete(req.body);
                 return res.status(200).send({ result: 'redirect', url: '/manager/viewSupervisor' , err:''});
             }catch(err){

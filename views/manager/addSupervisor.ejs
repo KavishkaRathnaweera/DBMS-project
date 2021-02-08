@@ -24,9 +24,9 @@
                         <!-- <input type="number" class="form-control" id="supervisor_id" name="supervisor_id" placeholder="Enter Employee ID" required> -->
                         <select class="form-control" name='selected_supervisor'>
                           <option value="">select an employee</option>
-                          <% if (deptEmployees.length > 0){ %>
-                            <% deptEmployees.forEach(deptEmployee => { %>
-                              <option value="<%= deptEmployee.employee_id %>" ><%= deptEmployee.employee_id %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= deptEmployee.first_name %>&nbsp;<%= deptEmployee.last_name %></option>
+                          <% if (canBeSupervisors.length > 0){ %>
+                            <% canBeSupervisors.forEach(Employee => { %>
+                              <option value="<%= Employee.employee_id %>" ><%= Employee.employee_id %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Employee.first_name %>&nbsp;<%= Employee.last_name %></option>
                             <% }) %>
                           <% } else { %>
                               <p>no members</p>
