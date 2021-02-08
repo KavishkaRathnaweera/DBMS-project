@@ -24,6 +24,10 @@ router.post('/signup', ifLoggedIn, RootController.signup)
 // include admin.js, HR.js, employee.js, supervisor.js
 router.use('/admin', require('./admin'))
 router.use('/HR', require('./HR'))
+
+
+
+
 router.use('/employee', require('./employee'));
 router.use("/supervisor", require("./supervisor"));
 router.use('/manager', require('./manager'));
