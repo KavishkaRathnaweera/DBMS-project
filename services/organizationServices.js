@@ -18,7 +18,7 @@ class OrganizationServices{
     }
     static async getEmployeeStatus(){
         const employee_status=await Organization.getEmployeeStatus();
-        return employee_status;
+        return employee_status; 
     }
 }
 module.exports=OrganizationServices

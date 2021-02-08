@@ -77,20 +77,34 @@
                  
                   
                 </li>
-                <!-- <li class="nav-item">  
-                  <% if(title==""){ %>
-                    <a href="/manager/editData" class="nav-link active">
-                      <i class="nav-icon fas fa-edit"></i>
-                      <p>Edit PIM Data</p>
+                <li class="nav-item">  
+                  <% if(title=="Add Supervisor"){ %>
+                    <a href="/manager/addSupervisor" class="nav-link active">
+                      <i class="nav-icon fas fa-user-plus"></i>
+                      <p>Add Supervisor</p>
                     </a>
                     <% } else { %>
-                      <a href="/manager/editData" class="nav-link">
-                        <i class="nav-icon fas fa-edit"></i>
-                        <p>Edit PIM Data</p>
+                      <a href="/manager/addSupervisor" class="nav-link">
+                        <i class="nav-icon fas fa-user-plus"></i>
+                        <p>Add Supervisor</p>
                       </a>
                     <% }%>
                 
-                </li> -->
+                </li>
+                <li class="nav-item">  
+                  <% if(title=="View Supervisor"){ %>
+                    <a href="/manager/viewSupervisor" class="nav-link active">
+                      <i class="nav-icon fas fas fa-eye"></i>
+                      <p>View Supervisor</p>
+                    </a>
+                    <% } else { %>
+                      <a href="/manager/viewSupervisor" class="nav-link">
+                        <i class="nav-icon fas fas fa-eye"></i>
+                        <p>View Supervisor</p>
+                      </a>
+                    <% }%>
+                
+                </li>
                 <li class="nav-item">  
                   <% if(title=="Profile"){ %>
                     <a href="/manager/viewPersonalDetails" class="nav-link active">

@@ -19,7 +19,7 @@
             <div class="form-group">
               <label>Branch</label>
               <select name="branchSelect" class="form-control select2" style="width: 100%;">
-                <% if (user == "manager"){ %>
+                <% if (user == "Manager"){ %>
                   <option value="<%= userBranchID %>"><%= userBranch %></option>
                 <% } else{%>
                     <% if (branches.length> 0){ %>
@@ -37,12 +37,16 @@
             <div class="form-group">
               <label>Department</label>
               <select name="deptSelect" class="form-control select2" style="width: 100%;">
+                <% if (user == "Manager"){ %>
+                  <option value="<%= userDepartment %>"><%= userDepartment %></option>
+                <% } else{%>
                 <option selected="selected" value="allDepartments">All</option>
                 <% if (departments.length> 0){ %>
                   <% departments.forEach(department=> { %>
                     <option value="<%= department.dept_name %>"><%= department.dept_name %></option>
                   <% }) %>
                 <% } %>
+              <% } %>
               </select>
             </div>
             </div>
@@ -54,7 +58,9 @@
                   <option selected="selected" value="allJobtypes">All</option>
                   <% if (Jobtypes.length> 0){ %>
                     <% Jobtypes.forEach(Jobtype=> { %>
+                      <% if (Jobtype.job_title != "Manager"){ %>
                       <option value="<%= Jobtype.job_title %>"><%= Jobtype.job_title %></option>
+                      <% } %>
                     <% }) %>
                   <% } %>
                 </select>
@@ -171,4 +177,5 @@
   
    
 </script>
+</html>
 
