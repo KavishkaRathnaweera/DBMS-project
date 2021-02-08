@@ -277,19 +277,20 @@ CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
 CREATE OR REPLACE PROCEDURE addToSupervisorT(
     employee_ids integer[],
-    val_supervisor_id int
+    val_supervisor_id int,
+    arraylength int
 
 )
 
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    arraylength int := array_length(materials, 1);
     i int;
 BEGIN
+    DELETE FROM supervisor WHERE supervisor_id = val_supervisor_id;
     for  i in 1..arraylength
     loop
-           INSERT INTO supervisor VALUES(employee_ids[i], val_supervisor_id ) ON CONFLICT DO NOTHING;
+           INSERT INTO supervisor VALUES(employee_ids[i], val_supervisor_id );
     end loop;
     commit;
 

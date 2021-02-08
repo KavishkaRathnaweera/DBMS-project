@@ -32,6 +32,10 @@ class managerServices{
         // console.log(employeeList);
         return employeeList;
     }
+    static async getCanbeSupervisors(branch,department,user){
+        const canbeSupervisor=await manager.getCanbeSupervisors(branch,department,user);
+        return canbeSupervisor;
+    }
     static async getSupervisorGroup(supervisor_id){
         const supervisor_employees=await manager.getSupervisorGroup(supervisor_id);
         return supervisor_employees;
@@ -52,11 +56,12 @@ class managerServices{
             supervisorGroupemployeeIDs.push(employee_id);
         }
         // console.log(supervisorGroupemployeeIDs);
-        await manager.saveSupervisorGroup(supervisor_id,supervisorGroupemployeeIDs);
+        const arraylength = supervisorGroupemployeeIDs.length;
+        await manager.saveSupervisorGroup(supervisor_id,supervisorGroupemployeeIDs,arraylength);
         // return toAddSupervisor_employees;
     }
-    static async getSupervisorList(){
-        const SupervisorList=await manager.getSupervisors();
+    static async getSupervisorList(branch,department,user){
+        const SupervisorList=await manager.getSupervisors(branch,department,user);
         return SupervisorList;
     }
     static async findSupervisor(emp_id){

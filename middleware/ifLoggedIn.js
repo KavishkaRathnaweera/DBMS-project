@@ -4,7 +4,7 @@ const ifLoggedIn=(req,res, next)=>{
             res.redirect("/admin/home")
         }
         else if(req.session.user.type=="HR"){
-            res.redirect("/HR")
+            res.redirect("/HR/home")
         }
         else if(req.session.user.type=="employee"){
             res.redirect("/employee")
