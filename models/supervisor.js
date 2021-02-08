@@ -1,22 +1,22 @@
-const sql = require("../connection");
+const db= require("../connection");
 
 class Supervisor {
   static async getAllLeavingRequests() {
     const id = 180335;
     const no = "No";
-    const records = await sql` select * from getleavea(${id}) `;
+    const records =( await db.query(` select * from getleavea($1) `,[id])).rows;
     console.log(records);
     return records;
   }
   static async findByID(id) {
-    const request = await sql`
-            select * from leave_record where leave_id = ${id}`;
+    const request =( await db.query(`
+            select * from leave_record where leave_id = $1`,[id])).rows;
     return request;
   }
 
   static async getRemainingLeaves(id) {
-    const res = await sql`
-            select * from employee_leave WHERE employee_id = ${id} AND year = 2021`;
+    const res =( await db.query(`
+            select * from employee_leave WHERE employee_id = $1 AND year = 2021`,[id])).rows;
     return res;
   }
 
@@ -30,18 +30,18 @@ class Supervisor {
     console.log(leave_id);
     console.log(approved);
 
-    const res = await sql`
-            UPDATE leave_record SET approval_state = ${result} WHERE leave_id = ${leave_id}`;
+    const res = (await db.query(`
+            UPDATE leave_record SET approval_state = $1 WHERE leave_id = $2`,[result,leave_id])).rows;
     return res;
-    // const res = await sql`;
+    // const res = await db.query(`;
     //         select * from employee_leave WHERE employee_id = ${id} AND year = 2021`;
     // return res;
   }
 
   static async getEmployees() {
     const id = 180335;
-    const res = await sql`
-            select * from getEmployees(${id})`;
+    const res =( await db.query(`
+            select * from getEmployees($1)`,[id])).rows;
     return res;
   }
 }

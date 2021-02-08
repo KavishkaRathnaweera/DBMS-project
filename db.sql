@@ -20,7 +20,11 @@ DROP TABLE IF EXISTS supervisor CASCADE;
 
 CREATE DATABASE jupitor;
 
-psql -U jupitor jupitor
+CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
+
+GRANT ALL PRIVILEGES ON DATABASE jupitor TO jupitor;
+
+-- psql -U jupitor jupitor
 
 
 
@@ -72,7 +76,11 @@ CREATE TABLE personal_information
     password varchar(250) ,
     photo bytea,
     registered_date date DEFAULT CURRENT_DATE,
-    CONSTRAINT personal_information_pkey PRIMARY KEY (employee_id)
+    CONSTRAINT personal_information_pkey PRIMARY KEY (employee_id),
+    CONSTRAINT address_id_fkey FOREIGN KEY (address_id)
+        REFERENCES address (address_id)  ON UPDATE CASCADE
+        ON DELETE CASCADE
+    
 );
 
 
@@ -88,22 +96,18 @@ CREATE TABLE admin
 
 
 
+
 CREATE TABLE branch
 (
-    branch_id SERIAL NOT NULL ,
+    
     branch_name varchar(100) NOT NULL,
     address_id integer NOT NULL,
-    CONSTRAINT branch_pkey PRIMARY KEY (branch_id),
+    CONSTRAINT branch_pkey PRIMARY KEY (branch_name),
     CONSTRAINT branch_address_id_fkey FOREIGN KEY (address_id)
         REFERENCES address (address_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 );
-
-
-
-
-
 
 
 CREATE TABLE department
@@ -157,14 +161,14 @@ CREATE TABLE pay_grade
 CREATE TABLE employee
 (
     employee_id integer NOT NULL,
-    branch_id integer NOT NULL,
+    branch_name varchar(100) NOT NULL,
     job_title varchar(50)  NOT NULL,
     dept_name varchar(100)  NOT NULL,
     paygrade_level varchar(50)  NOT NULL,
     e_status_name varchar(50)  NOT NULL,
     CONSTRAINT employee_pkey PRIMARY KEY (employee_id),
-    CONSTRAINT employee_branch_id_fkey FOREIGN KEY (branch_id)
-        REFERENCES branch (branch_id) 
+    CONSTRAINT employee_branch_name_fkey FOREIGN KEY (branch_name)
+        REFERENCES branch (branch_name) 
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT employee_dept_name_fkey FOREIGN KEY (dept_name)
@@ -189,26 +193,6 @@ CREATE TABLE employee
         ON DELETE CASCADE
 );
 
-CREATE FUNCTION changeempcount()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE NOT LEAKPROOF
-AS $BODY$
-BEGIN
-      update department set employee_count=employee_count+1 where dept_name=new.dept_name;
-	  return new;
-   END;
-$BODY$;
-
-ALTER FUNCTION changeempcount()
-    OWNER TO postgres;
-
-CREATE TRIGGER incrementempcount
-    AFTER INSERT
-    ON employee
-    FOR EACH ROW
-    EXECUTE PROCEDURE changeempcount();
 
 CREATE TABLE employee_leave
 (
@@ -271,8 +255,8 @@ CREATE TABLE leave_record
 CREATE TABLE supervisor
 (
     employee_id integer NOT NULL,
-    supervisor_id integer NOT NULL,
-    CONSTRAINT supervisor_pkey PRIMARY KEY (employee_id,supervisor_id)
+    supervisor_id integer ,
+    CONSTRAINT supervisor_pkey PRIMARY KEY (employee_id)
 );
 
 CREATE TABLE "session" (
@@ -333,9 +317,6 @@ $$
 
 
 
-CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
-
-GRANT ALL PRIVILEGES ON DATABASE jupitor TO jupitor;
 
 
 
@@ -377,7 +358,6 @@ GRANT ALL ON TABLE public.supervisor TO jupitor;
 
 -- Sandaruwn Functions--------------------------------------------------------------------------------------------------------------------
 
-CREATE TRIGGER leave_count AFTER UPDATE ON leave_record FOR EACH ROW EXECUTE PROCEDURE emp_stamp6();
 
 CREATE FUNCTION emp_stamp6() RETURNS trigger AS $BODY$
 
@@ -407,6 +387,7 @@ END;
 $BODY$ LANGUAGE plpgsql;
 
 
+CREATE TRIGGER leave_count AFTER UPDATE ON leave_record FOR EACH ROW EXECUTE PROCEDURE emp_stamp6();
 
 create function getleavea ( s_id numeric)
 returns table(
@@ -426,6 +407,7 @@ begin
 end;$$
 
 
+
 create function getEmployees ( s_id numeric)
 returns table(
  		employee_id int,
@@ -442,3 +424,119 @@ returns table(
 	left outer join employee_leave e on e.employee_id = p.employee_id
   		where s.supervisor_id = s_id  AND year =2021 ;
 end;$$
+
+
+
+
+-- Indunil's section
+
+CREATE FUNCTION changeempcount()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
+BEGIN
+      update department set employee_count=employee_count+1 where dept_name=new.dept_name;
+	  return new;
+   END;
+$BODY$;
+
+
+
+CREATE TRIGGER incrementempcount
+    AFTER INSERT
+    ON employee
+    FOR EACH ROW
+    EXECUTE PROCEDURE changeempcount();
+
+
+
+
+
+-- CREATE OR REPLACE FUNCTION changeempcount1() RETURNS TRIGGER AS $department_table$
+--    BEGIN
+--       update department set employee_count=employee_count-1 where dept_name=new.dept_name;
+--       RETURN NEW;
+--    END;
+-- $department_table$ LANGUAGE plpgsql;
+
+-- CREATE TRIGGER deccrementempcount
+--     AFTER DELETE
+--     ON employee
+--     FOR EACH ROW
+--     EXECUTE PROCEDURE changeempcount1();
+
+
+-- CREATE OR REPLACE FUNCTION setcountry( c varchar(100)) RETURNS integer
+-- 	AS $$
+--     DECLARE
+--     c_id integer;
+--     BEGIN 
+--         SELECT country_id INTO c_id FROM country
+--         WHERE country=c;
+
+--         IF c_id IS NULL THEN 
+--         INSERT INTO country (country) VALUES (c)
+--         RETURNING country_id INTO c_id ;
+
+--         END IF;
+
+--         RETURN c_id;
+--     END;
+--     $$ LANGUAGE PLpgSQL;
+
+
+-- CREATE OR REPLACE FUNCTION setcity( cityname varchar(100), countryid integer) RETURNS integer
+-- 	AS $$
+--     DECLARE
+--     c_id integer;
+--     BEGIN 
+--         SELECT city_id INTO c_id FROM city
+--         WHERE city=cityname and country_id=countryid;
+
+--         IF c_id IS NULL THEN 
+--         INSERT INTO city (city, country_id) VALUES (cityname, country_id)
+--         RETURNING city_id INTO c_id ;
+
+--         END IF;
+
+--         RETURN c_id;
+--     END;
+--     $$ LANGUAGE PLpgSQL;
+
+-- CREATE OR REPLACE FUNCTION setaddress( addressname varchar(100), cityid integer, postalcode integer) RETURNS integer
+-- 	AS $$
+--     DECLARE
+--     a_id integer;
+--     BEGIN 
+--         SELECT address_id INTO a_id FROM address
+--         WHERE adress=addressname and city_id=cityid and postal_code=postalcode;
+
+--         IF a_id IS NULL THEN 
+--         INSERT INTO address (address, city_id,postal_code) VALUES (addressname, cityid, postalcode)
+--         RETURNING address_id INTO a_id ;
+
+--         END IF;
+
+--         RETURN a_id;
+--     END;
+--     $$ LANGUAGE PLpgSQL;
+
+
+
+Create Or Replace PROCEDURE updateJupitorLeaves(paygradelevel varchar(50), an integer, cas integer, mat integer, nopay integer)
+LANGUAGE plpgsql
+AS $$
+BEGIN 
+	UPDATE leave SET anual=an, casual=cas, maternity=mat, no_pay=nopay where paygrade_level=paygradelevel;
+	IF NOT FOUND THEN
+	INSERT INTO leave(paygrade_level, anual, casual, maternity,no_pay) values (an,cas, mat, nopay);
+	END IF;
+END;
+$$;
+
+-- call updateJupitorLeaves('level 1', 3 ,3 ,4 ,7)
+
+
+

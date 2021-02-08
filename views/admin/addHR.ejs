@@ -34,18 +34,23 @@
                             <div class="form-group mb-3"><input class="form-control" type="text" name="last_name" placeholder="Last Name" value="<%=HR.last_name%>"></div>
                             <div class="form-group mb-3"><input class="form-control" type="text" name="gender" placeholder="Gender" value="<%=HR.gender%>"></div>
                             <div class="form-group mb-3"><input class="form-control" type="text" name="birthday" placeholder="Birthday" value="<%=HR.birthday%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="address_id" placeholder="Address" value="<%=HR.address_id%>"></div>
+
+                            <div class="form-group mb-3"><input class="form-control" type="text" name="address" placeholder="Address" value="<%=HR.address%>"></div>
+                            <div class="form-group mb-3"><input class="form-control" type="text" name="city" placeholder="city" value="<%=HR.city%>"></div>
+                            <div class="form-group mb-3"><input class="form-control" type="text" name="postal_code" placeholder="postal code" value="<%=HR.postal_code%>"></div>
+                            <div class="form-group mb-3"><input class="form-control" type="text" name="country" placeholder="country" value="<%=HR.country%>"></div>
+
                             <div class="form-group mb-3"><input class="form-control" type="text" name="email" placeholder="email" value="<%=HR.email%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="password" placeholder="password" value="<%=HR.password%>"></div>
+                            <div class="form-group mb-3"><input class="form-control" type="password" name="password" placeholder="password" value="<%=HR.password%>"></div>
 
 
 
                             <div class="form-group mb-3">
-                                                    <select class="form-control" id="exampleFormControlSelect1" name="branch_id">
+                                                    <select class="form-control" id="exampleFormControlSelect1" name="branch_name">
                                                         <% 
                                                             if(branches && branches[0]){
                                                             branches.forEach(function(branch){ %>
-                                                                                <option value="<%=branch.branch_id%>"><%=branch.branch_name%></option>
+                                                                                <option value="<%=branch.branch_name%>"><%=branch.branch_name%></option>
                                                             <% })}
                                                             else{ %>
                                                                                  <option value="">no branches available</option>
