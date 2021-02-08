@@ -1,3 +1,15 @@
+
+-- CREATE DATABASE jupitor;
+
+-- CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
+
+-- GRANT ALL PRIVILEGES ON DATABASE jupitor TO jupitor;
+
+-- psql -U jupitor jupitor
+
+
+--drop tables if exists--------------------------------------------------------------------------------------------
+
 DROP TABLE IF EXISTS country CASCADE;
 DROP TABLE IF EXISTS city CASCADE;
 DROP TABLE IF EXISTS address CASCADE;
@@ -14,19 +26,10 @@ DROP TABLE IF EXISTS employee_leave CASCADE;
 DROP TABLE IF EXISTS employee_phone_number CASCADE;
 DROP TABLE IF EXISTS leave CASCADE;
 DROP TABLE IF EXISTS leave_record CASCADE;
-DROP TABLE IF EXISTS country CASCADE;
 DROP TABLE IF EXISTS supervisor CASCADE;
+DROP TABLE IF EXISTS session;
 
-
-CREATE DATABASE jupitor;
-
-CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
-
-GRANT ALL PRIVILEGES ON DATABASE jupitor TO jupitor;
-
--- psql -U jupitor jupitor
-
-
+-- create tables-----------------------------------------------------------------------------------------------------
 
 
 CREATE TABLE country
@@ -166,6 +169,7 @@ CREATE TABLE employee
     dept_name varchar(100)  NOT NULL,
     paygrade_level varchar(50)  NOT NULL,
     e_status_name varchar(50)  NOT NULL,
+    supervisor boolean default FALSE,
     CONSTRAINT employee_pkey PRIMARY KEY (employee_id),
     CONSTRAINT employee_branch_name_fkey FOREIGN KEY (branch_name)
         REFERENCES branch (branch_name) 
@@ -293,12 +297,6 @@ END;
 $$;
 
 
-CREATE TRIGGER removeSupervisor
-    AFTER UPDATE
-    OF supervisor
-    ON employee
-    FOR EACH ROW
-    EXECUTE PROCEDURE deleteSupervisorGroup();
 
 
 CREATE OR REPLACE FUNCTION deleteSupervisorGroup()
@@ -313,48 +311,17 @@ BEGIN
 
 	RETURN NEW;
 END;
-$$
+$$;
 
 
+CREATE TRIGGER removeSupervisor
+    AFTER UPDATE
+    OF supervisor
+    ON employee
+    FOR EACH ROW
+    EXECUTE PROCEDURE deleteSupervisorGroup();
 
 
-
-
-GRANT ALL ON TABLE public.address TO jupitor;
-
-GRANT ALL ON TABLE public.admin TO jupitor;
-
-GRANT ALL ON TABLE public.branch TO jupitor;
-
-GRANT ALL ON TABLE public.city TO jupitor;
-
-GRANT ALL ON TABLE public.country TO jupitor;
-
-GRANT ALL ON TABLE public.department TO jupitor;
-
-GRANT ALL ON TABLE public.emergency_contact_details TO jupitor;
-
-GRANT ALL ON TABLE public.employee TO jupitor;
-
-GRANT ALL ON TABLE public.employee_leave TO jupitor;
-
-GRANT ALL ON TABLE public.employee_phone_number TO jupitor;
-
-GRANT ALL ON TABLE public.employee_status TO jupitor;
-
-GRANT ALL ON TABLE public.job_type TO jupitor;
-
-GRANT ALL ON TABLE public.leave TO jupitor;
-
-GRANT ALL ON TABLE public.leave_record TO jupitor;
-
-GRANT ALL ON TABLE public.pay_grade TO jupitor;
-
-GRANT ALL ON TABLE public.personal_information TO jupitor;
-
-GRANT ALL ON TABLE public.session TO jupitor;
-
-GRANT ALL ON TABLE public.supervisor TO jupitor;
 
 -- Sandaruwn Functions--------------------------------------------------------------------------------------------------------------------
 
@@ -404,7 +371,7 @@ begin
  		select l.leave_id,l.employee_id,p.first_name,p.last_name,l.leave_type from supervisor s left outer join leave_record  l on l.employee_id = s.employee_id
  		left outer join personal_information p on s.employee_id = p.employee_id
  		where s.supervisor_id = s_id AND l.approval_state = 'No' ;
-end;$$
+end;$$;
 
 
 
@@ -423,12 +390,12 @@ returns table(
 	on s.employee_id = p.employee_id
 	left outer join employee_leave e on e.employee_id = p.employee_id
   		where s.supervisor_id = s_id  AND year =2021 ;
-end;$$
+end;$$;
 
 
 
 
--- Indunil's section
+-- Indunil's section---------------------------------------------------------------------------------------------------------------------
 
 CREATE FUNCTION changeempcount()
     RETURNS trigger
@@ -539,4 +506,64 @@ $$;
 -- call updateJupitorLeaves('level 1', 3 ,3 ,4 ,7)
 
 
+-- grant privilages
+GRANT EXECUTE ON FUNCTION public.getemployees(s_id numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.getleavea(s_id numeric) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE public.updatejupitorleaves(paygradelevel character varying, an integer, cas integer, mat integer, nopay integer) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.changeempcount() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.deletesupervisorgroup() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.emp_stamp6() TO jupitor;
+
+GRANT ALL ON SEQUENCE public.address_address_id_seq TO jupitor;
+
+GRANT ALL ON SEQUENCE public.city_city_id_seq TO jupitor;
+
+GRANT ALL ON SEQUENCE public.country_country_id_seq TO jupitor;
+
+GRANT ALL ON SEQUENCE public.leave_record_leave_id_seq TO jupitor;
+
+GRANT ALL ON SEQUENCE public.personal_information_employee_id_seq TO jupitor;
+
+GRANT ALL ON TABLE public.address TO jupitor;
+
+GRANT ALL ON TABLE public.admin TO jupitor;
+
+GRANT ALL ON TABLE public.branch TO jupitor;
+
+GRANT ALL ON TABLE public.city TO jupitor;
+
+GRANT ALL ON TABLE public.country TO jupitor;
+
+GRANT ALL ON TABLE public.department TO jupitor;
+
+GRANT ALL ON TABLE public.emergency_contact_details TO jupitor;
+
+GRANT ALL ON TABLE public.employee TO jupitor;
+
+GRANT ALL ON TABLE public.employee_leave TO jupitor;
+
+GRANT ALL ON TABLE public.employee_phone_number TO jupitor;
+
+GRANT ALL ON TABLE public.employee_status TO jupitor;
+
+GRANT ALL ON TABLE public.job_type TO jupitor;
+
+GRANT ALL ON TABLE public.leave TO jupitor;
+
+GRANT ALL ON TABLE public.leave_record TO jupitor;
+
+GRANT ALL ON TABLE public.pay_grade TO jupitor;
+
+GRANT ALL ON TABLE public.personal_information TO jupitor;
+
+GRANT ALL ON TABLE public.session TO jupitor;
+
+GRANT ALL ON TABLE public.supervisor TO jupitor;
 
