@@ -1,8 +1,10 @@
 class employeeController{
     
   static async index(req,res){
-        res.render('employee/index',{ });
-    }
+    res.render('employee/index',{
+        user:req.session.user
+    })
+  }
 
   static async applyLeave(req,res){
         res.render('employee/applyLeave',{ });
@@ -18,9 +20,10 @@ class employeeController{
     }
     static async leavesHistory(req,res){
       res.render('employee/leavesHistory',{});
+   
     }
 
-    }
+}
 
 
 

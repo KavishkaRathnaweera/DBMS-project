@@ -1,6 +1,7 @@
+const { Pool } = require('pg');
 
-const postgres=require("postgres")
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+});
 
-const sql=postgres(process.env.DATABASE_URL)
-
-module.exports=sql
+module.exports = pool;

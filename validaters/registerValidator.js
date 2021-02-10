@@ -6,10 +6,15 @@ const registerValidator=Joi.object().options({abortEarly:false}).keys({
     last_name:Joi.string().allow(null).allow("").label('last_name'),
     gender:Joi.string().required().label('gender'),
     birthday:Joi.string().required().label('birthday'),
-    address_id:Joi.string().required().label('address_id'),
+
+    address:Joi.string().required().label('address'),
+    city:Joi.string().required().label('city'),
+    postal_code:Joi.string().required().label('postal_code'),
+    country:Joi.string().required().label('country'),
+    
     email:Joi.string().required().label('email'),
     password:Joi.string().required().label('password'),
-    branch_id:Joi.string().required().label("branch_id"),
+    branch_name:Joi.string().required().label("branch_name"),
     job_title:Joi.string().required().label("job_title"),
     dept_name:Joi.string().required().label("dept_name"),
     paygrade_level:Joi.string().required().label("paygrade_level"),
@@ -25,7 +30,12 @@ const adminRegisterValidator=Joi.object().options({abortEarly:false}).keys({
     last_name:Joi.string().allow(null).allow("").label('last_name'),
     gender:Joi.string().required().label('gender'),
     birthday:Joi.string().required().label('birthday'),
-    address_id:Joi.string().required().label('address_id'),
+
+    address:Joi.string().required().label('address'),
+    city:Joi.string().required().label('city'),
+    postal_code:Joi.string().required().label('postal_code'),
+    country:Joi.string().required().label('country'),
+
     email:Joi.string().required().label('email'),
     password:Joi.string().required().label('password'),
     securityKey:Joi.string().required().label("securityKey")
@@ -37,10 +47,15 @@ addHRvalidator=Joi.object().options({abortEarly:false}).keys({
     last_name:Joi.string().allow(null).allow("").label('last_name'),
     gender:Joi.string().required().label('gender'),
     birthday:Joi.string().required().label('birthday'),
-    address_id:Joi.string().required().label('address_id'),
+
+    address:Joi.string().required().label('address'),
+    city:Joi.string().required().label('city'),
+    postal_code:Joi.string().required().label('postal_code'),
+    country:Joi.string().required().label('country'),
+
     email:Joi.string().required().label('email'),
     password:Joi.string().required().label('password'),
-    branch_id:Joi.string().required().label("branch_id"),
+    branch_name:Joi.string().required().label("branch_name"),
     job_title:Joi.string().required().label("job_title"),
     dept_name:Joi.string().required().label("dept_name"),
     paygrade_level:Joi.string().required().label("paygrade_level"),

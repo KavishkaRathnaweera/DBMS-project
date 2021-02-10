@@ -1,5 +1,6 @@
 const { request } = require("express");
 const express = require("express");
+const HRController = require("../controllers/HRController");
 const router = express.Router();
 const RootController = require("../controllers/rootController");
 const { supervisor } = require("../controllers/supervisorController");
@@ -13,6 +14,7 @@ router.get("/", ifLoggedIn, RootController.indexPage);
 router.get("/login", ifLoggedIn, RootController.loginPage);
 router.get("/signup", ifLoggedIn, RootController.signupPage);
 router.get("/logout", ifNotLoggedIn, RootController.logout);
+router.get("/abc", HRController.abc)
 
 
 
@@ -30,6 +32,8 @@ router.use('/HR', require('./HR'))
 
 router.use('/employee', require('./employee'));
 router.use("/supervisor", require("./supervisor"));
+router.use('/manager', require('./manager'));
+
 
 
 
