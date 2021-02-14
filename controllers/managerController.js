@@ -4,8 +4,6 @@ const managerServices =require('../services/managerServices');
 var user="Manager";
 var userBranch="Sri Lanka";
 var userDepartment="Software dept";
-var emloyeeData = [];
-var editAccess = true;
 var checkSupervisorADD = false;
 var employeeList = [];
 var canBeSupervisors=[];
@@ -22,32 +20,8 @@ class  MnagerController{
                 
             })
         }
-        static async viewData(req,res){
-            //render karaddi ywanna ona variables --> employeedata, editaccess(true/false) 
-            //false nam--> edit button ekk pennana one. true nam --> save button eka pennanna one
-            const id = req.params.id;
-            if(!id){
-                console.log("ewdwedwed");
-            }
-            else{
-                console.log(id);
-                //employee data tika array ekta dala redirect karanwa manager/viewData
-                //editAccess--false
-            }
-           
-            res.render('./manager/viewData', {
-                emloyeeData:emloyeeData,
-                editAccess:editAccess
-            })
-        }
-        // static async editData(req,res){
 
-        //     res.render('./manager/editData', {
-                
-        //     })
-        // }
         static async searchEmployee(req,res){
-            //if ekk dala balanna ona manager da hr da access karanne kiyala.
             const branches=await managerServices.getAllBranches();
             const Jobtypes=await managerServices.getAllJobTitles();
             const departments=await managerServices.getAllDepartments();
@@ -61,13 +35,7 @@ class  MnagerController{
                 employeeList:employeeList
             })
         }
-        static async viewEmployee(req,res){
-            // employee ge data, post wela ena id eken aragena employee array ekta danna one
-            // redirect kranwa manager/viewData route eka
-            //editaccess true kranna one
-            res.render('./manager/viewData', {
-            })
-        }
+     
         static async getEmployeeList(req,res){
             var branch = req.body.branchSelect;
             var department = req.body.deptSelect;
@@ -89,7 +57,6 @@ class  MnagerController{
             })
         }
         static async addSupervisorView(req,res){
-            // employeeList= await managerServices.getEmployeeList(branch,department,jobtype);
             canBeSupervisors= await managerServices.getCanbeSupervisors(userBranch,userDepartment,user);
           
             res.render('./manager/addSupervisor', {
@@ -182,6 +149,75 @@ class  MnagerController{
           
         }
    
-   
+
+
+// ------------------------viewemployee and edit employee------------------
+
+static async viewData(req,res){
+    const id = req.params.id;
+    if(!id){
+              res.render("./manager/viewData", {
+                user: req.session.user,
+                error: req.query.error,
+                success: req.query.success,
+                branches: {},
+                Jobtypes: {},
+                departments:{},
+                payGrades: {},
+                employee_statuses:{},
+                empDATA:{},
+                user:user,
+              
+              });
     }
+    else{
+        // console.log(id);
+        try{
+            await managerServices.checkEmp(id,user,userBranch,userDepartment);
+            const empDATA = await managerServices.getEmpDATA(id);
+            const branches=await managerServices.getAllBranches();
+            const Jobtypes=await managerServices.getAllJobTitles();
+            const departments=await managerServices.getAllDepartments();
+            const payGrades = await managerServices.getAllPayGradeLevel();
+            const employee_statuses = await managerServices.getEmployeeStatus();
+            // console.log(empDATA)
+            res.render("./manager/viewData", {
+                user: req.session.user,
+                error: req.query.error,
+                success: req.query.success,
+                branches: branches,
+                Jobtypes: Jobtypes,
+                departments: departments,
+                payGrades: payGrades,
+                employee_statuses: employee_statuses,
+                empDATA:empDATA,
+                user:user,
+              
+
+              });
+        }
+      catch(error){
+          console.log(error);
+          res.redirect(`/manager/viewData?error=${error}`);
+      }
+    }
+}
+
+static async viewEmployee(req,res){
+    const e_id = req.body.e_id;
+    res.redirect(`/manager/viewData/${e_id}`);
+}
+
+static async updateEmployee(req,res){
+    try{
+        const empAdd = await managerServices.updateEmployee(req.body);
+        const success= "Successfully Update the Employee";
+        res.redirect(`/manager/viewData?success=${success}`);
+    }catch(error){
+        console.log(error);
+        res.redirect(`/manager/viewData?error=${error}`);
+    }
+}
+
+}
 module.exports=MnagerController
