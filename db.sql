@@ -166,6 +166,7 @@ CREATE TABLE employee
     dept_name varchar(100)  NOT NULL,
     paygrade_level varchar(50)  NOT NULL,
     e_status_name varchar(50)  NOT NULL,
+    supervisor  boolean NOT NULL DEFAULT 'false'::boolean,
     CONSTRAINT employee_pkey PRIMARY KEY (employee_id),
     CONSTRAINT employee_branch_name_fkey FOREIGN KEY (branch_name)
         REFERENCES branch (branch_name) 
@@ -294,12 +295,6 @@ END;
 $$;
 
 
-CREATE TRIGGER removeSupervisor
-    AFTER UPDATE
-    OF supervisor
-    ON employee
-    FOR EACH ROW
-    EXECUTE PROCEDURE deleteSupervisorGroup();
 
 
 CREATE OR REPLACE FUNCTION deleteSupervisorGroup()
@@ -314,9 +309,21 @@ BEGIN
 
 	RETURN NEW;
 END;
-$$
+$$;
 
 
+CREATE TRIGGER removeSupervisor
+    AFTER UPDATE
+    OF supervisor
+    ON employee
+    FOR EACH ROW
+    EXECUTE PROCEDURE deleteSupervisorGroup();
+
+
+
+CREATE VIEW EmployeeData_View AS
+SELECT *
+FROM  employee join personal_information using(employee_id);
 
 
 
@@ -355,7 +362,9 @@ GRANT ALL ON TABLE public.personal_information TO jupitor;
 
 GRANT ALL ON TABLE public.session TO jupitor;
 
-GRANT ALL ON TABLE public.supervisor TO jupitor;
+GRANT ALL ON TABLE public.supervisor TO jupitor; 
+
+GRANT ALL ON TABLE public.EmployeeData_View TO jupitor;
 
 -- Sandaruwn Functions--------------------------------------------------------------------------------------------------------------------
 
@@ -405,7 +414,7 @@ begin
  		select l.leave_id,l.employee_id,p.first_name,p.last_name,l.leave_type from supervisor s left outer join leave_record  l on l.employee_id = s.employee_id
  		left outer join personal_information p on s.employee_id = p.employee_id
  		where s.supervisor_id = s_id AND l.approval_state = 'No' ;
-end;$$
+end;$$;
 
 
 
@@ -424,7 +433,7 @@ returns table(
 	on s.employee_id = p.employee_id
 	left outer join employee_leave e on e.employee_id = p.employee_id
   		where s.supervisor_id = s_id  AND year =2021 ;
-end;$$
+end;$$;
 
 
 
