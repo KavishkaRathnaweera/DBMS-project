@@ -9,5 +9,6 @@ router.get("/leaves", supervisorController.leaves);
 router.get("/leaveRequest/:request", supervisorController.leaveRequest);
 
 router.post("/approve", supervisorController.approve);
+router.post("/search", supervisorController.findemployee);
 
 module.exports = router;

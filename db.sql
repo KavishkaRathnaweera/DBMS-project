@@ -327,35 +327,39 @@ CREATE TRIGGER removeSupervisor
 -- Sandaruwn Functions--------------------------------------------------------------------------------------------------------------------
 
 
-CREATE FUNCTION emp_stamp6() RETURNS trigger AS $BODY$
+CREATE FUNCTION emp_stamp() RETURNS trigger AS $BODY$
 
-DECLARE
-count1 INTEGER :=0 ;
+ DECLARE
+ count1 INTEGER :=0 ;
 		
- 		BEGIN
-  		IF( NEW.leave_type ='anual') THEN
-		select anual into count1 from employee_leave where employee_id = NEW.employee_id and year = 2021;
- 		UPDATE employee_leave SET anual = count1 - 1 WHERE employee_id = NEW.employee_id  AND year = 2021 ; END IF;
+  		BEGIN
+   		IF( NEW.leave_type ='anual' AND NEW.approval_state = 'Yes') THEN
+ 		select anual into count1 from employee_leave where employee_id = NEW.employee_id and year = 2021;
+  		UPDATE employee_leave SET anual = count1 - NEW.duration WHERE employee_id = NEW.employee_id  AND year = 2021 ; END IF;
 		
-  		IF( NEW.leave_type ='casual') THEN
- 		select casual into count1 from employee_leave where employee_id = NEW.employee_id and year = 2021;
- 		UPDATE employee_leave SET casual = count1 - 1 WHERE employee_id = NEW.employee_id  AND year = 2021 ; END IF;
+   		IF( NEW.leave_type ='casual' AND NEW.approval_state = 'Yes') THEN
+  		select casual into count1 from employee_leave where employee_id = NEW.employee_id and year = 2021;
+  		UPDATE employee_leave SET casual = count1 - NEW.duration WHERE employee_id = NEW.employee_id  AND year = 2021 ; END IF;
 		
+   		IF( NEW.leave_type ='maternity' AND NEW.approval_state = 'Yes') THEN
+  		select maternity into count1 from employee_leave where employee_id = NEW.employee_id and year = 2021;
+  		UPDATE employee_leave SET maternity = count1 - NEW.duration WHERE employee_id = NEW.employee_id  AND year = 2021 ; END IF;
 		
-  		IF( NEW.leave_type ='maternity') THEN
- 		select maternity into count1 from employee_leave where employee_id = NEW.employee_id and year = 2021;
- 		UPDATE employee_leave SET maternity = count1 - 1 WHERE employee_id = NEW.employee_id  AND year = 2021 ; END IF;
-		
-  		IF( NEW.leave_type ='no_pay') THEN
- 		select no_pay into count1 from employee_leave where employee_id = NEW.employee_id and year = 2021;
- 		UPDATE employee_leave SET no_pay = count1 - 1 WHERE employee_id = NEW.employee_id  AND year = 2021 ; END IF;
+  		IF( NEW.leave_type ='no_pay' AND NEW.approval_state = 'Yes') THEN
+  		select no_pay into count1 from employee_leave where employee_id = NEW.employee_id and year = 2021;
+ 		UPDATE employee_leave SET no_pay = count1 - NEW.duration WHERE employee_id = NEW.employee_id  AND year = 2021 ; END IF;
 		
 		return new;
 END;
 $BODY$ LANGUAGE plpgsql;
 
 
-CREATE TRIGGER leave_count AFTER UPDATE ON leave_record FOR EACH ROW EXECUTE PROCEDURE emp_stamp6();
+
+CREATE TRIGGER leave_count AFTER UPDATE ON leave_record FOR EACH ROW EXECUTE PROCEDURE emp_stamp();
+
+
+
+ -- get leave requests----------------------
 
 create function getleavea ( s_id numeric)
 returns table(
@@ -374,25 +378,69 @@ begin
  		where s.supervisor_id = s_id AND l.approval_state = 'No' ;
 end;$$;
 
-
-
+-- get all employees--------------------------------
 create function getEmployees ( s_id numeric)
 returns table(
  		employee_id int,
  		first_name varchar ,
   		last_name varchar,
-  		count_leaves int
+  		count_leaves int,
+		total_leaves int
   	)
   	language plpgsql
  as $$
  begin
   	return query 
-  		select s.employee_id,p.first_name,p.last_name, e.anual+e.casual+e.maternity+e.no_pay AS count_leaves from supervisor s left outer join personal_information  p  
+  		select s.employee_id,p.first_name,
+		p.last_name, e.anual+e.casual+e.maternity+e.no_pay AS count_leaves,
+		lv.anual + lv.casual + lv.maternity + lv.no_pay AS total_leaves
+		from supervisor s left outer join personal_information  p  
 	on s.employee_id = p.employee_id
 	left outer join employee_leave e on e.employee_id = p.employee_id
+	left outer join employee em on em.employee_id = p.employee_id
+	left outer join leave lv on em.paygrade_level = lv.paygrade_level
   		where s.supervisor_id = s_id  AND year =2021 ;
 end;$$;
 
+-- get employee-----------------------------
+create function getEmployee ( e_id numeric)
+returns table(
+ 		employee_id int,
+ 		first_name varchar ,
+  		last_name varchar,
+  		count_leaves int,
+		total_leaves int
+  	)
+  	language plpgsql
+ as $$
+ begin
+  	return query 
+  		select p.employee_id,p.first_name,p.last_name,
+		e.anual+e.casual+e.maternity+e.no_pay AS count_leaves,
+		lv.anual + lv.casual + lv.maternity + lv.no_pay AS total_leaves
+		from personal_information  p  
+		left outer join employee_leave e on e.employee_id = p.employee_id
+		left outer join employee em on em.employee_id = p.employee_id
+		left outer join leave lv on em.paygrade_level = lv.paygrade_level
+  		where p.employee_id = e_id AND year =2021  ;
+end;$$;
+
+
+-- get absents -----------------------
+create function getAttendence (In s_id numeric,
+						In today varchar(10))
+returns integer
+  	language plpgsql
+ as $$
+ 
+ DECLARE
+ count1 INTEGER :=0 ;
+ begin
+		select count(distinct l.employee_id) into count1
+from supervisor s left outer join leave_record  l on l.employee_id = s.employee_id
+where start_date + duration >= today AND s.supervisor_id = s_id AND start_date < today AND approval_state = 'Yes';
+return count1;
+end;$$;
 
 
 
