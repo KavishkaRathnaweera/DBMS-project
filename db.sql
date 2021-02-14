@@ -324,6 +324,11 @@ CREATE TRIGGER removeSupervisor
 
 
 
+CREATE VIEW EmployeeData_View AS
+SELECT *
+FROM  employee join personal_information using(employee_id);
+
+
 -- Sandaruwn Functions--------------------------------------------------------------------------------------------------------------------
 
 
@@ -568,3 +573,4 @@ GRANT ALL ON TABLE public.session TO jupitor;
 
 GRANT ALL ON TABLE public.supervisor TO jupitor;
 
+GRANT ALL ON TABLE public.EmployeeData_View TO jupitor;
