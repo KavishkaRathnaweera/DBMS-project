@@ -48,6 +48,7 @@ class SupervisorController {
     const remaining_leaves = await Supervisor.getRemainingLeaves(
       leave[0].employee_id
     );
+    console.log(leave[0].leave_type);
     var date = new Date(leave[0].start_date),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
