@@ -2,26 +2,85 @@
 
 <%- include('_sidebar',{title:"My Info"}) %>
 
+<!-- variables for employee details-->
+<% photo= '<img src=".\assets\img\21207.jpg" alt="employee photo here" width="100 px" height="100px" srcset="">' %>
+<% userName= 'theekshana madumal'; %>
+
+<% id= 7; %>
+<% jobTitle= 'superviser'; %>
+<% department= 'cutting'; %>
+<% payGrade= 3; %>
+<% employeeStatus= 'unmarried'; %>
+
+<% nic= '971650834V'; %>
+<% firstName= 'theekshana'; %>
+<% lastName= 'madumal'; %>
+
+<% addressLine1= 'no 10'; %>
+<% addressLine2= 'puttalam rd'; %>
+<% addressLine3= 'nikaweratiya'; %>
+
+<% telephone= 0773137660; %>
+<% email= 'theekshana.18@cse.mrt.ac.lk'; %>
+
+<!-- ////////<%= lastName %>
+
+//////////////// -->
 
 
 
 
+<div class="content-wrapper">
+    <!-- row 1-->
+    <div class="row mb-2">
+        <!-- column 1-->
+        <div class="col-lg-6 col-6" style="font-size: 20px">
+                <%- photo %> <br>
+                <%- userName %> <br><br>
+        </div>
+        <!-- column 2-->
+        <div class="col-lg-6 col-6" style="font-size: 20px">
+               ID         : <%- id %> <br>
+               Job Title  : <%- jobTitle %> <br>
+               Department : <%- department %> <br>
+               Pay Grade  : <%- payGrade %> <br>
+               Employee Status : <%- employeeStatus %> <br><br>
+        </div>
+    </div>
+
+    <!-- row 2-->
+        <div class="row mb-2">
+        <!-- column 1-->
+            <div class="col-lg-6 col-6" style="font-size: 20px">
+                NIC No     : <%- nic %> <br>
+                First Name : <%- firstName %> <br>
+                Last  Name : <%- lastName %> <br><br>
+            </div>
+        <!-- column 2-->
+        <div class="col-lg-6 col-6">
+            <div class="col-lg-6 col-6" style="font-size: 20px">
+                Address : 
+                <Address>
+                <%- addressLine1 %> <br>
+                <%- addressLine2 %> <br>
+                <%- addressLine3 %> <br><br>
+                </Address>
+            </div>
+        </div>
+    </div>
+
+    <!-- row 3-->
+    <div class="row mb-2">
+        <div class="col-lg-6 col-6">
+            <div class="col-lg-6 col-6" style="font-size: 20px">
+                Telephone  : <%- telephone %> <br>         
+                Email      : <%- email %> <br><br>
+                
+            </div>
+        </div>
+    </div>
+</div>
 
 
-
-
-<center>
-<h1>employeeInfo here</h1>
-</center>
-
-
-
-
-
-
-
-
-
-
-
+</body>
 <%- include('_footer') %>
