@@ -84,12 +84,16 @@ static async getEmployeeStatus(){
     return employee_status; 
 }
 static async checkEmp(id,user,userBranch,userDepartment){
-    const result=await manager.getEmployeeBranchAndDept(id);
+    const result=await manager.getEmployeeBranchAndDeptAndjobTitle(id);
     // console.log(result);
     if(result.length===0){
         throw new Error.BadRequest("Invalid ID");
     }
-    const [{branch_name,dept_name}] = result;
+    const [{branch_name,dept_name,job_title}] = result;
+    
+    if(job_title===user){
+        throw new Error.BadRequest("No access to view or edit this employee's data");
+    } 
 
     if(user === "Manager"){
         if(userBranch!==branch_name){
@@ -98,7 +102,7 @@ static async checkEmp(id,user,userBranch,userDepartment){
         else if(userDepartment!== dept_name){
             throw new Error.BadRequest("This emplooyee is not in your department");
         }
-    } 
+    }
 }
 static async getEmpDATA(id){
     const result=await manager.getEmpDATA(id);

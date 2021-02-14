@@ -109,9 +109,9 @@ static async getEmployeeStatus(){
     select e_status_name from employee_status`)
     return employee_status.rows;
 }
-static async getEmployeeBranchAndDept(id){
+static async getEmployeeBranchAndDeptAndjobTitle(id){
     const result=await db.query(`
-    select branch_name,dept_name from employee where employee_id = $1`,[id])
+    select branch_name,dept_name,job_title from employee where employee_id = $1`,[id])
     return result.rows;
 }
 static async getEmpDATA(id){
