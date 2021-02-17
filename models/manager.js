@@ -141,10 +141,10 @@ static async updateEmployee(
     phone,
     gender,
     birthday,
-    adress,
+    address,
     city,
     postal_code,
-    hashpwd,
+    // hashpwd,
     branch,
     jobTitle,
     department,
@@ -155,7 +155,7 @@ static async updateEmployee(
    
     try{//assume if address name is same then city and postal code also same
         await db.query("BEGIN");
-        let addressID = (await db.query(`SELECT address_id from address where adress = $1`,[adress])).rows;
+        let addressID = (await db.query(`SELECT address_id from address where address = $1`,[address])).rows;
         // console.log(addressID);
         if(!addressID[0]){
             let cityID=(await db.query(`SELECT city_id from city where city.city= $1`,[city])).rows;
@@ -169,11 +169,11 @@ static async updateEmployee(
                 // console.log(cityID[0]);
                
             }
-            addressID = (await db.query(`INSERT INTO address(adress,city_id,postal_code) VALUES($1,$2,$3) returning address_id`,[adress,cityID[0].city_id,postal_code])).rows;
+            addressID = (await db.query(`INSERT INTO address(address,city_id,postal_code) VALUES($1,$2,$3) returning address_id`,[address,cityID[0].city_id,postal_code])).rows;
         }
 
-        const personal_information = (await db.query(`update Personal_information set NIC = $1, first_name=$2, middle_name=$3, last_name=$4, gender=$5, birth_day=$6, address_id=$7, email=$8, password=$9 
-        where employee_id = $10`,[NIC, first_name, middle_name, last_name, gender, birthday, addressID[0].address_id,  email, hashpwd,ID])).rows;
+        const personal_information = (await db.query(`update Personal_information set NIC = $1, first_name=$2, middle_name=$3, last_name=$4, gender=$5, birth_day=$6, address_id=$7, email=$8
+        where employee_id = $9`,[NIC, first_name, middle_name, last_name, gender, birthday, addressID[0].address_id,  email,ID])).rows;
 
         const employee = (await db.query(`update Employee set branch_name=$1, job_title=$2, dept_name=$3, paygrade_level=$4, e_status_name=$5 
         where employee_id=$6`,[branch, jobTitle, department, payGrade, empStatus,ID])).rows;

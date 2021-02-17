@@ -160,7 +160,7 @@
                                       <!-- text input -->
                                       <div class="form-group">
                                           <label>Address</label>
-                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].adress : ''%>" id="address_id" name="address_id" value="<%=empDATA.length>0 ? empDATA[0].adress : ''%>" required disabled>
+                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].address : ''%>" id="address_id" name="address_id" value="<%=empDATA.length>0 ? empDATA[0].address : ''%>" required disabled>
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
@@ -175,13 +175,13 @@
                                           <input type="number" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].postal_code : ''%>" id="postal_code" name="postal_code"  value="<%=empDATA.length>0 ? empDATA[0].postal_code : ''%>" required disabled> 
                                       </div>
                                   </div>
-                                  <div class="col-sm-6">
+                                  <div class="col-sm-6" style="display:none;">
                                       <div class="form-group">
                                           <label>Password</label>
                                           <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="password" name="password" required disabled>
                                       </div>
                                   </div>
-                                  <div class="col-sm-6">
+                                  <div class="col-sm-6" style="display:none;">
                                       <div class="form-group">
                                           <label>Re-enter password</label>
                                           <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="repassword" name="repassword" required disabled>
@@ -216,16 +216,6 @@
                                             <% if(empDATA.length>0){ %>
                                                 <option value="<%= empDATA[0].branch_name %>"><%= empDATA[0].branch_name %></option>
                                              <% }  %>
-                                            <% if(user !== "Manager"){ %>
-                                                <% if(branches && branches[0]){ branches.forEach(function(branch){ %>
-
-                                                    <option value="<%=branch.branch_name%>">
-                                                        <%=branch.branch_name%>
-                                                    </option>
-
-                                                    <% })} 
-                                             } %>
-                                            
                                           </select>
                                       </div>
                                   </div>
@@ -238,7 +228,7 @@
                                                 <option value="<%= empDATA[0].job_title %>"><%= empDATA[0].job_title %></option>
                                              <% } %>
                                               <% if(Jobtypes && Jobtypes[0]){ Jobtypes.forEach(function(Jobtype){ %>
-                                                <% if(Jobtype.job_title !== user) {%>
+                                                <% if(Jobtype.job_title !== user && Jobtype.job_title !== empDATA[0].job_title) {%>
                                                   <option value="<%=Jobtype.job_title%>">
                                                       <%=Jobtype.job_title%>
                                                   </option>
@@ -257,13 +247,6 @@
                                             <% if(empDATA.length>0){ %>
                                                 <option value="<%= empDATA[0].dept_name %>"><%= empDATA[0].dept_name %></option>
                                              <% }  %>
-                                            <% if(user !== "Manager"){ %>
-                                                <% if(departments && departments[0]){ departments.forEach(function(department){%>
-                                                    <option value="<%=department.dept_name%>">
-                                                        <%=department.dept_name%>
-                                                    </option>
-                                                    <% })}
-                                             } %>
                                           </select>
                                       </div>
                                   </div>
@@ -369,8 +352,6 @@
                 $('#address_id').attr('disabled', false);
                 $('#city').attr('disabled', false);
                 $('#postal_code').attr('disabled', false);
-                $('#password').attr('disabled', false);
-                $('#repassword').attr('disabled', false);
                 $('#customFile').attr('disabled', false);
                 $('#branch').attr('disabled', false);
                 $('#jobTitle').attr('disabled', false);

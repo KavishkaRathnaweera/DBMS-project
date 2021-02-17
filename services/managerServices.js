@@ -91,18 +91,17 @@ static async checkEmp(id,user,userBranch,userDepartment){
     }
     const [{branch_name,dept_name,job_title}] = result;
     
+    if(userBranch!==branch_name){
+        throw new Error.BadRequest("This emplooyee is not in your branch");
+    }
+    if(userDepartment!== dept_name){
+        throw new Error.BadRequest("This emplooyee is not in your department");
+    }
+
     if(job_title===user){
         throw new Error.BadRequest("No access to view or edit this employee's data");
     } 
-
-    if(user === "Manager"){
-        if(userBranch!==branch_name){
-            throw new Error.BadRequest("This emplooyee is not in your branch");
-        }
-        else if(userDepartment!== dept_name){
-            throw new Error.BadRequest("This emplooyee is not in your department");
-        }
-    }
+    
 }
 static async getEmpDATA(id){
     const result=await manager.getEmpDATA(id);
@@ -121,8 +120,8 @@ static async updateEmployee({
     address_id,
     city,
     postal_code,
-    password,
-    repassword,
+    // password,
+    // repassword,
     branch,
     jobTitle,
     department,
@@ -131,18 +130,18 @@ static async updateEmployee({
     salary,
   }) {
     const checkEmail = await manager.findUserIDByEmail(email);
-    console.log(checkEmail)
+    // console.log(checkEmail)
     ID= parseInt(ID);
-    console.log(ID)
+    // console.log(ID)
     if (checkEmail.length>0 && checkEmail[0].employee_id !==ID) {
       throw new Error.BadRequest(`This email is already registered with employee id ${checkEmail[0].employee_id}`);
     }
     const checkNIC = await manager.findUserIDByNIC(NIC);
-    console.log(checkNIC)
+    // console.log(checkNIC)
     if (checkNIC.length>0 && checkNIC[0].employee_id !==ID) {
       throw new Error.BadRequest(`This NIC is already registered with employee id ${checkNIC[0].employee_id}`);
     }
-    const hashpwd = await bcrypt.hash(password, 10);
+    // const hashpwd = await bcrypt.hash(password, 10);
     const result = await manager.updateEmployee(
       ID,
       NIC,
@@ -156,7 +155,7 @@ static async updateEmployee({
       address_id,
       city,
       postal_code,
-      hashpwd,
+    //   hashpwd,
       branch,
       jobTitle,
       department,
