@@ -274,7 +274,7 @@ ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFE
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
-
+-- Kaveesha Functions--------------------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE PROCEDURE addToSupervisorT(
     employee_ids integer[],
     val_supervisor_id int,
