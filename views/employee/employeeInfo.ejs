@@ -4,21 +4,25 @@
 
 <!-- variables for employee details-->
 <% photo= '<img src=".\assets\img\21207.jpg" alt="employee photo here" width="100 px" height="100px" srcset="">' %>
-<% userName= 'theekshana madumal'; %>
-
-<% id= 7; %>
-<% jobTitle= 'superviser'; %>
-<% department= 'cutting'; %>
-<% payGrade= 3; %>
-<% employeeStatus= 'unmarried'; %>
-
-<% nic= '971650834V'; %>
 <% firstName= 'theekshana'; %>
-<% lastName= 'madumal'; %>
+<% middleName= ' madumal'; %>
+<% lastName= ' samaradiwakara'; %>
 
-<% addressLine1= 'no 10'; %>
-<% addressLine2= 'puttalam rd'; %>
-<% addressLine3= 'nikaweratiya'; %>
+<% id             = 7; %>
+<% branch         = 'nikaweratiya'; %>
+<% jobTitle       = 'superviser'; %>
+<% department     = 'cutting'; %>
+<% payGrade       = 3; %>
+<% employeeStatus = 'unmarried'; %>
+<% supervisor     = 'kamal'; %>
+<% registeredDate = '2013/05/05'; %>
+
+<% nic     = '971650834V'; %>
+<% gender  = 'male'; %>
+<% birthDay= '1997/06/13'; %>
+
+<% address = 'no 10 , puttalam rd'; %>
+<% city    = 'nikaweratiya'; %>
 
 <% telephone= 0773137660; %>
 <% email= 'theekshana.18@cse.mrt.ac.lk'; %>
@@ -36,7 +40,7 @@
         <!-- column 1-->
         <div class="col-lg-6 col-6" style="font-size: 20px">
                 <%- photo %> <br>
-                <%- userName %> <br><br>
+                <%- firstName %>  <%- middleName %> <%- lastName %> <br><br>
         </div>
         <!-- column 2-->
         <div class="col-lg-6 col-6" style="font-size: 20px">
@@ -45,6 +49,9 @@
                Department : <%- department %> <br>
                Pay Grade  : <%- payGrade %> <br>
                Employee Status : <%- employeeStatus %> <br><br>
+               supervisor      : <%- supervisor %> <br>
+               Registered Date : <%- registeredDate %> <br><br>
+
         </div>
     </div>
 
@@ -53,17 +60,16 @@
         <!-- column 1-->
             <div class="col-lg-6 col-6" style="font-size: 20px">
                 NIC No     : <%- nic %> <br>
-                First Name : <%- firstName %> <br>
-                Last  Name : <%- lastName %> <br><br>
+                Gender : <%- gender %> <br>
+                BirthDay : <%- birthDay %> <br><br>
             </div>
         <!-- column 2-->
         <div class="col-lg-6 col-6">
             <div class="col-lg-6 col-6" style="font-size: 20px">
                 Address : 
                 <Address>
-                <%- addressLine1 %> <br>
-                <%- addressLine2 %> <br>
-                <%- addressLine3 %> <br><br>
+                <%- address %> <br>
+                <%- city %> <br><br>
                 </Address>
             </div>
         </div>
