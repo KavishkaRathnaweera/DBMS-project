@@ -565,7 +565,7 @@ GRANT EXECUTE ON FUNCTION public.getemployees(s_id numeric) TO jupitor;
 
 GRANT EXECUTE ON FUNCTION public.getleavea(s_id numeric) TO jupitor;
 
-GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer) TO jupitor;
+--GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer) TO jupitor;
 
 GRANT EXECUTE ON PROCEDURE public.updatejupitorleaves(paygradelevel character varying, an integer, cas integer, mat integer, nopay integer) TO jupitor;
 

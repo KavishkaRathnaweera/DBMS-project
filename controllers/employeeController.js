@@ -17,8 +17,10 @@ class employeeController {
   }
 
   static async employeeInfo(req, res) {
-    res.render("employee/employeeInfo", {});
+    const information = await Employee.getEmployeeInfo();
+    res.render("employee/employeeInfo", {information:information});
   }
+  
   static async leavesHistory(req, res) {
     res.render("employee/leavesHistory", {});
   }
