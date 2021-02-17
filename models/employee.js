@@ -49,6 +49,19 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
 
     return res;
   }
+
+  static async getEmployeeInfo() {
+    let employee_id = 180336;
+    
+
+
+
+    return info;
+
+  }
+
+
+
 }
 
 module.exports = Employee;
