@@ -1,14 +1,20 @@
-const {adminRegisterValidator, addHRvalidator} =require('../validaters/registerValidator')
+const {adminRegisterValidator, addHRvalidatorWrapper} =require('../validaters/registerValidator')
 const {adminLoginValidator} =require('../validaters/loginValidater')
 const adminServices =require('../services/adminServices');
 const idForm=require("../helpers/idChecker")
 const OrganizationServices=require('../services/organizationServices')
 const {leaveCountValidator}=require('../validaters/leaveValidator');
-const {branchValidator}=require('../validaters/organizationValidator');
+const {branchValidator,payGradeValidator,payGradeEditValidator,employeeStatusValidator,EmployeeStatusEditValidator, jobTypeEditValidator, jobTypeValidator}=require('../validaters/organizationValidator');
 const { getAllBranches } = require('../models/organization');
 
 
 class  AdminController{
+
+        static async dashboard(req,res){
+            res.render('admin/dashboard',{
+                user:req.session.user
+            })
+        }
 
         static async signupPage(req,res){
             res.render('admin/adminSignup',{
@@ -99,7 +105,7 @@ class  AdminController{
         
 
         static async home(req,res){
-            res.render('admin/adminHome', {
+            res.render('admin/dashboard', {
                 user:req.session.user,
                 error:req.query.error,
                 success:req.query.success
@@ -113,6 +119,7 @@ class  AdminController{
                 const departments=await OrganizationServices.getAllDepartment();
                 const payGrades=await OrganizationServices.getAllPayGradeLevel()
                 const employee_statuses=await OrganizationServices.getEmployeeStatus();
+                const customAttributes=await OrganizationServices.getCustomAttributes();
                 const HR={}
                 HR.NIC=req.query.NIC
                 HR.first_name=req.query.first_name
@@ -133,6 +140,7 @@ class  AdminController{
                 HR.dept_name=req.query.dept_name
                 HR.paygrade_level=req.query.paygrade_level
                 HR.e_status_name=req.query.e_status_name
+            
 
 
 
@@ -145,9 +153,11 @@ class  AdminController{
                     departments:departments,
                     payGrades:payGrades,
                     employee_statuses:employee_statuses,
+                    customAttributes:customAttributes,
                     HR:HR
                 })
             } catch (error) {
+               
                 res.render('admin/addHR',{
                     user:req.session.user,
                     error:error,
@@ -157,6 +167,7 @@ class  AdminController{
                     departments:'',
                     payGrades:'',
                     employee_statuses:'',
+                    customAttributes:'',
                     HR:{}
                     
                 })
@@ -166,12 +177,12 @@ class  AdminController{
         }
         static async addHR(req,res){
             try {
-                const {error , value}= await addHRvalidator.validate(req.body)
+                const {error , value}= await addHRvalidatorWrapper(req.body)
                 if(error) throw error
                 const HR =await adminServices.addHR(value); 
                 
                 const success="HR addedd sucessfully. you can logged in using emp"+idForm.idForm(HR.employee_id);
-
+              
 
                 
                 res.redirect(`/admin/addHR?success=${success}&NIC=${req.body.NIC}&first_name=${req.body.first_name}&
@@ -180,6 +191,7 @@ class  AdminController{
                 dept_name=${req.body.dept_name}&paygrade_level=${req.body.paygrade_level}&e_status_name=${req.body.e_status_name}`)
 
             } catch (error) {
+                console.log(error)
                 res.redirect(`/admin/addHR?error=${error}&NIC=${req.body.NIC}&first_name=${req.body.first_name}&
                 middle_name=${req.body.middle_name}&last_name=${req.body.last_name}&gender=${req.body.gender}&birthday=${req.body.birthday}&
                 address=${req.body.address}&city=${req.body.city}&postal_code=${req.body.postal_code}&country=${req.body.country}&email=${req.body.email}&password=${req.body.password}&branch_id=${req.body.branch_name}&job_title=${req.body.job_title}&
@@ -190,6 +202,7 @@ class  AdminController{
         static async viewLeaves(req,res){
             try {
                     const leaves=await OrganizationServices.getLeaves()
+                    
                     res.render('admin/viewLeaves',{
                         user:req.session.user,
                         leaves:leaves,
@@ -239,7 +252,6 @@ class  AdminController{
         static async viewBranches(req,res){
             try {
                 const branches=await OrganizationServices.getAllBranchesWithAdress();
-                console.log(branches)
                 res.render('admin/viewBranches',{
                     user:req.session.user,
                     success:'',
@@ -267,8 +279,245 @@ class  AdminController{
                 res.redirect(`/admin/jupitorBranches?error=${error}`)
             }
         }
-        
 
+
+        static async addCustomAttributePage(req,res){
+            res.render('admin/customAttributes',{
+                user:req.session.user,
+                error:req.query.error,
+                success:req.query.success
+            })
+        }
+        static async addCustomAttribute(req,res){
+            try {
+                await adminServices.addCustomAttribute(req.body);
+                res.redirect('/admin/viewCustomAttributes');
+            } catch (error) {
+                res.redirect(`/admin/addCustomAttribute?error=${error}`)
+            }
+        }
+        static async viewCustomAttributes(req,res){
+            try {
+                const customAttributes=await OrganizationServices.getCustomAttributes();
+                res.render('admin/viewCustomAttributes',{
+                    user:req.session.user,
+                    error:req.query.error,
+                    success:req.query.success,
+                    customAttributes:customAttributes
+                })
+            } catch (error) {
+                res.render('admin/viewCustomAttributes',{
+                    user:req.session.user,
+                    error:error,
+                    success:req.query.success,
+                    customAttributes:""
+                })
+            }
+        }
+        static async deleteCustomAttribute(req,res){
+            try {
+                await OrganizationServices.deleteCustomAttribute(req.params.columnName)
+                res.redirect('/admin/viewCustomAttributes')
+            } catch (error) {
+                res.redirect(`/admin/viewCustomAttributes?error=${error}`)
+            }
+        }
+        static async payGradePage(req,res){
+            try {
+                const payGrades=await OrganizationServices.getAllPayGradeLevel()
+                res.render('admin/payGrades',{
+                    user:req.session.user,
+                    payGrades:payGrades,
+                    error:req.query.error,
+                    success:req.query.success
+                        })
+                } catch (error) {
+                    res.render('admin/payGrades',{
+                        error:error,
+                        payGrades:'',
+                        user:req.session.user,
+                        success:''
+                    })
+                }
+        }
+        static async addPayGrade(req,res){
+            try {
+                const {error, value}= await payGradeValidator.validate(req.body)
+                if(error) throw error
+                await OrganizationServices.addPayGrade(value)
+                res.redirect(`/admin/jupitorPayGrades`)
+
+            } catch (error) {
+                res.redirect(`/admin/jupitorPayGrades?error=${error}`)
+            }
+        }
+        static async editPayGradePage(req,res){
+            try {
+                const payGrade=await OrganizationServices.getPayGrade(req.params.paygrade_level)
+                res.render('admin/editPayGrade',{
+                    user:req.session.user,
+                    error:req.query.error,
+                    payGrade:payGrade
+                })
+            } catch (error) {
+                 res.render('admin/editPayGrade',{
+                     user:req.session.user,
+                     error:error,
+                     payGrade:{}
+                 })
+            }
+        }
+        static async editPayGrade(req,res){
+            try {
+                const {error , value}=await payGradeEditValidator.validate(req.body)
+                if(error) throw error
+
+                await OrganizationServices.setPayGrade(req.params.paygrade_level,value);
+                res.redirect(`/admin/jupitorPayGrades`)
+            } catch (error) {
+                res.redirect(`/admin/editPayGrade/${req.params.paygrade_level}?error=${error}`)
+            }
+        }
+        
+        static async employeeStatusPage(req,res){
+            try {
+                const employeeStatus=await OrganizationServices.getEmployeeStatus()
+                res.render('admin/employeeStatus',{
+                    user:req.session.user,
+                    employeeStatus:employeeStatus,
+                    error:req.query.error,
+                    success:req.query.success
+                 })
+                } catch (error) {
+                    res.render('admin/employeeStatus',{
+                        error:error,
+                        employeeStatus:"",
+                        user:req.session.user,
+                        success:''
+                    })
+                }
+        }
+        static async addEmployeeStatus(req,res){
+            try {
+                const {error, value}= await employeeStatusValidator.validate(req.body)
+                if(error) throw error
+                await OrganizationServices.addEmployeeState(value)
+                res.redirect(`/admin/jupitorEmployeeStatus`)
+
+            } catch (error) {
+                res.redirect(`/admin/jupitorEmployeeStatus?error=${error}`)
+            }
+        }
+        static async editEmployeeStatusPage(req,res){
+            try {
+                const EmployeeStatus=await OrganizationServices.getEmployeeState(req.params.EmployeeStatus)
+                res.render('admin/editEmployeeStatus',{
+                    user:req.session.user,
+                    error:req.query.error,
+                    EmployeeStatus:EmployeeStatus
+                })
+            } catch (error) {
+                 res.render('admin/editEmployeeStatus',{
+                     user:req.session.user,
+                     error:error,
+                     EmployeeStatus:{}
+                 })
+            }
+        }
+        static async editEmployeeStatus(req,res){
+            try {
+                const {error , value}=await EmployeeStatusEditValidator.validate(req.body)
+                if(error) throw error
+                await OrganizationServices.setEmployeeStatus(req.params.EmployeeStatus,value);
+                res.redirect(`/admin/jupitorEmployeeStatus`)
+            } catch (error) {
+                res.redirect(`/admin/editEmployeeStatus/${req.params.EmployeeStatus}?error=${error}`)
+            }
+        }
+        static async jobTypePage(req,res){
+            try {
+                const jobTypes=await OrganizationServices.getAllJobTitle()
+                res.render('admin/jobTypes',{
+                    user:req.session.user,
+                    jobTypes:jobTypes,
+                    error:req.query.error,
+                    success:req.query.success
+                 })
+                } catch (error) {
+                    res.render('admin/jobTypes',{
+                        error:error,
+                        jobTypes:"",
+                        user:req.session.user,
+                        success:''
+                    })
+                }
+        } 
+        static async editJobTypePage(req,res){
+            try {
+                const jobType=await OrganizationServices.getJobType(req.params.jobType)
+                res.render('admin/editjobType',{
+                    user:req.session.user,
+                    error:req.query.error,
+                    jobType:jobType
+                })
+            } catch (error) {
+                 res.render('admin/editjobType',{
+                     user:req.session.user,
+                     error:error,
+                     jobType:{}
+                 })
+            }
+        }
+        static async editJobType(req,res){
+            try {
+                const {error , value}=await jobTypeEditValidator.validate(req.body)
+                if(error) throw error
+                await OrganizationServices.setJobType(req.params.jobType,value);
+                res.redirect(`/admin/jupitorjobs`)
+            } catch (error) {
+                res.redirect(`/admin/editjobType/${req.params.jobType}?error=${error}`)
+            }
+        } 
+        static async addJobType(req,res){
+            try {
+                const {error, value}= await jobTypeValidator.validate(req.body)
+                if(error) throw error
+                await OrganizationServices.addJobType(value)
+                res.redirect(`/admin/jupitorjobs`)
+
+            } catch (error) {
+                res.redirect(`/admin/jupitorjobs?error=${error}`)
+            }
+        }
+        static async getBranch(req,res){
+            try {
+                const branch=await OrganizationServices.getBranch(req.params.branch)
+                const HR=await OrganizationServices.getHRData(req.params.branch)
+                const empCount=await OrganizationServices.getEmplyeeCount(req.params.branch)
+                const departments=await OrganizationServices.getAllDepartment()
+               
+                res.render('admin/branch',{
+                    user:req.session.user,
+                    branch:branch,
+                    HR:HR ? HR:{},
+                    empCount:empCount,
+                    departments:departments,
+                    error:'',
+                    success:''
+                })
+            } catch (error) {
+                console.log(error)
+                res.render('admin/branch',{
+                    user:req.session.user,
+                    departments:'',
+                    branch:{},
+                    HR:{},
+                    empCount:'',
+                    error:error,
+                    success:''
+                })
+            }
+        }
 
 
 }

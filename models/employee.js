@@ -1,0 +1,54 @@
+const db = require("../connection");
+
+class Employee {
+  static async applyLeave1({ ID, leaveType, startdate, duration, reason }) {
+    let date_ob = new Date();
+    let date = ("0" + date_ob.getDate()).slice(-2);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let year = date_ob.getFullYear();
+    const today = year + "-" + month + "-" + date;
+    let state = "No";
+    const res = (
+      await db.query(
+        `INSERT INTO leave_record (
+employee_id, leave_type, apply_date, start_date, duration, reason, approval_state)  VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+        [ID, leaveType, today, startdate, duration, reason, state]
+      )
+    ).rows;
+  }
+
+  static async getLeavingHistory() {
+    let employee_id = 180336;
+    const res = (
+      await db.query(`select * from leave_record where employee_id = $1`, [
+        employee_id,
+      ])
+    ).rows;
+    console.log(res);
+
+    for (let i = 0; i < res.length; i++) {
+      let date_ob = new Date(res[i].apply_date);
+      let date = ("0" + date_ob.getDate()).slice(-2);
+      let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+      let year = date_ob.getFullYear();
+      const apply_date = year + "-" + month + "-" + date;
+      console.log(apply_date);
+      res[i].apply_date = apply_date;
+
+      let date_ob1 = new Date(res[i].start_date);
+      let date1 = ("0" + date_ob1.getDate()).slice(-2);
+      let month1 = ("0" + (date_ob1.getMonth() + 1)).slice(-2);
+      let year1 = date_ob1.getFullYear();
+      const start_date = year1 + "-" + month1 + "-" + date1;
+      res[i].start_date = start_date;
+
+      if (res[i].approval_state == "No") {
+        res[i].approval_state = "Pending..";
+      }
+    }
+
+    return res;
+  }
+}
+
+module.exports = Employee;
