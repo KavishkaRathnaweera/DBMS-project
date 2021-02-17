@@ -9,9 +9,18 @@ const RootController = require("../controllers/rootController");
 
 
 router.get("/", HRController.loginHR);
-router.get("/home", HRController.home);
+router.get("/home", HRController.index);
 router.get('/addEmployeePage', HRController.addEmployeePage);
+router.get("/viewEmployee/:id", HRController.viewEmployee);
+router.get("/report", HRController.report);
+router.get("/customreport", HRController.customreport);
+router.get("/leavereport", HRController.leaveReport);
 
 
 router.post("/submitEmployee", HRController.submitEmployee);
+router.post("/findReport", HRController.findReport);
+router.post("/findcustomreport", HRController.findCustomReport)
+router.post("/findLeave", HRController.findleaveReport)
+
+//router.post("/viewEmployee", HRController.viewEmployee);
 module.exports=router
