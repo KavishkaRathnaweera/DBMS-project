@@ -559,6 +559,47 @@ $$;
 
 -- call updateJupitorLeaves('level 1', 3 ,3 ,4 ,7)
 
+--Kavishka's Functions--
+CREATE OR REPLACE VIEW public.full_employee_detail
+    AS
+     SELECT personal_information.employee_id,
+    personal_information.nic,
+    personal_information.first_name,
+    personal_information.middle_name,
+    personal_information.last_name,
+    personal_information.gender,
+    personal_information.birth_day,
+    personal_information.address_id,
+    personal_information.email,
+    personal_information.password,
+    personal_information.photo,
+    personal_information.registered_date,
+    employee.branch_name,
+    employee.job_title,
+    employee.dept_name,
+    employee.paygrade_level,
+    employee.e_status_name,
+    employee.supervisor
+   FROM (personal_information
+     JOIN employee USING (employee_id1));
+
+-- function for get leave records by date range
+
+CREATE OR REPLACE FUNCTION public.getleavebydate(startD date,endD date)
+    RETURNS TABLE(leave_id integer, employee_id integer, leave_type character varying, apply_date date, startdate date, duration integer, reason character varying, approval_state character varying)
+    LANGUAGE 'plpgsql'
+    VOLATILE
+    PARALLEL UNSAFE
+    COST 100    ROWS 1000 
+    
+AS $BODY$
+BEGIN
+RETURN QUERY
+	SELECT * FROM public.leave_record WHERE start_date BETWEEN startD AND endD;
+END;
+$BODY$;
+
+
 
 Create Or Replace PROCEDURE updateJupitorPayGrade(paygradelevel varchar(50), des varchar(50), req varchar(50))
 LANGUAGE plpgsql
