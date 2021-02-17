@@ -11,7 +11,8 @@ const RootController = require("../controllers/rootController");
 router.get("/", HRController.loginHR);
 router.get("/home", HRController.index);
 router.get('/addEmployeePage', HRController.addEmployeePage);
-router.get("/viewEmployee/:id", HRController.viewEmployee);
+router.get('/viewData/:id', HRController.viewData);
+router.get('/viewData', HRController.viewData);
 router.get("/report", HRController.report);
 router.get("/customreport", HRController.customreport);
 router.get("/leavereport", HRController.leaveReport);
@@ -19,8 +20,10 @@ router.get("/leavereport", HRController.leaveReport);
 
 router.post("/submitEmployee", HRController.submitEmployee);
 router.post("/findReport", HRController.findReport);
-router.post("/findcustomreport", HRController.findCustomReport)
-router.post("/findLeave", HRController.findleaveReport)
+router.post("/findcustomreport", HRController.findCustomReport);
+router.post("/findLeave", HRController.findleaveReport);
+router.post('/viewData', HRController.viewEmployee);
+router.post('/viewData/updateEmployee', HRController.updateEmployee)
 
-//router.post("/viewEmployee", HRController.viewEmployee);
+
 module.exports=router

@@ -2,9 +2,11 @@ const sql = require("../connection");
 const OrganizationServices = require("../services/organizationServices");
 const {adminRegisterValidator,addHRvalidator,} = require("../validaters/registerValidator");
 const hrService = require("../services/hrService");
+const managerServices =require('../services/managerServices');
 
 var employeeSet = { column: [], details: [], selectTypes:[] };
 var departmentSet = [];
+var user="HR Manager";
 
 class HRController {
   static async loginHR(req, res) {
@@ -49,9 +51,8 @@ class HRController {
       });
     }
   }
-  static async viewEmployee(req, res) {
-    res.render("HR/viewEmployee", {});
-  }
+
+
 
   static async submitEmployee(req, res) {
     const branches = await OrganizationServices.getAllBranches();
@@ -75,9 +76,9 @@ class HRController {
 
     try {
       const empAdd = await hrService.addEmployee(req.body);
-      console.log(empAdd);
+      
       const success = "HR added sucessfully. you can logged in using emp";
-      res.redirect("HR/viewEmployee/<%= empAdd.employee_id %>");
+      res.redirect("viewData/"+empAdd.employee_id);
     } catch (error) {
       res.render("HR/add_employee", {
         error: error,
@@ -91,23 +92,72 @@ class HRController {
     }
   }
 
-  static async viewEmployee(req, res) {
-    //render karaddi ywanna ona variables --> employeedata, editaccess(true/false)
-    //false nam--> edit button ekk pennana one. true nam --> save button eka pennanna one
+  static async viewData(req, res) {
     const id = req.params.id;
-    if (!id) {
-      console.log("ewdwedwed");
-    } else {
-      console.log(id);
-      //employee data tika array ekta dala redirect karanwa manager/viewData
-      //editAccess--false
+  
+    if(!id){
+              res.render("HR/viewData", {
+                user: req.session.user,
+                error: req.query.error,
+                success: req.query.success,
+                branches: {},
+                Jobtypes: {},
+                departments:{},
+                payGrades: {},
+                employee_statuses:{},
+                empDATA:{},
+                user:user,
+              
+              });
     }
+    else{
+        // console.log(id);
+        try{
+            const empDATA = await managerServices.getEmpDATA(id);
+            const branches=await managerServices.getAllBranches();
+            const Jobtypes=await managerServices.getAllJobTitles();
+            const departments=await managerServices.getAllDepartments();
+            const payGrades = await managerServices.getAllPayGradeLevel();
+            const employee_statuses = await managerServices.getEmployeeStatus();
+            // console.log(empDATA)
+            res.render("HR/viewData", {
+                user: req.session.user,
+                error: req.query.error,
+                success: req.query.success,
+                branches: branches,
+                Jobtypes: Jobtypes,
+                departments: departments,
+                payGrades: payGrades,
+                employee_statuses: employee_statuses,
+                empDATA:empDATA,
+                user:user,
+              
 
-    res.render("HR/viewEmployee", {
-      id: emloyeeData,
-      editAccess: editAccess,
-    });
+              });
+        }
+      catch(error){
+          console.log(error);
+          res.redirect(`viewData?error=${error}`);
+      }
+    }
   }
+
+    static async viewEmployee(req,res){
+    const e_id = req.body.e_id;
+
+    res.redirect(`viewData/${e_id}`);
+}
+
+static async updateEmployee(req,res){
+    try{
+        const empAdd = await managerServices.updateEmployee(req.body);
+        const success= "Successfully Update the Employee";
+        res.redirect(`viewData?success=${success}`);
+    }catch(error){
+        console.log(error);
+        res.redirect(`viewData?error=${error}`);
+    }
+}
 
   static async report(req, res) {
     const branches = await OrganizationServices.getAllBranches();
