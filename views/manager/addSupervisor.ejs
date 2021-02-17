@@ -13,8 +13,8 @@
               <div class="col-sm-12">
                 <!-- <h1>Icons</h1> -->
 
-                <div class="card card-primary" style="background: rgb(177,172,172);
-                background: linear-gradient(90deg, rgba(177,172,172,1) 5%, rgb(218, 214, 214) 50%, rgba(175,175,175,1) 95%);">  
+                <div class="card card-primary" style="background: rgb(223,164,102);
+                background: linear-gradient(90deg, rgba(223,164,102,1) 5%, rgba(255,206,155,1) 50%, rgba(223,164,102,1) 95%);">  
                   <form  id="addSupervisor" action="/manager/addSupervisor" method="POST">
                     <div class="card-body">  
                         <div id="err_msg4">
@@ -34,7 +34,7 @@
                           <% } %>
                         </select>
                       </div>
-                      <button type="submit" class="btn btn-primary">Add</button>
+                      <button type="submit" class="btn btn-primary">Select</button>
                   </form>
                 </div>
       
@@ -47,8 +47,7 @@
         <section class="content">
           <div class="container-fluid" >
             <% if(checkSupervisorADD){ %>
-            <div class="card" id="SupervisorTable" style="background: rgb(137,134,196);
-            background: linear-gradient(90deg, rgba(137,134,196,1) 3%, rgba(203,203,255,1) 50%, rgba(129,129,185,1) 97%);">
+            <div class="card" id="">
             <div class="card-header">
                 <h3 class="card-title" style="font-size: 30px;">Add Members to Supervisor Group: <%= supervisor_id %> </h3>
               </div>
@@ -75,7 +74,7 @@
                     </select>
                   </div>
                   <div>
-                    <button style="background-color: rgb(31, 111, 158);color: rgb(255, 246, 246);" class="btn btn-add" type="button" id="addMember">Add Member</button>
+                    <button class="btn btn-add btn-primary type="button" id="addMember">Add Member</button>
                   </div>
                   <br/>
                   <% if(supervisorGroup.length>0) {%> 
@@ -89,7 +88,7 @@
                         <th style="width: 120px" class="text-center">Action</th>
                       </tr>
                     </thead>
-                    <tbody style="background:linear-gradient(to left,rgb(180, 180, 180),rgb(219, 203, 203),rgb(180, 180, 180)) ;">
+                    <tbody>
                       <% for(var i=0; i< supervisorGroup.length; i++){ %>
                       <tr>
                         <td><%= i+1 %></td>
