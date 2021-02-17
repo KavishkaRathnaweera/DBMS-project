@@ -4,11 +4,11 @@
 <link rel="stylesheet" href="../../assets/css/viewBrnaches.css">
 
 <div>
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-fluid" style="min-height: 91vh;" >
+        <div class="row" >
            
             <div class="col-12">
-                <div class="row" style="margin-top: 159px;">
+                <div class="row" style="margin-top: 120px;">
                      
                     <% if(error) {%>
                         <div class="col-9 m-auto">
@@ -32,7 +32,7 @@
                 <div class="row">
                    
                     <div class="col-sm-4 m-auto">
-                        <h2 class="text-center">All Branch Details</h2>
+                        <h2 class="text-center">Jupitor Jobtypes</h2>
                     </div>
 
 
@@ -46,24 +46,21 @@
                         </p>
                           <div class="collapse" id="collapseExample">
                             <div class="card card-body ">
-                                <form method="POST" action="/admin/addBranch">
+                                <form method="POST" action="/admin/addJobType">
                                     <div class="row">
                                       <div class="col">
-                                        <input type="text" class="form-control" placeholder="branch name" name="branch_name">
+                                        <input type="text" class="form-control" placeholder="Job title" name="job_title">
                                       </div>
                                       <div class="col">
-                                        <input type="text" class="form-control" placeholder="address" name="address">
+                                        <input type="text" class="form-control" placeholder="description" name="description">
                                       </div>
                                       <div class="col">
-                                        <input type="text" class="form-control" placeholder="city" name="city">
+                                        <input type="text" class="form-control" placeholder="requirement qualification" name="req_qualification">
                                       </div>
                                       <div class="col">
-                                        <input type="text" class="form-control" placeholder="Postal code" name="postal_code">
+                                        <input type="text" class="form-control" placeholder="prerequisites" name="prerequisites">
                                       </div>
-                                      <div class="col">
-                                        <input type="text" class="form-control" placeholder="Country" name="country">
-                                      </div>
-                                    </div>
+                                     
                                     <button  type="submit" class="btn btn-primary btn-sm mt-2">submit</button>
                                   </form>
                             </div>
@@ -82,28 +79,29 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Branch <i class="fa fa-sort"></i></th>
-                        <th>Address</th>
-                        <th>City <i class="fa fa-sort"></i></th>
-                        <th>Postal code Code</th>
-                        <th>Country <i class="fa fa-sort"></i></th>
-                        <th>Actions</th>
+                        <th>Job title<i class="fa fa-sort"></i></th>
+                        <th>description</th>
+                        <th>requirement qualification <i class="fa fa-sort"></i></th>
+                        <th>prerequisites</th>
+                        <th>Action</th>
+                      
                     </tr>
                 </thead>
                 <tbody>
-                   <% if(branches && branches[0]){ 
-                        branches.forEach(function( branch, index){ %>
+                   <% if(jobTypes && jobTypes[0]){ 
+                        jobTypes.forEach(function( jobType, index){ %>
                     <tr>
                         <td><%=index+1%></td>
-                        <td><%=branch.branch_name%></td>
-                        <td><%=branch.address%></td>
-                        <td><%=branch.city%></td>
-                        <td><%=branch.postal_code%></td>
-                        <td><%=branch.country%></td>
+                        <td><%=jobType.job_title%></td>
+                        <td><%=jobType.description%></td>
+                        <td><%=jobType.req_qualification%></td>
+                        <td><%=jobType.prerequisites%></td>
+                        
                        
                         <td>
-                            <a href="/admin/branch/<%=branch.branch_name%>" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
-                            <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                           
+                            <a href="/admin/editJobType/<%=jobType.job_title%>" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+
                         </td>
                     </tr>
                     <%})}else{ %>
@@ -113,8 +111,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td> </td>
+                         
+                         
                         </tr>
                     <% }%>
                          

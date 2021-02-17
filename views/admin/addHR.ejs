@@ -1,66 +1,79 @@
 <%-include("_header", {user}) %>
 
 
+
 <div>
     <div class="container-fluid">
         <div class="row">
            
             <div class="col-12">
-                <div class="row" style="margin-top: 159px;">
+                <div class="row" style="margin-top: 70px;">
                     <% if(error) {%>
-                        <div class="col-9 m-auto">
+                        <div class="col-8 m-auto">
                             <div class="alert alert-danger" role="alert">
                                <%=error%>
                               </div>
                         </div>
                     <%} %>
                     <% if(success) {%>
-                        <div class="col-9 m-auto">
+                        <div class="col-8 m-auto">
                             <div class="alert alert-success" role="alert">
                                <%=success%>
                               </div>
                         </div>
                     <%} %>
                     
-                    <h1 class="text-center" style="color: rgb(134,192,251);">ADD HR</h1>
+                    
 
-                    <div class="col-10 m-auto" style="padding: 28px;background-color: #f2f2f2;">
+                    <div class="col-8 m-auto p-5  bg-light">
+                    <h2 class="text-center">Add HR Manager</h2>
+                    
                         <form action="/admin/addHR" method="POST">
 
 
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="NIC" placeholder="NIC" value="<%=HR.NIC%>"></div>
-                            <div class="form-group mb-3 "><input class="form-control" type="text" name="first_name" placeholder="First Name" value="<%=HR.first_name%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="middle_name" placeholder="Middle Name" value="<%=HR.middle_name%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="last_name" placeholder="Last Name" value="<%=HR.last_name%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="gender" placeholder="Gender" value="<%=HR.gender%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="birthday" placeholder="Birthday" value="<%=HR.birthday%>"></div>
+                            <div class="form-group mb-3"><label for="">NIC Number:</label><input class="form-control" type="text" name="NIC" placeholder="NIC" value="<%=HR.NIC%>"></div>
+                            <div class="form-group mb-3 "><label for="">First Name:</label><input class="form-control" type="text" name="first_name" placeholder="First Name" value="<%=HR.first_name%>"></div>
+                            <div class="form-group mb-3"><label for="">Middle Name:</label><input class="form-control" type="text" name="middle_name" placeholder="Middle Name" value="<%=HR.middle_name%>"></div>
+                            <div class="form-group mb-3"><label for="">Last Name:</label><input class="form-control" type="text" name="last_name" placeholder="Last Name" value="<%=HR.last_name%>"></div>
+                            <div class="form-group mb-3"><label for="">Gender:</label><input class="form-control" type="text" name="gender" placeholder="Gender" value="<%=HR.gender%>"></div>
+                            <div class="form-group mb-3"><label for="">Birthday:</label><input class="form-control" type="Date" name="birthday" placeholder="Birthday" value="<%=HR.birthday%>"></div>
 
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="address" placeholder="Address" value="<%=HR.address%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="city" placeholder="city" value="<%=HR.city%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="postal_code" placeholder="postal code" value="<%=HR.postal_code%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="country" placeholder="country" value="<%=HR.country%>"></div>
+                            <div class="form-group mb-3"><label for="">Address:</label><input class="form-control" type="text" name="address" placeholder="Address" value="<%=HR.address%>"></div>
+                            <div class="form-group mb-3"><label for="">City:</label><input class="form-control" type="text" name="city" placeholder="city" value="<%=HR.city%>"></div>
+                            <div class="form-group mb-3"><label for="">Postal Code:</label><input class="form-control" type="text" name="postal_code" placeholder="postal code" value="<%=HR.postal_code%>"></div>
+                            <div class="form-group mb-3"><label for="">Country:</label><input class="form-control" type="text" name="country" placeholder="country" value="<%=HR.country%>"></div>
 
-                            <div class="form-group mb-3"><input class="form-control" type="text" name="email" placeholder="email" value="<%=HR.email%>"></div>
-                            <div class="form-group mb-3"><input class="form-control" type="password" name="password" placeholder="password" value="<%=HR.password%>"></div>
+                            <div class="form-group mb-3"><label for="">Email:</label><input class="form-control" type="text" name="email" placeholder="email" value="<%=HR.email%>"></div>
+                            <div class="form-group mb-3"><label for="">Password:</label><input class="form-control" type="password" name="password" placeholder="password" value="<%=HR.password%>"></div>
+                      
+                            <div class="form-group mb-3"><input class="form-control" id="url" type="hidden" name="photo" placeholder="photo" value=""></div>
+            
+                            <!-- adding image to cloudinary and get the url -->
+                            <div class="form-group mb-3">  <span>Upload image</span>
+                               <input class="form-control" type="file" onchange="setImage(this.files[0])" />
+                                <div id="spinner" class="" role="status">
+                            </div></div>
 
 
 
                             <div class="form-group mb-3">
-                                                    <select class="form-control" id="exampleFormControlSelect1" name="branch_name">
-                                                        <% 
-                                                            if(branches && branches[0]){
-                                                            branches.forEach(function(branch){ %>
-                                                                                <option value="<%=branch.branch_name%>"><%=branch.branch_name%></option>
-                                                            <% })}
-                                                            else{ %>
-                                                                                 <option value="">no branches available</option>
-                                                        <% }%>
-                                                    </select>
+                                <label for="">Branch Name:</label>
+                                <select class="form-control" id="exampleFormControlSelect1" name="branch_name">
+                                    <% 
+                                        if(branches && branches[0]){
+                                        branches.forEach(function(branch){ %>
+                                                            <option value="<%=branch.branch_name%>"><%=branch.branch_name%></option>
+                                        <% })}
+                                        else{ %>
+                                                                <option value="">no branches available</option>
+                                    <% }%>
+                                </select>
                             </div>
                            
                             
 
                             <div class="form-group mb-3">
+                                <label for="">Job Title:</label>
                                 <select class="form-control" id="exampleFormControlSelect1" name="job_title">
                                     <% 
                                     if(Jobtypes && Jobtypes[0]){
@@ -76,7 +89,8 @@
 
 
 
-                            <div class="form-group mb-3">                                
+                            <div class="form-group mb-3">
+                                <label for="">Department:</label>                                
                                 <select class="form-control" id="exampleFormControlSelect1" name="dept_name">
                                     <% 
                                     if(departments && departments[0]){ 
@@ -94,6 +108,7 @@
 
 
                             <div class="form-group mb-3">
+                                <label for="">Pay Grade Level:</label>
                                                 <select class="form-control" id="exampleFormControlSelect1" name="paygrade_level">
                                                     <% 
                                                     if(payGrades && payGrades[0]){
@@ -109,6 +124,7 @@
 
 
                             <div class="form-group mb-3">
+                                <label for="">Employee Status:</label>
                                                 <select class="form-control" id="exampleFormControlSelect1" name="e_status_name">
                                                     <% 
                                                     if(employee_statuses && employee_statuses[0]){
@@ -124,6 +140,33 @@
 
 
 
+
+                            <% if(customAttributes && customAttributes[0]){
+                             
+                                customAttributes.forEach(function(customAttribute){
+                                    if(customAttribute.type=="boolean") { %>
+                                        <div class="form-group mb-3" name>
+                                            <label for=""><%=customAttribute.name%>:</label>
+                                            <select class="form-control" id="exampleFormControlSelect1" name="<%=customAttribute.name%>">
+                                                <option value="false">false</option>
+                                                <option value="true">true</option>
+                                            </select>
+                                       </div>
+                                       
+                                    <% }else if(customAttribute.type=="varchar"){ %>
+                                        <div class="form-group mb-3">
+                                            <input class="form-control" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=customAttribute.default_val%>" >
+                                        </div>
+                                   <% }else if(customAttribute.type=="integer"){ %>
+                                        <div class="form-group mb-3">
+                                            <input class="form-control" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=customAttribute.default_val%>" >
+                                        </div>
+                           <% }})} %>
+
+                           
+                                 
+
+
                             <button class="btn btn-primary" type="submit">Button</button>
                         </form>
                 </div>
@@ -133,5 +176,5 @@
  </div>
 </div>
 </div>
-
+<script src="../../assets/js/imageUpload.js"></script>
 <%-include("_footer", {user}) %>

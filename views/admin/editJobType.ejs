@@ -18,27 +18,23 @@
                   
 <!-- ####################################################################################################### -->
                     <div class="col-8 m-auto p-5  bg-light">
-                             <div class="col-sm-8"><h2>Pay Grade <%=paygrade_level%> Leaves</h2></div>
-                        <form action="/admin/editLeave/<%=paygrade_level%>" method="post">
+                             <div class="col-sm-8"><h2>Job Title: <%=jobType.job_title%> </h2></div>
+                        <form action="/admin/editJobType/<%=jobType.job_title%>" method="post">
                             <div class="form-group">
-                                <label for="">Anual Leaves</label>
-                                <input type="number" class="form-control" name="anual" value="<%=leave?leave.anual:''%>">
+                                <label for="">duration</label>
+                                <input type="text" class="form-control" name="description" value="<%=jobType.description%>">
                             </div>
 
                             <div class="form-group">
-                                <label for="">Casual Leaves</label>
-                                <input type="number" class="form-control" name="casual" value="<%=leave?leave.casual:''%>">
+                                <label for="">requirement qualification</label>
+                                <input type="text" class="form-control" name="req_qualification" value="<%=jobType.req_qualification%>">
+                            </div>
+                            <div class="form-group">
+                                <label for="">prerequisites</label>
+                                <input type="text" class="form-control" name="prerequisites" value="<%=jobType.prerequisites%>">
                             </div>
                             
-                            <div class="form-group">
-                                <label for="">Maternity Leaves</label>
-                                <input type="number" class="form-control" name="maternity" value="<%=leave?leave.maternity:''%>">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">No pay Leaves</label>
-                                <input type="number" class="form-control" name="no_pay" value="<%=leave?leave.no_pay:''%>">
-                            </div>
+                           
                             
                             <button type="submit" class="btn btn-primary">Submit</button>
                           </form>
