@@ -18,10 +18,7 @@
                      <img src="/public/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                  </div>
                  <div class="info">
-                     <br>
-                     <div>
-                     <a class="d-block">Hello Employee</a>
-                    </div>
+                     <a class="d-block">Hello employee</a>
                  </div>
              </div>
 
@@ -32,72 +29,50 @@
                      <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
                      <li class="nav-item menu-open">
-                         <a href="/supervisor" class="nav-link active">
+                         <a href="/employee" class="nav-link active">
                              <i class="nav-icon fas fa-tachometer-alt"></i>
                              <p>
                                  Dashboard
                              </p>
                          </a>
-
-                         
                          <ul class="nav nav-treeview">
-
-                            <li class="nav-item">
-                                <% if(title== "Apply Leave "){ %>
-                                <a href="/employee/applyLeave" class="nav-link active">
-                                    <i class="nav-icon fas fa-house-user"></i>
-                                    <p>Apply Leave </p>
-                                </a>
-                                <% } else { %>
-                                <a href="/employee/applyLeave" class="nav-link">
-                                    <i class="nav-icon fas fa-house-user"></i>
-                                    <p>Apply Leave </p>
-                                </a>
-                                <% }%>
-    
-                            </li>
-
+                             <li class="nav-item">
+                                 <% if(title== "apply Leave"){ %>
+                                 <a href="/employee/applyLeave" class="nav-link active">
+                                     <i class="nav-icon fas fa-user"></i>
+                                     <p>Apply Leave</p>
+                                 </a>
+                                 <% } else { %>
+                                 <a href="/employee/applyLeave" class="nav-link">
+                                     <i class="nav-icon fas fa-user"></i>
+                                     <p>Apply Leave</p>
+                                 </a>
+                                 <% }%>
+                             </li>
                              <li class="nav-item">
                                  <% if(title== "Attendence"){ %>
-                                 <a href="/employee/attendence" class="nav-link active">
-                                     <i class="nav-icon fas fa-user"></i>
-                                     <p>Attendance</p>
+                                 <a href="/employee/attendance" class="nav-link active">
+                                     <i class="nav-icon fas fa-users-cog"></i>
+                                     <p>Leaving Records</p>
                                  </a>
                                  <% } else { %>
-                                 <a href="/employee/attendence" class="nav-link">
-                                     <i class="nav-icon fas fa-user"></i>
-                                     <p>Attendance</p>
+                                 <a href="/employee/attendance" class="nav-link ">
+                                     <i class="nav-icon fas fa-users-cog"></i>
+                                     <p>Leaving Records</p>
                                  </a>
                                  <% }%>
 
-                                 
-
-
                              </li>
                              <li class="nav-item">
-                                 <% if(title== "My Info"){ %>
+                                 <% if(title== "employeeInfo"){ %>
                                  <a href="/employee/employeeInfo" class="nav-link active">
-                                     <i class="nav-icon fas fa-users-cog"></i>
+                                     <i class="nav-icon fas fa-house-user"></i>
                                      <p>My Info</p>
                                  </a>
                                  <% } else { %>
-                                 <a href="/employee/employeeInfo" class="nav-link ">
-                                     <i class="nav-icon fas fa-users-cog"></i>
+                                 <a href="/employee/employeeInfo" class="nav-link">
+                                     <i class="nav-icon fas fa-house-user"></i>
                                      <p>My Info</p>
-                                 </a>
-                                 <% }%>
-
-                             </li>
-                             <li class="nav-item">
-                                 <% if(title== "Leaves History"){ %>
-                                 <a href="/employee/leaves" class="nav-link active">
-                                     <i class="nav-icon fas fa-house-user"></i>
-                                     <p>Leaves History</p>
-                                 </a>
-                                 <% } else { %>
-                                 <a href="/employee/leaves" class="nav-link">
-                                     <i class="nav-icon fas fa-house-user"></i>
-                                     <p>Leaves History</p>
                                  </a>
                                  <% }%>
 

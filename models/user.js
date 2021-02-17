@@ -1,8 +1,4 @@
 const db = require('../connection');
-
-
-
-
 class User{
     
     
@@ -56,16 +52,18 @@ class User{
                         }
 
             
-                        
-                        const isAddressExists=(await db.query(`select * from address where address =$1 and city_id=$2 and postal_code=$3`,[address,cityrow[0].city_id,postal_code])).rows
+                       
+                        console.log(iscityExists)
+                        const isAddressExists=(await db.query(`select * from address where address =$1 and city_id=$2 and postal_code=$3`,[address, cityrow[0].city_id, postal_code])).rows
                         var addressrow;
+                       
                         if(isAddressExists[0]){
                               addressrow=isAddressExists
                         }
                         else{
                               addressrow=(await db.query(`insert into address (address, city_id, postal_code) values($1, $2, $3) returning *`,[address,cityrow[0].city_id,postal_code])).rows
                         }
-                  
+                        
 
                         return addressrow;
             
@@ -173,6 +171,8 @@ class User{
                         throw error
                   }   
        }
+       
 }
+
 
 module.exports=User
