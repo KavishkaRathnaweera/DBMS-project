@@ -56,7 +56,7 @@ CREATE TABLE city
 CREATE TABLE address
 (
     address_id SERIAL NOT NULL ,
-    adress varchar(100) NOT NULL,
+    address varchar(100) NOT NULL,
     city_id integer NOT NULL,
     postal_code integer NOT NULL,
     CONSTRAINT address_pkey PRIMARY KEY (address_id),
@@ -477,8 +477,8 @@ CREATE TRIGGER incrementempcount
 
 -- CREATE OR REPLACE FUNCTION changeempcount1() RETURNS TRIGGER AS $department_table$
 --    BEGIN
---       update department set employee_count=employee_count-1 where dept_name=new.dept_name;
---       RETURN NEW;
+--       update department set employee_count=employee_count-1 where dept_name=old.dept_name;
+--       RETURN old;
 --    END;
 -- $department_table$ LANGUAGE plpgsql;
 
@@ -552,12 +552,41 @@ AS $$
 BEGIN 
 	UPDATE leave SET anual=an, casual=cas, maternity=mat, no_pay=nopay where paygrade_level=paygradelevel;
 	IF NOT FOUND THEN
-	INSERT INTO leave(paygrade_level, anual, casual, maternity,no_pay) values (an,cas, mat, nopay);
+	INSERT INTO leave(paygrade_level, anual, casual, maternity,no_pay) values (paygradelevel,an,cas, mat, nopay);
 	END IF;
 END;
 $$;
 
 -- call updateJupitorLeaves('level 1', 3 ,3 ,4 ,7)
+
+
+Create Or Replace PROCEDURE updateJupitorPayGrade(paygradelevel varchar(50), des varchar(50), req varchar(50))
+LANGUAGE plpgsql
+AS $$
+BEGIN 
+	UPDATE pay_grade SET description=des, requirement=req where paygrade_level=paygradelevel;
+	
+END;
+$$;
+
+
+Create Or Replace PROCEDURE updateJupitorEmployeeStatus(estatusname varchar(50), du varchar(50), des varchar(50))
+LANGUAGE plpgsql
+AS $$
+BEGIN 
+	UPDATE employee_status SET duration=du, description=des where e_status_name=estatusname;
+	
+END;
+$$;
+
+Create Or Replace PROCEDURE updateJupitorJobs(jobtitle varchar(50), des varchar(50), req varchar(50), prereq varchar(50))
+LANGUAGE plpgsql
+AS $$
+BEGIN 
+	UPDATE job_type SET description=des, req_qualification=req, prerequisites=prereq where job_title=jobtitle;
+	
+END;
+$$;
 
 
 -- grant privilages

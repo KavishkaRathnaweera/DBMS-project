@@ -34,7 +34,7 @@ class adminServices{
 
 
 
-    static async adminRegister({NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,password, securityKey}){
+    static async adminRegister({NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,password, photo, securityKey}){
             
                 const isEmailRegistered=await User.findUserByEmail(email);
                 if(isEmailRegistered){
@@ -47,24 +47,29 @@ class adminServices{
               
                 const hashpwd= await bcrypt.hash(password, 10)
         
-                const admin=await Admin.adminRegister(NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,  hashpwd)
+                const admin=await Admin.adminRegister(NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,  hashpwd, photo)
                 return admin;
     }
 
-    static async addHR({NIC,first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country,email, password, branch_name, job_title, dept_name, paygrade_level, e_status_name}){
-                const isEmailRegistered=await User.findUserByEmail(email);
+    static async addHR(value){
+                const isEmailRegistered=await User.findUserByEmail(value.email);
                 if(isEmailRegistered){
                     throw new Error.BadRequest("email is already registered")
                 }
-                const isNICRegistered=await User.findUserByNIC(NIC);
+                const isNICRegistered=await User.findUserByNIC(value.NIC);
                 if(isNICRegistered){
                     throw new Error.BadRequest("NIC is already registered")
                 }
-                const hashpwd=await bcrypt.hash(password, 10);
-                const HR=await  Admin.addHR(NIC,first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email, hashpwd, branch_name, job_title, dept_name, paygrade_level, e_status_name);
+                const hashpwd=await bcrypt.hash(value.password, 10);
+                value.password=hashpwd
+                const HR=await  Admin.addHR(value);
                 return HR
     }
-    
+
+    static async addCustomAttribute({ name, type, size, default_val }) {
+        await Admin.addCustomAttribute(name, type, size, default_val)
+    }  
+              
 
 
 
