@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS leave CASCADE;
 DROP TABLE IF EXISTS leave_record CASCADE;
 DROP TABLE IF EXISTS supervisor CASCADE;
 DROP TABLE IF EXISTS session;
-
+DROP  TABLE IF EXISTS customattributes;
 -- create tables-----------------------------------------------------------------------------------------------------
 
 
@@ -77,7 +77,7 @@ CREATE TABLE personal_information
     address_id integer NOT NULL,
     email varchar(100)  NOT NULL,
     password varchar(250) ,
-    photo bytea,
+    photo varchar(200),
     registered_date date DEFAULT CURRENT_DATE,
     CONSTRAINT personal_information_pkey PRIMARY KEY (employee_id),
     CONSTRAINT address_id_fkey FOREIGN KEY (address_id)
@@ -262,6 +262,24 @@ CREATE TABLE supervisor
     supervisor_id integer ,
     CONSTRAINT supervisor_pkey PRIMARY KEY (employee_id)
 );
+
+CREATE TABLE customattributes
+(
+    name character varying(100)  NOT NULL,
+    type character varying(100) ,
+    size integer,
+    default_val character varying(100) ,
+    CONSTRAINT "customAttributes_pkey" PRIMARY KEY (name)
+);
+
+
+CREATE TABLE personal_information_custom
+(
+    employee_id integer NOT NULL,
+    nationality character varying(50) ,
+    CONSTRAINT personal_information_custom_pkey PRIMARY KEY (employee_id)
+);
+
 
 CREATE TABLE "session" (
   "sid" varchar NOT NULL COLLATE "default",
