@@ -324,15 +324,15 @@ CREATE TRIGGER removeSupervisor
 
 
 
-CREATE VIEW EmployeeData_View AS
+CREATE or replace VIEW EmployeeData_View AS
 SELECT *
-FROM  employee join personal_information using(employee_id);
+FROM  employee join personal_information using(employee_id) join personal_information_custom using(employee_id);
 
 
 -- Sandaruwn Functions--------------------------------------------------------------------------------------------------------------------
 
 
-CREATE FUNCTION emp_stamp() RETURNS trigger AS $BODY$
+CREATE or replace FUNCTION emp_stamp() RETURNS trigger AS $BODY$
 
  DECLARE
  count1 INTEGER :=0 ;
@@ -359,6 +359,8 @@ END;
 $BODY$ LANGUAGE plpgsql;
 
 
+Drop TRIGGER IF EXISTS leave_count on leave_record;
+
 
 CREATE TRIGGER leave_count AFTER UPDATE ON leave_record FOR EACH ROW EXECUTE PROCEDURE emp_stamp();
 
@@ -366,7 +368,7 @@ CREATE TRIGGER leave_count AFTER UPDATE ON leave_record FOR EACH ROW EXECUTE PRO
 
  -- get leave requests----------------------
 
-create function getleavea ( s_id numeric)
+create or replace function getleavea ( s_id numeric)
 returns table(
 		leave_id int,
 		employee_id int,
@@ -384,7 +386,7 @@ begin
 end;$$;
 
 -- get all employees--------------------------------
-create function getEmployees ( s_id numeric)
+create or replace function getEmployees ( s_id numeric)
 returns table(
  		employee_id int,
  		first_name varchar ,
@@ -408,7 +410,7 @@ returns table(
 end;$$;
 
 -- get employee-----------------------------
-create function getEmployee ( e_id numeric)
+create or replace function getEmployee ( e_id numeric)
 returns table(
  		employee_id int,
  		first_name varchar ,
@@ -432,8 +434,8 @@ end;$$;
 
 
 -- get absents -----------------------
-create function getAttendence (In s_id numeric,
-						In today varchar(10))
+create or replace function getAttendence (In s_id numeric,
+						In today (10))
 returns integer
   	language plpgsql
  as $$
@@ -451,7 +453,7 @@ end;$$;
 
 -- Indunil's section---------------------------------------------------------------------------------------------------------------------
 
-CREATE FUNCTION changeempcount()
+CREATE or replace FUNCTION changeempcount()
     RETURNS trigger
     LANGUAGE 'plpgsql'
     COST 100
@@ -464,6 +466,7 @@ BEGIN
 $BODY$;
 
 
+Drop TRIGGER IF EXISTS incrementempcount on employee;
 
 CREATE TRIGGER incrementempcount
     AFTER INSERT
@@ -475,74 +478,77 @@ CREATE TRIGGER incrementempcount
 
 
 
--- CREATE OR REPLACE FUNCTION changeempcount1() RETURNS TRIGGER AS $department_table$
---    BEGIN
---       update department set employee_count=employee_count-1 where dept_name=old.dept_name;
---       RETURN old;
---    END;
--- $department_table$ LANGUAGE plpgsql;
-
--- CREATE TRIGGER deccrementempcount
---     AFTER DELETE
---     ON employee
---     FOR EACH ROW
---     EXECUTE PROCEDURE changeempcount1();
+CREATE OR REPLACE FUNCTION changeempcount1() RETURNS TRIGGER AS $department_table$
+   BEGIN
+      update department set employee_count=employee_count-1 where dept_name=old.dept_name;
+      RETURN old;
+   END;
+$department_table$ LANGUAGE plpgsql;
 
 
--- CREATE OR REPLACE FUNCTION setcountry( c varchar(100)) RETURNS integer
--- 	AS $$
---     DECLARE
---     c_id integer;
---     BEGIN 
---         SELECT country_id INTO c_id FROM country
---         WHERE country=c;
+Drop TRIGGER IF EXISTS deccrementempcount on employee;
 
---         IF c_id IS NULL THEN 
---         INSERT INTO country (country) VALUES (c)
---         RETURNING country_id INTO c_id ;
-
---         END IF;
-
---         RETURN c_id;
---     END;
---     $$ LANGUAGE PLpgSQL;
+CREATE TRIGGER deccrementempcount
+    AFTER DELETE
+    ON employee
+    FOR EACH ROW
+    EXECUTE PROCEDURE changeempcount1();
 
 
--- CREATE OR REPLACE FUNCTION setcity( cityname varchar(100), countryid integer) RETURNS integer
--- 	AS $$
---     DECLARE
---     c_id integer;
---     BEGIN 
---         SELECT city_id INTO c_id FROM city
---         WHERE city=cityname and country_id=countryid;
+CREATE OR REPLACE FUNCTION setcountry( c varchar(100)) RETURNS integer
+	AS $$
+    DECLARE
+    c_id integer;
+    BEGIN 
+        SELECT country_id INTO c_id FROM country
+        WHERE country=c;
 
---         IF c_id IS NULL THEN 
---         INSERT INTO city (city, country_id) VALUES (cityname, country_id)
---         RETURNING city_id INTO c_id ;
+        IF c_id IS NULL THEN 
+        INSERT INTO country (country) VALUES (c)
+        RETURNING country_id INTO c_id ;
 
---         END IF;
+        END IF;
 
---         RETURN c_id;
---     END;
---     $$ LANGUAGE PLpgSQL;
+        RETURN c_id;
+    END;
+    $$ LANGUAGE PLpgSQL;
 
--- CREATE OR REPLACE FUNCTION setaddress( addressname varchar(100), cityid integer, postalcode integer) RETURNS integer
--- 	AS $$
---     DECLARE
---     a_id integer;
---     BEGIN 
---         SELECT address_id INTO a_id FROM address
---         WHERE adress=addressname and city_id=cityid and postal_code=postalcode;
 
---         IF a_id IS NULL THEN 
---         INSERT INTO address (address, city_id,postal_code) VALUES (addressname, cityid, postalcode)
---         RETURNING address_id INTO a_id ;
+CREATE OR REPLACE FUNCTION setcity( cityname varchar(100), countryid numeric) RETURNS integer
+	AS $$
+    DECLARE
+    c_id integer;
+    BEGIN 
+        SELECT city_id INTO c_id FROM city
+        WHERE city=cityname and country_id=countryid;
 
---         END IF;
+        IF c_id IS NULL THEN 
+        INSERT INTO city (city, country_id) VALUES (cityname, countryid)
+        RETURNING city_id INTO c_id ;
 
---         RETURN a_id;
---     END;
---     $$ LANGUAGE PLpgSQL;
+        END IF;
+
+        RETURN c_id;
+    END;
+    $$ LANGUAGE PLpgSQL;
+
+CREATE OR REPLACE FUNCTION setaddress( addressname varchar(100), cityid numeric, postalcode numeric) RETURNS integer
+	AS $$
+    DECLARE
+    a_id integer;
+    BEGIN 
+        SELECT address_id INTO a_id FROM address
+        WHERE address=addressname and city_id=cityid and postal_code=postalcode;
+
+        IF a_id IS NULL THEN 
+        INSERT INTO address (address, city_id,postal_code) VALUES (addressname, cityid, postalcode)
+        RETURNING address_id INTO a_id ;
+
+        END IF;
+
+        RETURN a_id;
+    END;
+    $$ LANGUAGE PLpgSQL;
 
 
 
@@ -581,7 +587,7 @@ CREATE OR REPLACE VIEW public.full_employee_detail
     employee.e_status_name,
     employee.supervisor
    FROM (personal_information
-     JOIN employee USING (employee_id1));
+     JOIN employee USING (employee_id));
 
 -- function for get leave records by date range
 
@@ -629,19 +635,52 @@ BEGIN
 END;
 $$;
 
+Create Or Replace PROCEDURE updateJupitorBranch(branchName varchar(50), add integer)
+LANGUAGE plpgsql
+AS $$
+BEGIN 
+	UPDATE branch SET address_id=add where branch_name=branchName;
+	
+END;
+$$;
 
--- grant privilages
+GRANT EXECUTE ON FUNCTION public.getattendence(s_id numeric, today character varying) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.getemployee(e_id numeric) TO jupitor;
+
 GRANT EXECUTE ON FUNCTION public.getemployees(s_id numeric) TO jupitor;
 
 GRANT EXECUTE ON FUNCTION public.getleavea(s_id numeric) TO jupitor;
 
---GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer) TO jupitor;
+GRANT EXECUTE ON FUNCTION public.getleavebydate(startd date, endd date) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.setaddress(addressname character varying, cityid numeric, postalcode numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.setcity(cityname character varying, countryid numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.setcountry(c character varying) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer, arraylength integer) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE public.updatejupitorbranch(branchname character varying, add integer) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE public.updatejupitoremployeestatus(estatusname character varying, du character varying, des character varying) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE public.updatejupitorjobs(jobtitle character varying, des character varying, req character varying, prereq character varying) TO jupitor;
 
 GRANT EXECUTE ON PROCEDURE public.updatejupitorleaves(paygradelevel character varying, an integer, cas integer, mat integer, nopay integer) TO jupitor;
 
+GRANT EXECUTE ON PROCEDURE public.updatejupitorpaygrade(paygradelevel character varying, des character varying, req character varying) TO jupitor;
+
 GRANT EXECUTE ON FUNCTION public.changeempcount() TO jupitor;
 
+GRANT EXECUTE ON FUNCTION public.changeempcount1() TO jupitor;
+
 GRANT EXECUTE ON FUNCTION public.deletesupervisorgroup() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION public.emp_stamp() TO jupitor;
 
 GRANT EXECUTE ON FUNCTION public.emp_stamp6() TO jupitor;
 
@@ -665,6 +704,8 @@ GRANT ALL ON TABLE public.city TO jupitor;
 
 GRANT ALL ON TABLE public.country TO jupitor;
 
+GRANT ALL ON TABLE public.customattributes TO jupitor;
+
 GRANT ALL ON TABLE public.department TO jupitor;
 
 GRANT ALL ON TABLE public.emergency_contact_details TO jupitor;
@@ -687,8 +728,13 @@ GRANT ALL ON TABLE public.pay_grade TO jupitor;
 
 GRANT ALL ON TABLE public.personal_information TO jupitor;
 
+GRANT ALL ON TABLE public.personal_information_custom TO jupitor;
+
 GRANT ALL ON TABLE public.session TO jupitor;
 
 GRANT ALL ON TABLE public.supervisor TO jupitor;
 
-GRANT ALL ON TABLE public.EmployeeData_View TO jupitor;
+GRANT ALL ON TABLE public.employeedata_view TO jupitor;
+
+GRANT ALL ON TABLE public.full_employee_detail TO jupitor;
+

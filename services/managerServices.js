@@ -108,62 +108,23 @@ static async getEmpDATA(id){
     const result=await manager.getEmpDATA(id);
     return result; 
 }
-static async updateEmployee({
-    ID,
-    NIC,
-    email,
-    first_name,
-    middle_name,
-    last_name,
-    phone,
-    gender,
-    birthday,
-    address_id,
-    city,
-    postal_code,
-    password,
-    repassword,
-    branch,
-    jobTitle,
-    department,
-    payGrade,
-    empStatus,
-    salary,
-  }) {
-    const checkEmail = await manager.findUserIDByEmail(email);
+static async updateEmployee(value) {
+    
+    const checkEmail = await manager.findUserIDByEmail(value.email);
     console.log(checkEmail)
-    ID= parseInt(ID);
-    console.log(ID)
+    const ID= parseInt(value.ID);
+    console.log(value.ID)
     if (checkEmail.length>0 && checkEmail[0].employee_id !==ID) {
       throw new Error.BadRequest(`This email is already registered with employee id ${checkEmail[0].employee_id}`);
     }
-    const checkNIC = await manager.findUserIDByNIC(NIC);
+    const checkNIC = await manager.findUserIDByNIC(value.NIC);
     console.log(checkNIC)
     if (checkNIC.length>0 && checkNIC[0].employee_id !==ID) {
       throw new Error.BadRequest(`This NIC is already registered with employee id ${checkNIC[0].employee_id}`);
     }
-    const hashpwd = await bcrypt.hash(password, 10);
-    const result = await manager.updateEmployee(
-      ID,
-      NIC,
-      email,
-      first_name,
-      middle_name,
-      last_name,
-      phone,
-      gender,
-      birthday,
-      address_id,
-      city,
-      postal_code,
-      hashpwd,
-      branch,
-      jobTitle,
-      department,
-      payGrade,
-      empStatus,
-      salary
-    );
+    const hashpwd = await bcrypt.hash(value.password, 10);
+    value.password=hashpwd
+    const result = await manager.updateEmployee(value);
     return result;
   }
 

@@ -2,6 +2,11 @@ const db = require("../connection");
 
 class Supervisor {
   // get all leaving requests
+  static async findEmployee(id){
+    const user =await db.query(`
+    select * from supervisor left join personal_information on personal_information.employee_id=supervisor.supervisor_id where personal_information.employee_id = $1`, [id])
+    return user.rows[0];
+  }
 
   static async getAllLeavingRequests() {
     const id = 180335;
@@ -116,12 +121,14 @@ class Supervisor {
     console.log(date - 1);
     // console.log(year + "-" + month + "-" + date);
     const today = year + "-" + month + "-" + date;
+    console.log("gfgf")
     const res = (
       await db.query(`select * from getAttendence($1,$2)`, [
         supervisor_id,
         today,
       ])
     ).rows;
+     console.log("gfgf")
     console.log(res);
     return res;
   }
@@ -134,6 +141,7 @@ class Supervisor {
     let year = date_ob.getFullYear();
     let arr = [];
     if (date <= 5) {
+      
       const lim = date;
       console.log(lim);
       for (var i = 0; i < lim; i++) {

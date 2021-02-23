@@ -167,6 +167,7 @@ static async viewData(req,res){
                 employee_statuses:{},
                 empDATA:{},
                 user:user,
+                customAttributes:{}
               
               });
     }
@@ -180,6 +181,8 @@ static async viewData(req,res){
             const departments=await managerServices.getAllDepartments();
             const payGrades = await managerServices.getAllPayGradeLevel();
             const employee_statuses = await managerServices.getEmployeeStatus();
+            const customAttributes=await OrganizationServices.getCustomAttributes();
+
             // console.log(empDATA)
             res.render("./manager/viewData", {
                 user: req.session.user,
@@ -192,6 +195,7 @@ static async viewData(req,res){
                 employee_statuses: employee_statuses,
                 empDATA:empDATA,
                 user:user,
+                customAttributes:customAttributes,
               
 
               });

@@ -18,7 +18,7 @@ class RootController{
         res.render('login', {
             user:'',
             success:req.query.success,
-            erorr:req.query.erorr,
+            error:req.query.error,
             email:'',
             password:''
         })
@@ -33,11 +33,14 @@ class RootController{
             if(user.job_title =="HR"){
                 type="HR";
             }
+            else if(user.job_title=="Manager"){
+                type="Manager"
+            }
             else if(user.job_title){
                  type="employee"
             }
             else{
-                type='login'
+                type='admin'
             }
 
             req.session.user={}
@@ -57,8 +60,8 @@ class RootController{
             
 
 
-        } catch (erorr) {
-            res.redirect(`/login?erorr=${erorr}`)
+        } catch (error) {
+            res.redirect(`/login?error=${error}`)
         }
     }
 

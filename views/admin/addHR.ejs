@@ -155,10 +155,12 @@
                                        
                                     <% }else if(customAttribute.type=="varchar"){ %>
                                         <div class="form-group mb-3">
+                                            <label for=""><%=customAttribute.name%>:</label>
                                             <input class="form-control" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=customAttribute.default_val%>" >
                                         </div>
                                    <% }else if(customAttribute.type=="integer"){ %>
                                         <div class="form-group mb-3">
+                                            <label for=""><%=customAttribute.name%>:</label>
                                             <input class="form-control" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=customAttribute.default_val%>" >
                                         </div>
                            <% }})} %>

@@ -17,7 +17,8 @@ class userServices {
         const isPasswordCorrect =await bcrypt.compare(password,user.password)
         if(!isPasswordCorrect){
              throw new Error.BadRequest('entered password is wrong');
-         }
+        }
+        console.log(user)
         return user;
         
     }

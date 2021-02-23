@@ -4,7 +4,7 @@ const adminServices =require('../services/adminServices');
 const idForm=require("../helpers/idChecker")
 const OrganizationServices=require('../services/organizationServices')
 const {leaveCountValidator}=require('../validaters/leaveValidator');
-const {branchValidator,payGradeValidator,payGradeEditValidator,employeeStatusValidator,EmployeeStatusEditValidator, jobTypeEditValidator, jobTypeValidator}=require('../validaters/organizationValidator');
+const {branchValidator,payGradeValidator,payGradeEditValidator,employeeStatusValidator,EmployeeStatusEditValidator, jobTypeEditValidator, jobTypeValidator, branchEditValidator, DepartmentValidator}=require('../validaters/organizationValidator');
 const { getAllBranches } = require('../models/organization');
 
 
@@ -279,6 +279,34 @@ class  AdminController{
                 res.redirect(`/admin/jupitorBranches?error=${error}`)
             }
         }
+        static async editBranchPage(req,res){
+            try {
+                const Branch=await OrganizationServices.getBranch(req.params.branch_name)
+                console.log(Branch)
+                res.render('admin/editBranch',{
+                    user:req.session.user,
+                    error:req.query.error,
+                    Branch:Branch
+                })
+            } catch (error) {
+                 res.render('admin/editBranch',{
+                     user:req.session.user,
+                     error:error,
+                     Branch:{}
+                 })
+            }
+        }
+        static async editBranch(req,res){
+            try {
+                const {error , value}=await branchEditValidator.validate(req.body)
+                if(error) throw error
+
+                await OrganizationServices.setBranch(req.params.branch_name,value);
+                res.redirect(`/admin/jupitorBranches`)
+            } catch (error) {
+                res.redirect(`/admin/editBranch/${req.params.branch_name}?error=${error}`)
+            }
+        }
 
 
         static async addCustomAttributePage(req,res){
@@ -288,6 +316,8 @@ class  AdminController{
                 success:req.query.success
             })
         }
+
+
         static async addCustomAttribute(req,res){
             try {
                 await adminServices.addCustomAttribute(req.body);
@@ -401,7 +431,7 @@ class  AdminController{
             try {
                 const {error, value}= await employeeStatusValidator.validate(req.body)
                 if(error) throw error
-                await OrganizationServices.addEmployeeState(value)
+                await OrganizationServices.addEmployeeStatus(value)
                 res.redirect(`/admin/jupitorEmployeeStatus`)
 
             } catch (error) {
@@ -516,6 +546,35 @@ class  AdminController{
                     error:error,
                     success:''
                 })
+            }
+        }
+        static async viewDepartments(req,res){
+            try {
+                const departments=await OrganizationServices.getAllDepartment();
+                res.render('admin/jupitorDepartment',{
+                    user:req.session.user,
+                    success:'',
+                    error:req.query.error,
+                    Departments:departments
+                })
+            } catch (error) {
+                res.render('admin/jupitorDepartment',{
+                    user:req.session.user,
+                    error:error,
+                    success:'',
+                    Departments:[]
+                })
+            }
+        }
+        static async addDepartment(req,res){
+            try {
+                const {error, value}= await DepartmentValidator.validate(req.body)
+                if(error) throw error
+                await OrganizationServices.addDepartment(value)
+                res.redirect(`/admin/jupitorDepartments`)
+
+            } catch (error) {
+                res.redirect(`/admin/jupitorDepartments?error=${error}`)
             }
         }
 
