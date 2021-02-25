@@ -114,6 +114,7 @@ class HRController {
                 employee_statuses:{},
                 empDATA:{},
                 user:user,
+                customAttributes:{}
               
               });
     }
@@ -160,6 +161,8 @@ class HRController {
 
 static async updateEmployee(req,res){
     try{
+
+     
         const empAdd = await managerServices.updateEmployee(req.body);
       
         const success= "Successfully Update the Employee";

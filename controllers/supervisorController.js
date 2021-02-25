@@ -39,10 +39,10 @@ static async login(req,res){
 }
 
   static async supervisor(req, res) {
-    const req_count = await Supervisor.getLeavingRequestCount();
-    const emp_count = await Supervisor.getEmployees_Count();
-    const attendance = await Supervisor.countAttendance();
-    const weekly = await Supervisor.countWeeklyAttendance();
+    const req_count = await Supervisor.getLeavingRequestCount(req.session.user.uid);
+    const emp_count = await Supervisor.getEmployees_Count(req.session.user.uid);
+    const attendance = await Supervisor.countAttendance(req.session.user.uid);
+    const weekly = await Supervisor.countWeeklyAttendance(req.session.user.uid);
     // console.log(req_count);
     // console.log(emp_count);
     console.log(weekly[0].date);
@@ -58,7 +58,7 @@ static async login(req,res){
 
   //  get all employees from database
   static async employee(req, res) {
-    const employees = await Supervisor.getEmployees();
+    const employees = await Supervisor.getEmployees(req.session.user.uid);
     console.log(employees);
     res.render("./supervisor/employees", {
       employeeLst: employees,
@@ -72,7 +72,7 @@ static async login(req,res){
 
   // get all Leaving Requests
   static async leaves(req, res) {
-    const requests = await Supervisor.getAllLeavingRequests();
+    const requests = await Supervisor.getAllLeavingRequests(req.session.user.uid);
     res.render("./supervisor/leaves", {
       requestLst: requests,
     });
@@ -101,10 +101,10 @@ static async login(req,res){
 
   static async approve(req, res) {
     const get = await Supervisor.approveLeave(req.body);
-    const req_count = await Supervisor.getLeavingRequestCount();
-    const emp_count = await Supervisor.getEmployees_Count();
-    const attendance = await Supervisor.countAttendance();
-    const weekly = await Supervisor.countWeeklyAttendance();
+    const req_count = await Supervisor.getLeavingRequestCount(req.session.user.uid);
+    const emp_count = await Supervisor.getEmployees_Count(req.session.user.uid);
+    const attendance = await Supervisor.countAttendance(req.session.user.uid);
+    const weekly = await Supervisor.countWeeklyAttendance(req.session.user.uid);
     res.render("./supervisor/dashboard", {
       req_count: req_count,
       emp_count: emp_count,

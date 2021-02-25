@@ -10,11 +10,11 @@ class supervisorServices {
         if(!isValidID){
             throw new Error.BadRequest("EMP ID is not Valid")
         }
-                const supervisor= await Supervisor.findEmployee(isValidID)
+        const supervisor= await Supervisor.findEmployee(isValidID)
         if(!supervisor){
             throw new Error.BadRequest('EMP ID is not registered as a supervisor');
         }
-        const isPasswordCorrect =await bcrypt.compare(password,supervisorpassword)
+        const isPasswordCorrect =await bcrypt.compare(password,supervisor.password)
         if(!isPasswordCorrect){
              throw new Error.BadRequest('entered password is wrong');
         }

@@ -28,7 +28,9 @@ DROP TABLE IF EXISTS leave CASCADE;
 DROP TABLE IF EXISTS leave_record CASCADE;
 DROP TABLE IF EXISTS supervisor CASCADE;
 DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS personal_information_custom;
 DROP  TABLE IF EXISTS customattributes;
+
 -- create tables-----------------------------------------------------------------------------------------------------
 
 
@@ -197,6 +199,8 @@ CREATE TABLE employee
         ON DELETE CASCADE
 );
 
+CREATE INDEX department_name ON employee(dept_name);  
+
 
 CREATE TABLE employee_leave
 (
@@ -249,6 +253,7 @@ CREATE TABLE leave_record
     duration integer NOT NULL,
     reason varchar(200),
     approval_state varchar(10)  NOT NULL DEFAULT 'No'::varchar,
+    CONSTRAINT leave_type_cons CHECK( leave_type IN('anual','casual','maternity','no_pay')),
     CONSTRAINT leave_record_pkey PRIMARY KEY (leave_id),
     CONSTRAINT leave_record_employee_id_fkey FOREIGN KEY (employee_id)
         REFERENCES personal_information (employee_id) 
@@ -293,6 +298,7 @@ ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFE
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
 -- Kaveesha Functions--------------------------------------------------------------------------------------------------------------------
+
 CREATE OR REPLACE PROCEDURE addToSupervisorT(
     employee_ids integer[],
     val_supervisor_id int,
@@ -340,7 +346,7 @@ BEGIN
 	RETURN NEW;
 END;
 $$;
-
+Drop Trigger if exists removeSupervisor on employee;
 
 CREATE TRIGGER removeSupervisor
     AFTER UPDATE
@@ -387,7 +393,7 @@ end;$$;
 
 CREATE OR REPLACE VIEW EmployeeData_View AS
 SELECT *
-FROM  employee join personal_information using(employee_id) join personal_information_custom using(employee_id);
+FROM  employee left join personal_information using(employee_id) left join personal_information_custom using(employee_id);
 
 
 -- Sandaruwn Functions--------------------------------------------------------------------------------------------------------------------
@@ -510,6 +516,32 @@ where start_date + duration >= today AND s.supervisor_id = s_id AND start_date <
 return count1;
 end;$$;
 
+
+
+CREATE FUNCTION emp_leave()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+ anual1 INTEGER :=0 ;
+ casual1 INTEGER :=0 ;
+ maternity1 INTEGER :=0 ;
+ no_pay1 INTEGER :=0 ;
+
+		
+  		BEGIN
+ 		select anual, casual , maternity , no_pay into anual1 , casual1, maternity1,no_pay1
+		from leave where paygrade_level = NEW.paygrade_level;
+  		insert into employee_leave values(NEW.employee_id,2021, anual1, casual1, maternity1, no_pay1 ); 
+		return new;
+		
+END;
+$BODY$;
+
+Drop TRIGGER IF EXISTS emp_leave on employee;
+
+
+CREATE TRIGGER setLeave AFTER UPDATE ON employee FOR EACH ROW EXECUTE PROCEDURE emp_leave();
 
 
 -- Indunil's section---------------------------------------------------------------------------------------------------------------------
@@ -652,7 +684,7 @@ CREATE OR REPLACE VIEW public.full_employee_detail
 
 -- function for get leave records by date range
 
-CREATE OR REPLACE FUNCTION public.getleavebydate(startD date,endD date)
+CREATE OR REPLACE FUNCTION getleavebydate(startD date,endD date)
     RETURNS TABLE(leave_id integer, employee_id integer, leave_type character varying, apply_date date, startdate date, duration integer, reason character varying, approval_state character varying)
     LANGUAGE 'plpgsql'
     VOLATILE
@@ -662,7 +694,7 @@ CREATE OR REPLACE FUNCTION public.getleavebydate(startD date,endD date)
 AS $BODY$
 BEGIN
 RETURN QUERY
-	SELECT * FROM public.leave_record WHERE start_date BETWEEN startD AND endD;
+	SELECT * FROM leave_record WHERE start_date BETWEEN startD AND endD;
 END;
 $BODY$;
 
@@ -704,98 +736,3 @@ BEGIN
 	
 END;
 $$;
-
-GRANT EXECUTE ON FUNCTION public.getattendence(s_id numeric, today character varying) TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.getemployee(e_id numeric) TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.getemployees(s_id numeric) TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.getleavea(s_id numeric) TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.getleavebydate(startd date, endd date) TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.setaddress(addressname character varying, cityid numeric, postalcode numeric) TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.setcity(cityname character varying, countryid numeric) TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.setcountry(c character varying) TO jupitor;
-
-GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer) TO jupitor;
-
-GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer, arraylength integer) TO jupitor;
-
-GRANT EXECUTE ON PROCEDURE public.updatejupitorbranch(branchname character varying, add integer) TO jupitor;
-
-GRANT EXECUTE ON PROCEDURE public.updatejupitoremployeestatus(estatusname character varying, du character varying, des character varying) TO jupitor;
-
-GRANT EXECUTE ON PROCEDURE public.updatejupitorjobs(jobtitle character varying, des character varying, req character varying, prereq character varying) TO jupitor;
-
-GRANT EXECUTE ON PROCEDURE public.updatejupitorleaves(paygradelevel character varying, an integer, cas integer, mat integer, nopay integer) TO jupitor;
-
-GRANT EXECUTE ON PROCEDURE public.updatejupitorpaygrade(paygradelevel character varying, des character varying, req character varying) TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.changeempcount() TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.changeempcount1() TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.deletesupervisorgroup() TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.emp_stamp() TO jupitor;
-
-GRANT EXECUTE ON FUNCTION public.emp_stamp6() TO jupitor;
-
-GRANT ALL ON SEQUENCE public.address_address_id_seq TO jupitor;
-
-GRANT ALL ON SEQUENCE public.city_city_id_seq TO jupitor;
-
-GRANT ALL ON SEQUENCE public.country_country_id_seq TO jupitor;
-
-GRANT ALL ON SEQUENCE public.leave_record_leave_id_seq TO jupitor;
-
-GRANT ALL ON SEQUENCE public.personal_information_employee_id_seq TO jupitor;
-
-GRANT ALL ON TABLE public.address TO jupitor;
-
-GRANT ALL ON TABLE public.admin TO jupitor;
-
-GRANT ALL ON TABLE public.branch TO jupitor;
-
-GRANT ALL ON TABLE public.city TO jupitor;
-
-GRANT ALL ON TABLE public.country TO jupitor;
-
-GRANT ALL ON TABLE public.customattributes TO jupitor;
-
-GRANT ALL ON TABLE public.department TO jupitor;
-
-GRANT ALL ON TABLE public.emergency_contact_details TO jupitor;
-
-GRANT ALL ON TABLE public.employee TO jupitor;
-
-GRANT ALL ON TABLE public.employee_leave TO jupitor;
-
-GRANT ALL ON TABLE public.employee_phone_number TO jupitor;
-
-GRANT ALL ON TABLE public.employee_status TO jupitor;
-
-GRANT ALL ON TABLE public.job_type TO jupitor;
-
-GRANT ALL ON TABLE public.leave TO jupitor;
-
-GRANT ALL ON TABLE public.leave_record TO jupitor;
-
-GRANT ALL ON TABLE public.pay_grade TO jupitor;
-
-GRANT ALL ON TABLE public.personal_information TO jupitor;
-
-GRANT ALL ON TABLE public.personal_information_custom TO jupitor;
-
-GRANT ALL ON TABLE public.session TO jupitor;
-
-GRANT ALL ON TABLE public.supervisor TO jupitor;
-
-GRANT ALL ON TABLE public.employeedata_view TO jupitor;
-
-GRANT ALL ON TABLE public.full_employee_detail TO jupitor;
-

@@ -11,13 +11,13 @@ class employeeController {
   }
 
   static async attendance(req, res) {
-    const history = await Employee.getLeavingHistory();
-    console.log(history[0].leave_id);
+    const history = await Employee.getLeavingHistory(req.session.user.uid);
+    // console.log(history[0].leave_id);
     res.render("employee/attendance", { history: history });
   }
 
   static async employeeInfo(req, res) {
-    const information = await Employee.getEmployeeInfo();
+    const information = await Employee.getEmployeeInfo(req.session.user.uid);
     res.render("employee/employeeInfo", {information:information});
   }
   
