@@ -122,8 +122,6 @@ static async updateEmployee(value) {
     if (checkNIC.length>0 && checkNIC[0].employee_id !==ID) {
       throw new Error.BadRequest(`This NIC is already registered with employee id ${checkNIC[0].employee_id}`);
     }
-    const hashpwd = await bcrypt.hash(value.password, 10);
-    value.password=hashpwd
     const result = await manager.updateEmployee(value);
     return result;
   }

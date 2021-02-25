@@ -80,10 +80,10 @@
                 <div class="form-group">
                     <label>Custom Fields</label>
                     <select name="field" class="form-control select2" style="width: 100%;"  multiple="multiple" required>
-                        
-                        <% for (var i = 0; i < customFields.length; i++) { %>
+                        <% if(customFields){%>
+                        <% for (var i = 0; i < customFields.length; i++) { if(customFields[i]!='password') {%>
                             <option value="<%= customFields[i] %>"><%= customFields[i] %></option>
-                      <% } %>
+                      <% } }}%>
                     </select>
                 </div>
             </div>
@@ -115,7 +115,7 @@
             <div class="card" >
               <div class="card-header">
                 <h3 class="card-title">Employees</h3>
-                <a class="btn btn-primary float-right newSupply" href="HR/viewEmployee">View PIM Data</a>
+                <a class="btn btn-primary float-right newSupply" href="HR/viewData">View PIM Data</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

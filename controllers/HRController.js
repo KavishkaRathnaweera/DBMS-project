@@ -3,6 +3,7 @@ const OrganizationServices = require("../services/organizationServices");
 const {adminRegisterValidator,addHRvalidator,} = require("../validaters/registerValidator");
 const hrService = require("../services/hrService");
 const managerServices =require('../services/managerServices');
+const { end } = require("../connection");
 
 var employeeSet = { column: [], details: [], selectTypes:[] };
 var departmentSet = [];
@@ -161,10 +162,10 @@ static async updateEmployee(req,res){
         const empAdd = await managerServices.updateEmployee(req.body);
       
         const success= "Successfully Update the Employee";
-        res.redirect(`viewData?success=${success}`);
+         
+        res.redirect(`${req.body.ID}?${success}`);
     }catch(error){
         console.log(error);
-        res.redirect(`viewData?error=${error}`);
     }
 }
 
@@ -258,7 +259,8 @@ static async updateEmployee(req,res){
     try {
       res.render("HR/leaveReport",{
       departmentlist: departmentSet,
-      dates:{}
+      dates:{},
+      error:''
     });
     departmentSet=[]
     } catch (error) {
@@ -272,16 +274,27 @@ static async updateEmployee(req,res){
       startDate: req.body.startdate,
       endDate: req.body.endDate,
     }
-    console.log(req.body);
-    try {
+    if(inpdate.startDate<inpdate.endDate && parseInt(inpdate.startDate.substring(0, 4))>2000){
+      try {
       departmentSet = await hrService.getDepartmentLeaves(inpdate.startDate,inpdate.endDate);
       res.render("HR/leaveReport",{
       departmentlist: departmentSet,
-      dates: inpdate
+      dates: inpdate,
+      error:''
     });
     } catch (error) {
+      departmentSet = [];
       throw error
     }
+    }
+    else{
+      res.render("HR/leaveReport",{
+      departmentlist: [],
+      dates: {},
+      error:'Invalid Date. Start Date must be greater than year 2000 and End Date must be greater than Start Date'
+    });
+    }
+    
    
   }
 

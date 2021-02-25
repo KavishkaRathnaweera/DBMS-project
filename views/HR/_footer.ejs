@@ -16,7 +16,7 @@
             var d = new Date();
             var n = d.getFullYear();
             if(phone.length==10){
-                if(n-parseInt(bdate.substring(0,4))>18){
+                if(n-parseInt(bdate.substring(0,4))>18 && (n - parseInt(bdate.substring(0, 4)) < 60)){
                     if(password.length>7 && password==repassword){
                         $('#sbmtbtn').attr('disabled', false);
                         
