@@ -91,34 +91,54 @@ static async checkEmp(id,user,userBranch,userDepartment){
     }
     const [{branch_name,dept_name,job_title}] = result;
     
+    if(userBranch!==branch_name){
+        throw new Error.BadRequest("This emplooyee is not in your branch");
+    }
+    if(userDepartment!== dept_name){
+        throw new Error.BadRequest("This emplooyee is not in your department");
+    }
+
     if(job_title===user){
         throw new Error.BadRequest("No access to view or edit this employee's data");
     } 
-
-    if(user === "Manager"){
-        if(userBranch!==branch_name){
-            throw new Error.BadRequest("This emplooyee is not in your branch");
-        }
-        else if(userDepartment!== dept_name){
-            throw new Error.BadRequest("This emplooyee is not in your department");
-        }
-    }
+    
 }
 static async getEmpDATA(id){
     const result=await manager.getEmpDATA(id);
     return result; 
 }
-static async updateEmployee(value) {
-    
-    const checkEmail = await manager.findUserIDByEmail(value.email);
-    console.log(checkEmail)
-    const ID= parseInt(value.ID);
-    console.log(value.ID)
+static async updateEmployee({
+    ID,
+    NIC,
+    email,
+    first_name,
+    middle_name,
+    last_name,
+    phone,
+    gender,
+    birthday,
+    address_id,
+    city,
+    postal_code,
+    country,
+    // password,
+    // repassword,
+    branch,
+    jobTitle,
+    department,
+    payGrade,
+    empStatus,
+    salary,
+  }) {
+    const checkEmail = await manager.findUserIDByEmail(email);
+    // console.log(checkEmail)
+    ID= parseInt(ID);
+    // console.log(ID)
     if (checkEmail.length>0 && checkEmail[0].employee_id !==ID) {
       throw new Error.BadRequest(`This email is already registered with employee id ${checkEmail[0].employee_id}`);
     }
-    const checkNIC = await manager.findUserIDByNIC(value.NIC);
-    console.log(checkNIC)
+    const checkNIC = await manager.findUserIDByNIC(NIC);
+    // console.log(checkNIC)
     if (checkNIC.length>0 && checkNIC[0].employee_id !==ID) {
       throw new Error.BadRequest(`This NIC is already registered with employee id ${checkNIC[0].employee_id}`);
     }
