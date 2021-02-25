@@ -116,7 +116,7 @@ static async getEmployeeBranchAndDeptAndjobTitle(id){
 }
 static async getEmpDATA(id){
     const result=await db.query(`
-    select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) 
+    select * from EmployeeData_View left outer join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) 
     where employee_id = $1`,[id])
     return result.rows;
 }

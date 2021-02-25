@@ -306,6 +306,7 @@
                                                 
                             <% customAttributes.forEach(function(customAttribute){
                                     let valString= `empDATA[0].${customAttribute.name}`
+                                    if(!empDATA.length>0){valString=""}
                                     if(customAttribute.type=="boolean") { %>
                                         <div class="col-sm-6">
                                         <div class="form-group" name>
@@ -320,7 +321,7 @@
                                         <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for=""><%=customAttribute.name%>:</label>
-                                            <input class="form-control" id="customAttr" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required disabled>
+                                            <input class="form-control" id="customAttr" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString)  %>" required disabled>
                                         </div>
                                         </div>
                                 <% }else if(customAttribute.type=="integer"){ %>

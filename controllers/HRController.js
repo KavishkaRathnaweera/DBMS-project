@@ -126,6 +126,7 @@ class HRController {
             const payGrades = await managerServices.getAllPayGradeLevel();
             const employee_statuses = await managerServices.getEmployeeStatus();
             const customAttributes=await OrganizationServices.getCustomAttributes();
+            console.log(empDATA)
           console.log(empDATA)
             // console.log(empDATA)
             res.render("HR/viewData", {

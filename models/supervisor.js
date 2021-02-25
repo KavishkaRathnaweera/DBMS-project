@@ -9,7 +9,7 @@ class Supervisor {
   }
 
   static async getAllLeavingRequests() {
-    const id = 180335;
+    const id = 11;
     const no = "No";
     const records = (await db.query(` select * from getleavea($1) `, [id]))
       .rows;
@@ -19,7 +19,7 @@ class Supervisor {
 
   // get leaving requests count
   static async getLeavingRequestCount() {
-    const id = 180335;
+    const id = 11;
     const count = (await db.query(` select count(*) from getleavea($1) `, [id]))
       .rows;
     return count;
@@ -68,7 +68,7 @@ class Supervisor {
 
   // get all employees
   static async getEmployees() {
-    const id = 180335;
+    const id = 11;
     const res = (
       await db.query(
         `
@@ -85,7 +85,7 @@ class Supervisor {
 
   // get employees count
   static async getEmployees_Count() {
-    const id = 180335;
+    const id = 11;
     const emp_count = (
       await db.query(
         `
@@ -104,6 +104,7 @@ class Supervisor {
         [employee_id]
       )
     ).rows;
+    console.log(res);
     for (var i = 0; i < res.length; i++) {
       let pres = (res[i].count_leaves / res[i].total_leaves) * 100;
       res[i].total_leaves = Math.round(pres);
@@ -113,7 +114,7 @@ class Supervisor {
 
   // get attendance
   static async countAttendance() {
-    const supervisor_id = 180335;
+    const supervisor_id = 11;
     let date_ob = new Date();
     let date = ("0" + date_ob.getDate()).slice(-2);
     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
@@ -134,7 +135,7 @@ class Supervisor {
   }
 
   static async countWeeklyAttendance() {
-    const supervisor_id = 180335;
+    const supervisor_id = 11;
     let date_ob = new Date();
     let date = ("0" + date_ob.getDate()).slice(-2);
     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);

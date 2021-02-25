@@ -14,7 +14,7 @@ class supervisorServices {
         if(!supervisor){
             throw new Error.BadRequest('EMP ID is not registered as a supervisor');
         }
-        const isPasswordCorrect =await bcrypt.compare(password,supervisor.password)
+        const isPasswordCorrect =await bcrypt.compare(password,supervisorpassword)
         if(!isPasswordCorrect){
              throw new Error.BadRequest('entered password is wrong');
         }

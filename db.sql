@@ -453,7 +453,7 @@ end;$$;
 
 -- get absents -----------------------
 create or replace function getAttendence (In s_id numeric,
-						In today (10))
+						In today date)
 returns integer
   	language plpgsql
  as $$
