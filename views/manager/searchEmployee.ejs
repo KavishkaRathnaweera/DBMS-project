@@ -16,19 +16,11 @@
             <div class="row">
               <!-- select branch name -->
             
-              <div class="col-md-4" >
+              <div class="col-md-4">
             <div class="form-group">
               <label>Branch</label>
               <select name="branchSelect" class="form-control select2" style="width: 100%;">
-                <% if (user == "Manager"){ %>
                   <option value="<%= userBranch %>"><%= userBranch %></option>
-                <% } else{%>
-                    <% if (branches.length> 0){ %>
-                      <% branches.forEach(branch=> { %>
-                        <option value="<%= branch.branch_name %>"><%= branch.branch_name %></option>
-                      <% }) %>
-                    <% } %>
-                <% } %>
               </select>
             </div>
             </div>
@@ -38,16 +30,7 @@
             <div class="form-group">
               <label>Department</label>
               <select name="deptSelect" class="form-control select2" style="width: 100%;">
-                <% if (user == "Manager"){ %>
                   <option value="<%= userDepartment %>"><%= userDepartment %></option>
-                <% } else{%>
-                <option selected="selected" value="allDepartments">All</option>
-                <% if (departments.length> 0){ %>
-                  <% departments.forEach(department=> { %>
-                    <option value="<%= department.dept_name %>"><%= department.dept_name %></option>
-                  <% }) %>
-                <% } %>
-              <% } %>
               </select>
             </div>
             </div>

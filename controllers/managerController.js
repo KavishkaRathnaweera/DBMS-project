@@ -1,9 +1,10 @@
 const e = require('cors');
 const managerServices =require('../services/managerServices');
 
-var user="Manager";
-var userBranch="Sri Lanka";
-var userDepartment="Software dept";
+var user;
+var userBranch;
+var userDepartment;
+
 var checkSupervisorADD = false;
 var employeeList = [];
 var canBeSupervisors=[];
@@ -15,7 +16,14 @@ var searchSupervisorErr=false;
 var searchSupervisormsg=[];
 
 class  MnagerController{
-        static async dashboard(req,res){//dashboard ekata eddima branch , deptment, define kranna
+
+        static async dashboard(req,res){
+            req.session.user=4;
+            const id = req.session.user;
+            const empDATA = await managerServices.getEmpDATA(id);
+            user=empDATA[0].job_title;
+            userBranch=empDATA[0].branch_name;
+            userDepartment=empDATA[0].dept_name;
             res.render('./manager/managerDashboard', {
                 
             })
