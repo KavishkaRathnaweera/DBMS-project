@@ -291,7 +291,7 @@
                                 </div>
                               <div class="col-sm-4">
                                   <div class="form-group">
-                                      <button type="button" class="btn btn-block btn-primary" id="savebtn" onclick="check()" disabled>Save</button>
+                                      <button type="button" class="btn btn-block btn-primary" id="savebtn" onclick="check1()" disabled>Save</button>
                                      
                                   </div>
                               </div>
@@ -351,12 +351,11 @@
             }
            
         }
-        function check(){
+        function check1(){
             const nic = document.getElementsByName('NIC')[0].value;
             const phone = document.getElementsByName('phone')[0].value.toString();
             const bdate = document.getElementsByName('birthday')[0].value;
-            const password = document.getElementsByName('password')[0].value;
-            const repassword = document.getElementsByName('repassword')[0].value;
+
             if((nic.length==10 && nic.charAt(9)=='V' && !isNaN(nic.substring(0,9))) || nic.length==12 && !isNaN(nic)){
                 var d = new Date();
                 var n = d.getFullYear();

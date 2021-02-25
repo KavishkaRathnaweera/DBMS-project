@@ -187,6 +187,14 @@
                                           <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="repassword" name="repassword" required disabled>
                                       </div>
                                   </div>
+
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].country : ''%>" id="country"  name="country" value="<%=empDATA.length>0 ? empDATA[0].country : ''%>" required disabled>
+                                    </div>
+                                    </div>
+
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <!-- <label for="customFile">Custom File</label> -->
@@ -352,6 +360,7 @@
                 $('#address_id').attr('disabled', false);
                 $('#city').attr('disabled', false);
                 $('#postal_code').attr('disabled', false);
+                $('#country').attr('disabled', false);
                 $('#customFile').attr('disabled', false);
                 $('#branch').attr('disabled', false);
                 $('#jobTitle').attr('disabled', false);
@@ -361,7 +370,7 @@
                 $('#salary').attr('disabled', false);
                 $('#savebtn').attr('disabled', false);
             }
-           
+            
         }
         function check(){
             const nic = document.getElementsByName('NIC')[0].value;

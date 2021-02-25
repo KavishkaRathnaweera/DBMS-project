@@ -300,14 +300,23 @@ $$;
 
 
 
-CREATE OR REPLACE FUNCTION deleteSupervisorGroup()
+CREATE OR REPLACE FUNCTION updateSupervisorTable()
   RETURNS TRIGGER 
   LANGUAGE PLPGSQL
   AS
 $$
+DECLARE
+    supervisr_id int;
 BEGIN
 	IF (NOT NEW.supervisor) AND OLD.supervisor THEN
 		DELETE FROM supervisor WHERE supervisor_id = OLD.employee_id;
+        DELETE FROM supervisor WHERE employee_id = OLD.employee_id;
+        ELSIF NEW.supervisor AND (NOT OLD.supervisor) THEN
+        IF(OLD.job_title != 'Manager') THEN
+            SELECT employee_id INTO supervisr_id FROM employee 
+            WHERE branch_name=OLD.branch_name AND dept_name=OLD.dept_name AND job_title='Manager';
+            INSERT INTO supervisor VALUES(OLD.employee_id, supervisr_id);
+        END IF;	    
 	END IF;
 
 	RETURN NEW;
@@ -320,11 +329,45 @@ CREATE TRIGGER removeSupervisor
     OF supervisor
     ON employee
     FOR EACH ROW
-    EXECUTE PROCEDURE deleteSupervisorGroup();
+    EXECUTE PROCEDURE updateSupervisorTable();
 
 
+ -- get Supervisors----------------------
 
-CREATE VIEW EmployeeData_View AS
+CREATE OR REPLACE function getSupervisors (branch varchar(100), department varchar(100), JobTitle varchar(100))
+returns table(
+        employee_id int,
+        nic varchar,
+        first_name varchar,
+        last_name varchar
+ 	)
+ 	language plpgsql
+as $$
+begin
+ 	return query 
+ 		select e.employee_id,e.nic,e.first_name,e.last_name from EmployeeData_View e
+        where e.branch_name = branch and e.dept_name = department and 
+        e.job_title != JobTitle and e.supervisor = true;
+end;$$;
+
+ -- get getNoSupervisorEmployees----------------------
+
+CREATE OR REPLACE function getNoSupervisorEmployees (branch varchar(100), department varchar(100), JobTitle varchar(100))
+returns table(
+        employee_id int,
+        first_name varchar,
+        last_name varchar
+ 	)
+ 	language plpgsql
+as $$
+begin
+ 	return query 
+ 		select e.employee_id,e.first_name,e.last_name from EmployeeData_View e
+        where e.branch_name = branch and e.dept_name = department and e.job_title != JobTitle 
+        and e.employee_id not in (select distinct(s.employee_id) from supervisor s);
+end;$$;
+
+CREATE OR REPLACE VIEW EmployeeData_View AS
 SELECT *
 FROM  employee join personal_information using(employee_id);
 
