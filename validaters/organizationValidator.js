@@ -49,5 +49,16 @@ const jobTypeValidator=Joi.object().options({abortEarly:false}).keys({
 
 
 })
+const branchEditValidator=Joi.object().options({abortEarly:false}).keys({
+    address:Joi.string().required().label('address'),
+    postal_code:Joi.string().required().label('postal_code'),
+    city:Joi.string().required().label('city'),
+    country:Joi.string().required().label('country'),
 
-module.exports={branchValidator,payGradeValidator,payGradeEditValidator, employeeStatusValidator, EmployeeStatusEditValidator,jobTypeEditValidator,jobTypeValidator}
+
+})
+const DepartmentValidator=Joi.object().options({abortEarly:false}).keys({
+    dept_name:Joi.string().required().label('dept_name'),
+})
+
+module.exports={branchValidator,payGradeValidator,payGradeEditValidator, employeeStatusValidator, EmployeeStatusEditValidator,jobTypeEditValidator,jobTypeValidator, branchEditValidator, DepartmentValidator}

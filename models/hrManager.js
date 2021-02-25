@@ -1,43 +1,35 @@
 const db = require("../connection");
-const User = require("../models/user");
+const User=require('../models/user')
+const customAttributesModelsHelper=require('../helpers/customAttributesModelsHelper')
+
 
 class hrManager {
 
-  static async addEmployee(
-    NIC,
-    email,
-    first_name,
-    middle_name,
-    last_name,
-    phone,
-    gender,
-    birthday,
-    address, //this is address name,not address id
-    city,
-    postal_code,
-    country,
-    hashpwd,
-    branch_name,
-    jobTitle,
-    department,
-    payGrade,
-    empStatus,
-    salary
-  ) {
+  static async customAttributes(value){
+      const {r_bind, r_data}= await customAttributesModelsHelper(value)
+      const sql=`insert into personal_information_custom values(${r_bind}) `
+      console.log(sql)
+      await db.query(sql, r_data)
+  }
+  static async addEmployee(value) {
     try{
     await db.query("BEGIN")
-     const addressrow= await User.addressTable(address,city,postal_code, country);
+    console.log(value)
+     const addressrow= await User.addressTable(value.address_id,value.city,value.postal_code, value.country);
      const personalDetails =(await db.query(` insert into  personal_information(NIC, first_name, middle_name, last_name, gender,birth_day, address_id, email, password) values ($1, $2, $3, $4, $5,$6,$7,$8,$9 ) 
-                                          returning *`,[NIC,first_name,middle_name,last_name,gender,birthday,addressrow[0].address_id,email,hashpwd]
+                                          returning *`,[value.NIC,value.first_name,value.middle_name,value.last_name,value.gender,value.birthday,addressrow[0].address_id,value.email,value.password]
                                           )).rows[0];
 
      const employee=(await db.query(`insert into Employee (employee_id ,branch_name, job_title, dept_name, paygrade_level, e_status_name) values($1,$2, $3, $4, $5, $6)
-                                          `,[personalDetails.employee_id,branch_name,jobTitle,department,payGrade,empStatus]));
-                        
+                                          `,[personalDetails.employee_id,value.branch_name,value.jobTitle,value.department,value.payGrade,value.empStatus]));
+      
+    value.employee_id=personalDetails.employee_id;
+    await hrManager.customAttributes(value)
+
      const empEmergency = (await db.query(`INSERT INTO emergency_contact_details(employee_id,relative_name,contact_no) values($1,$2, $3)
-                                          `,[personalDetails.employee_id,first_name,phone]));
+                                          `,[personalDetails.employee_id,value.first_name,value.phone]));
      const empPhone = (await db.query(`INSERT INTO employee_phone_number(employee_id,phone) values($1,$2)
-                                          `,[personalDetails.employee_id,phone]));
+                                          `,[personalDetails.employee_id,value.phone]));
                                           
     await db.query("COMMIT")
     return personalDetails;

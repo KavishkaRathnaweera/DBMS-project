@@ -7,6 +7,11 @@ class Organization{
             select branch_name from branch`)
             return branches.rows;
     }
+    static async getBranch(branch_name){
+        const branch=await db.query(`
+        select * from branch left outer join address using(address_id) left outer join city using(city_id) left outer join country using(country_id)  where branch_name=$1`,[branch_name])
+        return branch.rows[0]
+    }
     static async getAllJobTitle(){
         const jobTitle=await db.query(`
         select * from job_type`)
@@ -14,9 +19,15 @@ class Organization{
     }
     static async getAllDepartment(){
         const department=await db.query(`
-        select dept_name from department`) 
+        select * from department`) 
         return department.rows;
     }
+    static async addDepartment(dept_name){
+        return await db.query(`
+        insert into department (dept_name) values($1)`, [dept_name]) 
+
+    }
+
     static async getAllPayGradeLevel(){
         
         const payGrade=await db.query(`
@@ -60,7 +71,7 @@ class Organization{
 
     static async deleteCustomAttribute(columnName){
                     await db.query(`delete from customattributes where name=$1`,[columnName])
-        return await db.query(`alter table personal_information drop column ${columnName}`)
+        return await db.query(`alter table personal_information_custom drop column ${columnName}`)
 
     }
     static async getColumn(tableName){
@@ -101,6 +112,10 @@ class Organization{
     }
     static async getEmplyeeCount(branch_name){
         return (await db.query('select count(*) from personal_information left outer join employee using(employee_id) where branch_name=$1', [branch_name])).rows[0]
+    }
+    static async setBranch(branch_name,address, city, postal_code, country){
+        const addressrow=await User.addressTable(address,city,postal_code, country);
+        return await db.query(`call updateJupitorBranch($1, $2)`,[branch_name,addressrow[0].address_id])
     }
 }
 module.exports=Organization;

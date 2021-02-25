@@ -1,4 +1,4 @@
-const db =require('../connection')
+ const db =require('../connection')
 const User=require('../models/user')
 const customAttributesModelsHelper=require('../helpers/customAttributesModelsHelper')
 

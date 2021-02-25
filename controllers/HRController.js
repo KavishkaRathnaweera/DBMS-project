@@ -32,6 +32,8 @@ class HRController {
       const departments = await OrganizationServices.getAllDepartment();
       const payGrades = await OrganizationServices.getAllPayGradeLevel();
       const employee_statuses = await OrganizationServices.getEmployeeStatus();
+      const customAttributes=await OrganizationServices.getCustomAttributes();
+
       res.render("HR/add_employee", {
         user: req.session.user,
         error: req.query.error,
@@ -41,6 +43,7 @@ class HRController {
         departments: departments,
         payGrades: payGrades,
         employee_statuses: employee_statuses,
+        customAttributes:customAttributes,
         HR: {},
       });
     } catch (error) {
@@ -60,6 +63,8 @@ class HRController {
     const departments = await OrganizationServices.getAllDepartment();
     const payGrades = await OrganizationServices.getAllPayGradeLevel();
     const employee_statuses = await OrganizationServices.getEmployeeStatus();
+    const customAttributes=await OrganizationServices.getCustomAttributes();
+
     const HR = {};
     HR.NIC = req.body.NIC;
     HR.first_name = req.body.first_name;
@@ -88,6 +93,7 @@ class HRController {
         departments: departments,
         payGrades: payGrades,
         employee_statuses: employee_statuses,
+        customAttributes:customAttributes,
       });
     }
   }
@@ -119,6 +125,8 @@ class HRController {
             const departments=await managerServices.getAllDepartments();
             const payGrades = await managerServices.getAllPayGradeLevel();
             const employee_statuses = await managerServices.getEmployeeStatus();
+            const customAttributes=await OrganizationServices.getCustomAttributes();
+          console.log(empDATA)
             // console.log(empDATA)
             res.render("HR/viewData", {
                 user: req.session.user,
@@ -131,7 +139,7 @@ class HRController {
                 employee_statuses: employee_statuses,
                 empDATA:empDATA,
                 user:user,
-              
+                customAttributes:customAttributes,            
 
               });
         }
@@ -151,6 +159,7 @@ class HRController {
 static async updateEmployee(req,res){
     try{
         const empAdd = await managerServices.updateEmployee(req.body);
+      
         const success= "Successfully Update the Employee";
         res.redirect(`viewData?success=${success}`);
     }catch(error){

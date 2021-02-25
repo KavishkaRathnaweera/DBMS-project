@@ -10,6 +10,13 @@ class OrganizationServices{
         const branches=await Organization.getAllBranches()
         return branches;
     }
+    static async getBranch(branch_name){
+        const branch=await Organization.getLeave(branch_name);
+        return branch;
+    }
+    static async setBranch(branch_name,{address, city, postal_code, country}){
+        return await Organization.setBranch(branch_name,address, city, postal_code, country);
+    }
     static async getAllJobTitle(){
         const Jobtype=await Organization.getAllJobTitle()
         return Jobtype;
@@ -18,6 +25,11 @@ class OrganizationServices{
         const department=await Organization.getAllDepartment();
         return department;
     }
+    static async addDepartment({dept_name}){
+        return await Organization.addDepartment(dept_name);
+       
+    }
+
     static async getAllPayGradeLevel(){
         const payGrade=await Organization.getAllPayGradeLevel();
         return payGrade;

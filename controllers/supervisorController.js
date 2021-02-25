@@ -1,6 +1,43 @@
 const Supervisor = require("../models/supervisor");
+const supervisorServices=require("../services/supervisorServices")
+const {loginValidator}=require("../validaters/loginValidater")
 
 class SupervisorController {
+  static async loginPage(req,res){
+        
+    res.render('supervisor/login', {
+        user:'',
+        success:req.query.success,
+        error:req.query.error,
+        email:'',
+        password:''
+    })
+}
+static async login(req,res){
+    try {
+        const {error, value} =await loginValidator.validate(req.body)
+        if(error) throw error
+        const user=await supervisorServices.login(value);
+          
+        req.session.user={}
+        req.session.user.type="supervisor"
+        req.session.user.uid=user.employee_id
+        req.session.user.NIC=user.NIC
+        req.session.user.first_name=user.first_name
+        req.session.user.middle_name=user.middle_name
+        req.session.user.last_name=user.last_name
+        req.session.user.email=user.email
+    
+
+        res.redirect(`/supervisor`)
+        
+
+
+    } catch (error) {
+        res.redirect(`/supervisor/login?error=${error}`)
+    }
+}
+
   static async supervisor(req, res) {
     const req_count = await Supervisor.getLeavingRequestCount();
     const emp_count = await Supervisor.getEmployees_Count();

@@ -245,6 +245,61 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
+
+
+                        <!-- custom attributes section -->
+                        <% if(customAttributes && customAttributes[0]){ %>
+                        <div class="card card-default"
+                        style="background:linear-gradient(to left,rgb(180, 180, 180),rgb(219, 203, 203),rgb(180, 180, 180)) ; margin-top: 5%;">
+                        <div class="card-header" style="background: rgb(6, 54, 82);">
+                            <h3 class="card-title" style="color: rgb(255, 255, 255);">Employee Details additional</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                            
+                                                    
+                                <% customAttributes.forEach(function(customAttribute){
+                                        if(customAttribute.type=="boolean") { %>
+                                            <div class="col-sm-6">
+                                            <div class="form-group" name>
+                                                <label for=""><%=customAttribute.name%>:</label>
+                                                <select class="form-control" id="exampleFormControlSelect1" name="<%=customAttribute.name%>">
+                                                    <option value="false">false</option>
+                                                    <option value="true">true</option>
+                                                </select>
+                                        </div>
+                                        </div>
+                                        
+                                        <% }else if(customAttribute.type=="varchar"){ %>
+                                            <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for=""><%=customAttribute.name%>:</label>
+                                                <input class="form-control" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=customAttribute.default_val%>" >
+                                            </div>
+                                            </div>
+                                    <% }else if(customAttribute.type=="integer"){ %>
+                                            <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for=""><%=customAttribute.name%>:</label>
+                                                <input class="form-control" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=customAttribute.default_val%>" >
+                                            </div>
+                                            </div>
+                            <% }}) %> 
+                            </div>
+                        </div>
+                        </div>
+
+                        <% } %>
+                        <!-- end of the custom attributes -->
+
+
+
+
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group" >

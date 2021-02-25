@@ -24,85 +24,51 @@ class User{
       }
       static async findEmployee(id){
             const user =await db.query(`
-            select * from personal_information left outer join employee using(employee_id) where employee_id = $1`, [id])
+            select * from employee left outer join personal_information using(employee_id) where employee_id = $1`, [id])
             return user.rows[0];
       }
 
       
       static async addressTable(address, city, postal_code, country){
-                        console.log(address,city,postal_code,country);
-                        const iscountryExists=(await db.query(`select * from country where country =$1`, [country])).rows
+
+                         const countryrow=(await db.query(`select * from setCountry($1)`, [country])).rows
+                         const cityrow=(await db.query(`select * from setCity($1,$2)`,[city,countryrow[0].setcountry])).rows
+                         const addressrow=(await db.query(`select setaddress as address_id from setaddress($1,$2,$3)`,[address, cityrow[0].setcity, postal_code])).rows
+
+                         
+                         
+                        // const iscountryExists=(await db.query(`select * from country where country =$1`, [country])).rows
                         
-                        var countryrow;
-                        if(iscountryExists[0]){
-                              countryrow=iscountryExists
-                        }else{
-                              countryrow=(await db.query(`insert into country (country) values($1) returning *`,[country])).rows
-                        }
+                        // var countryrow;
+                        // if(iscountryExists[0]){
+                        //       countryrow=iscountryExists
+                        // }else{
+                        //       countryrow=(await db.query(`insert into country (country) values($1) returning *`,[country])).rows
+                        // }
                       
 
                         
                         
-                        const iscityExists=(await db.query(`select * from city where city =$1 and country_id=$2`,[city,countryrow[0].country_id])).rows
-                        var cityrow;
-                        if(iscityExists[0]){
-                              cityrow=iscityExists
-                        }else{
-                              cityrow=(await db.query(`insert into city(city, country_id) values($1, $2) returning *`,[city,countryrow[0].country_id])).rows
-                        }
+                        // const iscityExists=(await db.query(`select * from city where city =$1 and country_id=$2`,[city,countryrow[0].country_id])).rows
+                        // var cityrow;
+                        // if(iscityExists[0]){
+                        //       cityrow=iscityExists
+                        // }else{
+                        //       cityrow=(await db.query(`insert into city(city, country_id) values($1, $2) returning *`,[city,countryrow[0].country_id])).rows
+                        // }
 
             
                        
-                        console.log(iscityExists)
-                        const isAddressExists=(await db.query(`select * from address where address =$1 and city_id=$2 and postal_code=$3`,[address, cityrow[0].city_id, postal_code])).rows
-                        var addressrow;
+                        // console.log(iscityExists)
+                        // const isAddressExists=(await db.query(`select * from address where address =$1 and city_id=$2 and postal_code=$3`,[address, cityrow[0].city_id, postal_code])).rows
+                        // var addressrow;
                        
-                        if(isAddressExists[0]){
-                              addressrow=isAddressExists
-                        }
-                        else{
-                              addressrow=(await db.query(`insert into address (address, city_id, postal_code) values($1, $2, $3) returning *`,[address,cityrow[0].city_id,postal_code])).rows
-                        }
-                        
-
-                        return addressrow;
-            
-      }
-
-      static async addressTable(address, city, postal_code, country){
-                      
-                        const iscountryExists=(await db.query(`select * from country where country =$1`, [country])).rows
-                        
-                        var countryrow;
-                        if(iscountryExists[0]){
-                              countryrow=iscountryExists
-                        }else{
-                              countryrow=(await db.query(`insert into country (country) values($1) returning *`,[country])).rows
-                        }
-                      
-
-                        
-                        
-                        const iscityExists=(await db.query(`select * from city where city =$1 and country_id=$2`,[city,countryrow[0].country_id])).rows
-                        var cityrow;
-                        if(iscityExists[0]){
-                              cityrow=iscityExists
-                        }else{
-                              cityrow=(await db.query(`insert into city(city, country_id) values($1, $2) returning *`,[city,countryrow[0].country_id])).rows
-                        }
-
-            
-                       
-                        console.log(iscityExists)
-                        const isAddressExists=(await db.query(`select * from address where address =$1 and city_id=$2 and postal_code=$3`,[address, cityrow[0].city_id, postal_code])).rows
-                        var addressrow;
-                       
-                        if(isAddressExists[0]){
-                              addressrow=isAddressExists
-                        }
-                        else{
-                              addressrow=(await db.query(`insert into address (address, city_id, postal_code) values($1, $2, $3) returning *`,[address,cityrow[0].city_id,postal_code])).rows
-                        }
+                        // if(isAddressExists[0]){
+                        //       addressrow=isAddressExists
+                        // }
+                        // else{
+                        //       addressrow=(await db.query(`insert into address (address, city_id, postal_code) values($1, $2, $3) returning *`,[address,cityrow[0].city_id,postal_code])).rows
+                        // }
                         
 
                         return addressrow;

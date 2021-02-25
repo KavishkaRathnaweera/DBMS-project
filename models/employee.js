@@ -49,6 +49,61 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
 
     return res;
   }
+
+  static async getEmployeeInfo() {
+    let employee_id = 180336;
+
+    const res = (
+      await db.query(`SELECT 
+      personal_information.photo,
+      personal_information.first_name,
+        personal_information.middle_name,
+        personal_information.last_name,
+    
+        personal_information.nic,
+      personal_information.gender,
+        personal_information.birth_day,
+      
+        Address.address,
+      city.city,
+      
+      employee_phone_number.phone,
+        personal_information.email,
+      
+      employee.employee_id,
+        employee.branch_name,
+        employee.job_title,
+        employee.dept_name,
+        employee.paygrade_level,
+        employee.e_status_name,
+        employee.supervisor,
+      personal_information.registered_date
+    
+    
+       
+       
+      FROM 
+      (employee
+        JOIN (personal_information 
+          join (address JOIN city USING (city_id) )
+          USING(address_id) )
+        USING (employee_id) 
+      )
+      JOIN employee_phone_number
+      USING (employee_id)  where employee_id = $1 ;`, [
+        employee_id
+      ])
+    ).rows;
+    console.log(res);
+
+
+    return res;
+
+  }
+
+
+
 }
 
 module.exports = Employee;
+

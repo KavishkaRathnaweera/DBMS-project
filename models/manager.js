@@ -180,12 +180,12 @@ static async updateEmployee(
         where employee_id = $9`,[NIC, first_name, middle_name, last_name, gender, birthday, addressrow[0].address_id,  email,ID])).rows;
 
         const employee = (await db.query(`update Employee set branch_name=$1, job_title=$2, dept_name=$3, paygrade_level=$4, e_status_name=$5 
-        where employee_id=$6`,[branch, jobTitle, department, payGrade, empStatus,ID])).rows;
+        where employee_id=$6`,[value.branch, value.jobTitle, value.department, value.payGrade, value.empStatus, value.ID])).rows;
 
         const empEmergency = (await db.query(`UPDATE emergency_contact_details set relative_name=$1, contact_no=$2 
-        where employee_id=$3`,[first_name, phone,ID])).rows;
+        where employee_id=$3`,[value.first_name, value.phone,value.ID])).rows;
         const empPhone = (await db.query(`UPDATE employee_phone_number set phone=$1 
-        where employee_id=$2`,[phone,ID])).rows;
+        where employee_id=$2`,[value.phone,value.ID])).rows;
         await db.query("COMMIT");
 
         } catch (error) {

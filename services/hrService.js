@@ -5,60 +5,18 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 
 class hrServices {
-  static async addEmployee({
-    NIC,
-    email,
-    first_name,
-    middle_name,
-    last_name,
-    phone,
-    gender,
-    birthday,
-    password,
-    repassword,
-    address_id,
-    city,
-    postal_code,
-    country,
-    photo,
-    branch_name,
-    jobTitle,
-    department,
-    payGrade,
-    empStatus,
-    salary,
-    submitButton,
-  }) {
-    const isEmailRegistered = await user.findUserByEmail(email);
+  static async addEmployee(value) {
+    const isEmailRegistered = await user.findUserByEmail(value.email);
     if (isEmailRegistered) {
       throw new Error.BadRequest("email is already registered");
     }
-    const isNICRegistered = await User.findUserByNIC(NIC);
+    const isNICRegistered = await User.findUserByNIC(value.NIC);
     if (isNICRegistered) {
       throw new Error.BadRequest("NIC is already registered");
     }
-    const hashpwd = await bcrypt.hash(password, 10);
-    const HR = await hrManager.addEmployee(
-      NIC,
-      email,
-      first_name,
-      middle_name,
-      last_name,
-      phone,
-      gender,
-      birthday,
-      address_id,
-      city,
-      postal_code,
-      country,
-      hashpwd,
-      branch_name,
-      jobTitle,
-      department,
-      payGrade,
-      empStatus,
-      salary
-    );
+    const hashpwd = await bcrypt.hash(value.password, 10);
+    value.password=hashpwd
+    const HR = await hrManager.addEmployee(value);
     return HR;
   }
 
