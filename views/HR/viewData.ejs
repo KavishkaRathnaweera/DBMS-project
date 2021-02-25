@@ -176,16 +176,10 @@
                                   </div>
                                   <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Password</label>
-                                        <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="password" name="password" required disabled>
+                                        <label>Country</label>
+                                        <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].country : ''%>" id="country"  name="country" value="<%=empDATA.length>0 ? empDATA[0].country : ''%>" required disabled>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Re-enter password</label>
-                                        <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="repassword" name="repassword" required disabled>
                                     </div>
-                                </div>
 
                               </div>
                           </div>
@@ -202,9 +196,6 @@
                                       <div class="form-group">
                                           <label>Branch</label>
                                           <select class="form-control" id="branch"  name="branch" disabled>
-                                            <% if(empDATA.length>0){ %>
-                                                <option value="<%= empDATA[0].branch_name %>"><%= empDATA[0].branch_name %></option>
-                                             <% }  %>
                                                 <% if(branches && branches[0]){ branches.forEach(function(branch){ %>
 
                                                     <option value="<%=branch.branch_name%>">
@@ -222,9 +213,6 @@
                                       <div class="form-group">
                                           <label>Job Title</label>
                                           <select class="form-control" id="jobTitle"  name="jobTitle" disabled>
-                                            <% if(empDATA.length>0){ %>
-                                                <option value="<%= empDATA[0].job_title %>"><%= empDATA[0].job_title %></option>
-                                             <% } %>
                                               <% if(Jobtypes && Jobtypes[0]){ Jobtypes.forEach(function(Jobtype){ %>
                                                 <% if(Jobtype.job_title !== user) {%>
                                                   <option value="<%=Jobtype.job_title%>">
@@ -241,10 +229,6 @@
                                       <div class="form-group">
                                           <label>Department</label>
                                           <select class="form-control" id="department" name="department" disabled>
-
-                                            <% if(empDATA.length>0){ %>
-                                                <option value="<%= empDATA[0].dept_name %>"><%= empDATA[0].dept_name %></option>
-                                             <% }  %>
                                                 <% if(departments && departments[0]){ departments.forEach(function(department){%>
                                                     <option value="<%=department.dept_name%>">
                                                         <%=department.dept_name%>
@@ -259,9 +243,6 @@
                                       <div class="form-group">
                                           <label>Pay Grade Level</label>
                                           <select class="form-control" id="payGrade"  name="payGrade" disabled>
-                                            <% if(empDATA.length>0){ %>
-                                                <option value="<%= empDATA[0].paygrade_level %>"><%= empDATA[0].paygrade_level %></option>
-                                             <% } %>
                                               <% if(payGrades && payGrades[0]){ payGrades.forEach(function(payGrade){%>
                                                   <option value="<%=payGrade.paygrade_level%>">
                                                       <%=payGrade.paygrade_level%>
@@ -277,9 +258,6 @@
                                       <div class="form-group">
                                           <label>Employee Status</label>
                                           <select class="form-control" id="empStatus"  name="empStatus" disabled>
-                                            <% if(empDATA.length>0){ %>
-                                                <option value="<%= empDATA[0].e_status_name %>"><%= empDATA[0].e_status_name %></option>
-                                             <% } %>
                                               <% if(employee_statuses && employee_statuses[0]){ employee_statuses.forEach(function(employee_status){ %>
                                                   <option value="<%=employee_status.e_status_name%>">
                                                       <%=employee_status.e_status_name%>
@@ -293,8 +271,10 @@
                               </div>
                           </div>
                       </div>
+                   
                     <!-- custom attributes section -->
                     <% if(customAttributes && customAttributes[0]){ %>
+
                     <div class="card card-default"
                     style="background:linear-gradient(to left,rgb(180, 180, 180),rgb(219, 203, 203),rgb(180, 180, 180)) ; margin-top: 5%;">
                     <div class="card-header" style="background: rgb(6, 54, 82);">
@@ -322,23 +302,23 @@
                                         <div class="form-group">
                                             <label for=""><%=customAttribute.name%>:</label>
                                             <input class="form-control" id="customAttr" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString)  %>" required disabled>
-                                        </div>
-                                        </div>
-                                <% }else if(customAttribute.type=="integer"){ %>
-                                        <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for=""><%=customAttribute.name%>:</label>
-                                            <input class="form-control" id="customAttr" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required disabled>
-                                        </div>
-                                        </div>
-                        <% }}) %> 
-                        </div>
-                    </div>
-                    </div>
 
-                    <% } %>
+ </div>
+                                                            </div>
+                                                    <% }else if(customAttribute.type=="integer"){ %>
+                                                            <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for=""><%=customAttribute.name%>:</label>
+                                                                <input class="form-control" id="customAttr" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required disabled>
+                                                            </div>
+                                                            </div>
+                                            <% }}) %> 
+                                            </div>
+                                        </div>
+                                        </div>
+                    
+                                        <% } %>
                     <!-- end of the custom attributes -->
-
 
 
 
@@ -400,8 +380,7 @@
                 $('#address_id').attr('disabled', false);
                 $('#city').attr('disabled', false);
                 $('#postal_code').attr('disabled', false);
-                $('#password').attr('disabled', false);
-                $('#repassword').attr('disabled', false);
+                $('#country').attr('disabled', false);
                 $('#customFile').attr('disabled', false);
                 $('#branch').attr('disabled', false);
                 $('#jobTitle').attr('disabled', false);
@@ -419,8 +398,6 @@
             const nic = document.getElementsByName('NIC')[0].value;
             const phone = document.getElementsByName('phone')[0].value.toString();
             const bdate = document.getElementsByName('birthday')[0].value;
-            const password = document.getElementsByName('password')[0].value;
-            const repassword = document.getElementsByName('repassword')[0].value;
           
             if((nic.length==10 && nic.charAt(9)=='V' && !isNaN(nic.substring(0,9))) || nic.length==12 && !isNaN(nic)){
                
@@ -428,13 +405,7 @@
                 var n = d.getFullYear();
                 if(phone.length==10){
                     if(n-parseInt(bdate.substring(0,4))>18){
-                        if(password.length>7 && password==repassword){
-                            $('#sbmtbtn').attr('disabled', false);
-                            
-                        }
-                        else{
-                            alert("Password does not match or password need minimum 8 charactors");
-                        }
+                       $('#sbmtbtn').attr('disabled', false);
                     }
                     else{
                         alert("incorrect Bday");
