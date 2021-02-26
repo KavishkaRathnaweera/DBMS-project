@@ -10,10 +10,10 @@ class employeeController {
     res.render("employee/applyLeave", {});
   }
 
-  static async attendance(req, res) {
-    const history = await Employee.getLeavingHistory();
-    console.log(history[0].leave_id);
-    res.render("employee/attendance", { history: history });
+  static async leaveRecords(req, res) {
+    const history = await Employee.getLeaveHistory();
+    //console.log(history[0].leave_id);
+    res.render("employee/leaveRecords", { history: history });
   }
 
   static async employeeInfo(req, res) {
@@ -21,9 +21,6 @@ class employeeController {
     res.render("employee/employeeInfo", {information:information});
   }
   
-  static async leavesHistory(req, res) {
-    res.render("employee/leavesHistory", {});
-  }
 
   static async requestLeave(req, res) {
     // console.log(req.body);

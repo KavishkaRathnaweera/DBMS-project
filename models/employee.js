@@ -17,7 +17,7 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
     ).rows;
   }
 
-  static async getLeavingHistory() {
+  static async getLeaveHistory() {
     let employee_id = 180336;
     const res = (
       await db.query(`select * from leave_record where employee_id = $1`, [
