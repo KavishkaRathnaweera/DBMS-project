@@ -69,7 +69,7 @@ class admin{
 
 
       static async findAdmin(id){
-            const admin=await db.query("select * from admin where employee_id=$1",[id])
+            const admin=await db.query("select * from admin left outer join personal_information using(employee_id) where employee_id=$1",[id])
             return admin.rows[0];
       }
 
