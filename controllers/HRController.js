@@ -114,6 +114,7 @@ class HRController {
                 employee_statuses:{},
                 empDATA:{},
                 user:user,
+                customAttributes:{}
               
               });
     }
@@ -127,6 +128,7 @@ class HRController {
             const payGrades = await managerServices.getAllPayGradeLevel();
             const employee_statuses = await managerServices.getEmployeeStatus();
             const customAttributes=await OrganizationServices.getCustomAttributes();
+            console.log(empDATA)
           console.log(empDATA)
             // console.log(empDATA)
             res.render("HR/viewData", {
@@ -159,6 +161,8 @@ class HRController {
 
 static async updateEmployee(req,res){
     try{
+
+     
         const empAdd = await managerServices.updateEmployee(req.body);
       
         const success= "Successfully Update the Employee";

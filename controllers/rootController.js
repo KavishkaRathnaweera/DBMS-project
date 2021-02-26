@@ -28,7 +28,7 @@ class RootController{
             const {error, value} =await loginValidator.validate(req.body)
             if(error) throw error
             const user=await userServices.login(value);
-          
+            console.log(user)
             var type=null;
             if(user.job_title =="HR"){
                 type="HR";
