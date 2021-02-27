@@ -30,7 +30,7 @@ class  MnagerController{
             // userBranch=empDATA[0].branch_name;
             // userDepartment=empDATA[0].dept_name;
             res.render('./manager/managerDashboard', {
-                
+                user:req.session.user
             })
         }
 
@@ -59,16 +59,7 @@ class  MnagerController{
             employeeList= await managerServices.getEmployeeList(branch,department,jobtype,user);
             res.redirect('/manager/search');
         }
-        static async applyLeave(req,res){
-            res.render('./manager/applyLeave', {
-                
-            })
-        }
-        static async viewPersonalDetails(req,res){
-            res.render('./manager/viewPersonalData', {
-                
-            })
-        }
+     
         static async addSupervisorView(req,res){
             canBeSupervisors= await managerServices.getCanbeSupervisors(userBranch,userDepartment,user);
           
