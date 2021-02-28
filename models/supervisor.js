@@ -1,9 +1,9 @@
-const { pool1 } = require("../connection");
+const { pool5 } = require("../connection");
 
 class Supervisor {
   // get all leaving requests
   static async findEmployee(id) {
-    const user = await pool1.query(
+    const user = await pool5.query(
       `
     select * from supervisor left join personal_information on personal_information.employee_id=supervisor.supervisor_id where personal_information.employee_id = $1`,
       [id]
@@ -13,7 +13,7 @@ class Supervisor {
 
   static async getAllLeavingRequests(id) {
     const no = "No";
-    const records = (await pool1.query(` select * from getleavea($1) `, [id]))
+    const records = (await pool5.query(` select * from getleavea($1) `, [id]))
       .rows;
     console.log(records);
     return records;
@@ -22,15 +22,15 @@ class Supervisor {
   // get leaving requests count
   static async getLeavingRequestCount(id) {
     const count = (
-      await pool1.query(` select count(*) from getleavea($1) `, [id])
+      await pool5.query(` select count(*) from getleavea($1) `, [id])
     ).rows;
     return count;
   }
 
   // find leave request using leave_id
-  static async finpool1yID(leave_id) {
+  static async findByID(leave_id) {
     const request = (
-      await pool1.query(
+      await pool5.query(
         `
             select * from leave_record where leave_id = $1`,
         [leave_id]
@@ -42,7 +42,7 @@ class Supervisor {
   // get all leaving requests which are requested by each employee
   static async getRemainingLeaves(employee_id) {
     const res = (
-      await pool1.query(
+      await pool5.query(
         `
             select * from employee_leave WHERE employee_id = $1 AND year = 2021`,
         [employee_id]
@@ -59,7 +59,7 @@ class Supervisor {
       console.log("approved");
     }
     const res = (
-      await pool1.query(
+      await pool5.query(
         `
             UPDATE leave_record SET approval_state = $1 WHERE leave_id = $2`,
         [result, leave_id]
@@ -71,7 +71,7 @@ class Supervisor {
   // get all employees
   static async getEmployees(id) {
     const res = (
-      await pool1.query(
+      await pool5.query(
         `
             select * from getEmployees1($1)`,
         [id]
@@ -87,7 +87,7 @@ class Supervisor {
   // get employees count
   static async getEmployees_Count(id) {
     const emp_count = (
-      await pool1.query(
+      await pool5.query(
         `
             select count(*) from getEmployees1($1)`,
         [id]
@@ -98,7 +98,7 @@ class Supervisor {
   // find employee using employee_id
   static async findemployee(employee_id) {
     const res = (
-      await pool1.query(
+      await pool5.query(
         `
             select * from getEmployee($1)`,
         [employee_id]
@@ -124,7 +124,7 @@ class Supervisor {
     const today = year + "-" + month + "-" + date;
     console.log("gfgf");
     const res = (
-      await pool1.query(`select * from getAttendence($1,$2)`, [
+      await pool5.query(`select * from getAttendence($1,$2)`, [
         supervisor_id,
         today,
       ])
@@ -148,7 +148,7 @@ class Supervisor {
         let date1 = date - i;
         let today = year + "-" + month + "-" + date1;
         let res = (
-          await pool1.query(`select * from getAttendence($1,$2)`, [
+          await pool5.query(`select * from getAttendence($1,$2)`, [
             supervisor_id,
             today,
           ])
@@ -161,7 +161,7 @@ class Supervisor {
         let date1 = date - i;
         let today = year + "-" + month + "-" + date1;
         let res = (
-          await pool1.query(`select * from getAttendence($1,$2)`, [
+          await pool5.query(`select * from getAttendence($1,$2)`, [
             supervisor_id,
             today,
           ])
