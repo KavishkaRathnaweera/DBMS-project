@@ -11,6 +11,45 @@ class hrManager {
       console.log(sql)
       await db.query(sql, r_data)
   }
+  
+  static async getAllBranches(){
+            const branches =await db.query(`
+            select branch_name from branch`)
+            return branches.rows;
+    }
+  static async getAllJobTitle(){
+        const jobTitle=await db.query(`
+        select * from job_type`)
+        return jobTitle.rows;
+    }
+  static async getAllDepartment(){
+        const department=await db.query(`
+        select * from department`) 
+        return department.rows;
+    }
+  static async getAllPayGradeLevel(){
+        
+        const payGrade=await db.query(`
+        select * from pay_grade `)
+        return payGrade.rows;
+    }
+  static async getEmployeeStatus(){
+        const employee_status=await db.query(`
+        select * from employee_status`)
+        return employee_status.rows;
+    }
+  static async getCustomAttributes(){
+        
+        return (await db.query('select * from customattributes')).rows
+    }
+
+  static async getEmpDATA(id){
+    const result=await db.query(`
+    select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id) 
+    where employee_id = $1`,[id])
+    return result.rows;
+    }
+
   static async addEmployee(value) {
     try{
     await db.query("BEGIN")
@@ -32,6 +71,9 @@ class hrManager {
                                           `,[personalDetails.employee_id,value.phone]));
                                           
     await db.query("COMMIT")
+
+    
+
     return personalDetails;
 
     } catch (error) {
@@ -179,6 +221,8 @@ class hrManager {
       throw error;
     }   
     }
+
+  
 
 
   }

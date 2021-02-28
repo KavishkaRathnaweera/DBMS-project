@@ -181,10 +181,11 @@
                                             <label>Job Title</label>
                                             <select class="form-control" name="jobTitle">
                                                 <% if(Jobtypes && Jobtypes[0]){ Jobtypes.forEach(function(Jobtype){ %>
+                                                    <% if(Jobtype.job_title!='HR') {%>
                                                     <option value="<%=Jobtype.job_title%>">
                                                         <%=Jobtype.job_title%>
                                                     </option>
-                                                    <% })} else{ %>
+                                                    <%} })} else{ %>
                                                         <option value="">no job types available</option>
                                                         <% }%>
                                             </select>

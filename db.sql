@@ -249,6 +249,7 @@ CREATE TABLE leave_record
     duration integer NOT NULL,
     reason varchar(200),
     approval_state varchar(10)  NOT NULL DEFAULT 'No'::varchar,
+    CONSTRAINT leave_type_cons CHECK( leave_type IN('anual','casual','maternity','no_pay')),
     CONSTRAINT leave_record_pkey PRIMARY KEY (leave_id),
     CONSTRAINT leave_record_employee_id_fkey FOREIGN KEY (employee_id)
         REFERENCES personal_information (employee_id) 
