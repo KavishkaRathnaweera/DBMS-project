@@ -1,5 +1,6 @@
 const e = require('cors');
 const managerServices =require('../services/managerServices');
+const OrganizationServices = require("../services/organizationServices");
 
 var user;
 var userBranch;
@@ -18,14 +19,18 @@ var searchSupervisormsg=[];
 class  MnagerController{
 
         static async dashboard(req,res){
-            req.session.user=4;
-            const id = req.session.user;
-            const empDATA = await managerServices.getEmpDATA(id);
-            user=empDATA[0].job_title;
-            userBranch=empDATA[0].branch_name;
-            userDepartment=empDATA[0].dept_name;
+          
+
+            user=req.session.user.job_title;
+            userBranch=req.session.user.branch_name;
+            userDepartment=req.session.user.department;
+            // const id = req.session.user.uid;
+            // const empDATA = await managerServices.getEmpDATA(id);
+            // user=empDATA[0].job_title;
+            // userBranch=empDATA[0].branch_name;
+            // userDepartment=empDATA[0].dept_name;
             res.render('./manager/managerDashboard', {
-                
+                user:req.session.user
             })
         }
 
@@ -54,16 +59,7 @@ class  MnagerController{
             employeeList= await managerServices.getEmployeeList(branch,department,jobtype,user);
             res.redirect('/manager/search');
         }
-        static async applyLeave(req,res){
-            res.render('./manager/applyLeave', {
-                
-            })
-        }
-        static async viewPersonalDetails(req,res){
-            res.render('./manager/viewPersonalData', {
-                
-            })
-        }
+     
         static async addSupervisorView(req,res){
             canBeSupervisors= await managerServices.getCanbeSupervisors(userBranch,userDepartment,user);
           

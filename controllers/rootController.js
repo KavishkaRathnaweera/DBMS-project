@@ -3,6 +3,7 @@ const {registerValidator}=require("../validaters/registerValidator")
 const userServices=require('../services/userServices')
 const OrganizationServices=require('../services/organizationServices')
 const idForm=require("../helpers/idChecker")
+const { use } = require("../routes/admin")
 
 
 class RootController{
@@ -11,7 +12,41 @@ class RootController{
         })
     }
 
-
+    static async employeeloginPage(req,res){
+        
+        res.render('employeelogin', {
+            user:'',
+            success:req.query.success,
+            error:req.query.error,
+            email:'',
+            password:''
+        })
+    }
+    static async employeelogin(req,res){
+        try {
+            const {error, value} =await loginValidator.validate(req.body)
+            if(error) throw error
+            const user=await userServices.login(value);
+            if(user.job_title=="admin") {
+                res.redirect(`/login?error=you don't have acess to this account`)
+                return
+            }
+            req.session.user={}
+            req.session.user.type="employee"
+            req.session.user.uid=user.employee_id
+            req.session.user.NIC=user.NIC
+            req.session.user.first_name=user.first_name
+            req.session.user.middle_name=user.middle_name
+            req.session.user.last_name=user.last_name
+            req.session.user.email=user.email
+            req.session.user.department=user.dept_name
+            req.session.user.branch_name=user.branch_name
+            req.session.user.job_title=user.job_title
+            res.redirect(`/employee/`)
+        } catch (error) {
+            res.redirect(`/employeelogin?error=${error}`)
+        }
+    }
 
     static async loginPage(req,res){
         
@@ -27,20 +62,21 @@ class RootController{
         try {
             const {error, value} =await loginValidator.validate(req.body)
             if(error) throw error
-            const user=await userServices.login(value);
-          
-            var type=null;
-            if(user.job_title =="HR"){
-                type="HR";
+            const user=await userServices.login(value); 
+            let type;
+            if(user.job_title=="admin") {
+                // console.log(user)
+                type='admin'
+            }
+            else if(user.job_title=="HR"){
+                type='HR'
             }
             else if(user.job_title=="Manager"){
                 type="Manager"
             }
-            else if(user.job_title){
-                 type="employee"
-            }
             else{
-                type='admin'
+                res.redirect(`/login?error=you don't have acess to this account`)
+                return
             }
 
             req.session.user={}
@@ -55,7 +91,6 @@ class RootController{
             req.session.user.department=user.dept_name
             req.session.user.branch_name=user.branch_name
             req.session.user.job_title=user.job_title
-
             res.redirect(`/${type}`)
             
 
@@ -146,9 +181,9 @@ class RootController{
     static async logout(req,res){
         try {
             req.session.destroy();
-            res.redirect('/login')
+            res.redirect('/')
         } catch (error) {
-            res.redirect('/login')
+            res.redirect('/')
             
         }
     }

@@ -1,5 +1,6 @@
 const Error =require('../helpers/error')
 const User=require('../models/user')
+const Admin=require('../models/admin')
 const bcrypt=require('bcrypt')
 const idChecker=require("../helpers/idChecker")
 
@@ -10,15 +11,25 @@ class userServices {
         if(!isValidID){
             throw new Error.BadRequest("EMP ID is not Valid")
         }
-                const user= await User.findEmployee(isValidID)
+        let user= await User.findEmployee(isValidID)
+
+        
         if(!user){
-            throw new Error.BadRequest('EMP ID is not registered');
+             user=await Admin.findAdmin(isValidID)
+            if(!user){
+                throw new Error.BadRequest('you dont have permission to login');
+            }
+            else if(user){
+                user.job_title="admin"
+            }
+            else{
+                throw new Error.BadRequest('EMP ID is not registered');
+            }
         }
         const isPasswordCorrect =await bcrypt.compare(password,user.password)
         if(!isPasswordCorrect){
              throw new Error.BadRequest('entered password is wrong');
         }
-        console.log(user)
         return user;
         
     }

@@ -114,6 +114,7 @@ class HRController {
                 employee_statuses:{},
                 empDATA:{},
                 user:user,
+                customAttributes:{}
               
               });
     }

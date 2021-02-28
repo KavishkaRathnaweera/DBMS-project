@@ -119,7 +119,7 @@ static async getEmployeeBranchAndDeptAndjobTitle(id){
 }
 static async getEmpDATA(id){
     const result=await db.query(`
-    select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id) 
+    select * from EmployeeData_View left outer join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id)
     where employee_id = $1`,[id])
     return result.rows;
 }
@@ -134,31 +134,11 @@ static async findUserIDByNIC(NIC){
     select employee_id from personal_information where NIC = $1`,[NIC])
     return result.rows;
 }
-static async updateEmployee(
-    ID,
-    NIC,
-    email,
-    first_name,
-    middle_name,
-    last_name,
-    phone,
-    gender,
-    birthday,
-    address,
-    city,
-    postal_code,
-    country,
-    // hashpwd,
-    branch,
-    jobTitle,
-    department,
-    payGrade,
-    empStatus,
-    salary
-  ) {
+static async updateEmployee(value) {
    
     try{
         await db.query("BEGIN");
+
         // let addressID = (await db.query(`SELECT address_id from address where address = $1`,[address])).rows;
         // // console.log(addressID);
         // if(!addressID[0]){
@@ -175,9 +155,11 @@ static async updateEmployee(
         //     }
         //     addressID = (await db.query(`INSERT INTO address(address,city_id,postal_code) VALUES($1,$2,$3) returning address_id`,[address,cityID[0].city_id,postal_code])).rows;
         // }
-        const addressrow= await User.addressTable(address,city,postal_code, country);
+        
+        console.log(value)
+        const addressrow= await User.addressTable(value.address_id,value.city,value.postal_code, value.country);
         const personal_information = (await db.query(`update Personal_information set NIC = $1, first_name=$2, middle_name=$3, last_name=$4, gender=$5, birth_day=$6, address_id=$7, email=$8
-        where employee_id = $9`,[NIC, first_name, middle_name, last_name, gender, birthday, addressrow[0].address_id,  email,ID])).rows;
+        where employee_id = $9`,[value.NIC, value.first_name, value.middle_name, value.last_name, value.gender, value.birthday, addressrow[0].address_id,  value.email,value.ID])).rows;
 
         const employee = (await db.query(`update Employee set branch_name=$1, job_title=$2, dept_name=$3, paygrade_level=$4, e_status_name=$5 
         where employee_id=$6`,[value.branch, value.jobTitle, value.department, value.payGrade, value.empStatus, value.ID])).rows;
