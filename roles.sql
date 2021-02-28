@@ -63,6 +63,7 @@ GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION getleavebydate(date, date) TO jupitorhr;
 
+
 -------------------- role manager----------------------------------------------------------------------------------------
 CREATE ROLE jupitormanager WITH LOGIN PASSWORD 'passwordmanager';
 GRANT SELECT ON TABLE branch TO jupitormanager;
@@ -97,3 +98,19 @@ GRANT EXECUTE ON FUNCTION setcity(cityname character varying, countryid numeric)
 GRANT EXECUTE ON FUNCTION setaddress(addressname character varying, cityid numeric, postalcode numeric) TO jupitormanager;
 GRANT EXECUTE ON FUNCTION setcountry(c character varying) TO jupitormanager;
 ---------------------------------------------------------------------------------------------------------------------
+
+
+-- Supervisor Role --------------
+CREATE ROLE jupitorSupervisor WITH LOGIN PASSWORD 'password123';
+GRANT  SELECT  ON TABLE personal_information TO jupitorSupervisor;
+GRANT  SELECT  ON TABLE supervisor TO jupitorSupervisor;
+GRANT  SELECT,UPDATE, TRIGGER ON TABLE leave_record TO jupitorSupervisor;
+GRANT  SELECT ON TABLE employee_leave TO jupitorSupervisor;
+GRANT  SELECT ON TABLE leave TO jupitorSupervisor;
+GRANT  SELECT ON TABLE employee TO jupitorSupervisor;
+GRANT ALL ON TABLE session TO jupitorSupervisor;
+
+GRANT EXECUTE ON FUNCTION getAttendence(s_id numeric, today date ) TO jupitorSupervisor;
+GRANT EXECUTE ON FUNCTION getEmployee(e_id numeric) TO jupitorSupervisor;
+GRANT EXECUTE ON FUNCTION getEmployees1(s_id numeric) TO jupitorSupervisor;
+GRANT EXECUTE ON FUNCTION getleavea(s_id numeric) TO jupitorSupervisor;
