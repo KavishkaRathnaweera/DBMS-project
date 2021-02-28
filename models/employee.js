@@ -17,6 +17,10 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
     ).rows;
   }
 
+  static async getLeaveHistory() {
+    let employee_id = 180336;
+  }
+  //old page
   static async getLeavingHistory(employee_id) {
     // let employee_id = 180336;
     const res = (
