@@ -753,3 +753,35 @@ $$ LANGUAGE plpgsql;
 Drop TRIGGER IF EXISTS checkAdminTable on admin;
 
 create trigger checkAdminTable before insert on admin for each row execute procedure restrictedAdmin();
+
+
+CREATE ROLE HR WITH LOGIN PASSWORD 'passwordhr';
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.address TO hr;
+GRANT SELECT, TRIGGER ON TABLE public.branch TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.city TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.country TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.customattributes TO hr;
+GRANT SELECT, TRIGGER ON TABLE public.department TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.employee TO hr;
+GRANT UPDATE, INSERT, SELECT, TRIGGER ON TABLE public.employee_phone_number TO hr;
+GRANT SELECT, TRIGGER ON TABLE public.employee_status TO hr;
+GRANT SELECT, TRIGGER ON TABLE public.job_type TO hr;
+GRANT SELECT, TRIGGER ON TABLE public.leave TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.leave_record TO hr;
+GRANT SELECT, TRIGGER ON TABLE public.pay_grade TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.personal_information TO hr;
+GRANT ALL ON TABLE public.session TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.supervisor TO hr;
+GRANT ALL ON SEQUENCE public.address_address_id_seq TO hr;
+GRANT ALL ON SEQUENCE public.city_city_id_seq TO hr;
+GRANT ALL ON SEQUENCE public.country_country_id_seq TO hr;
+GRANT ALL ON SEQUENCE public.leave_record_leave_id_seq TO hr;
+GRANT ALL ON SEQUENCE public.personal_information_employee_id_seq TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.personal_information_custom TO hr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.full_employee_detail TO hr;
+GRANT EXECUTE ON FUNCTION public.changeempcount() TO hr;
+GRANT EXECUTE ON FUNCTION public.changeempcount1() TO hr;
+GRANT EXECUTE ON FUNCTION public.emp_leave() TO hr;
+GRANT EXECUTE ON FUNCTION public.emp_stamp() TO hr;
+GRANT EXECUTE ON FUNCTION public.updatesupervisortable() TO hr;
+GRANT EXECUTE ON FUNCTION public.getleavebydate(date, date) TO hr;

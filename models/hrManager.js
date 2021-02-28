@@ -4,17 +4,52 @@ const customAttributesModelsHelper=require('../helpers/customAttributesModelsHel
 
 
 class hrManager {
-
   static async customAttributes(value){
       const {r_bind, r_data}= await customAttributesModelsHelper(value)
       const sql=`insert into personal_information_custom values(${r_bind}) `
-      console.log(sql)
       await pool1.query(sql, r_data)
-  }
+  }  
+  static async getAllBranches(){
+            const branches =await db.query(`
+            select branch_name from branch`)
+            return branches.rows;
+    }
+  static async getAllJobTitle(){
+        const jobTitle=await db.query(`
+        select * from job_type`)
+        return jobTitle.rows;
+    }
+  static async getAllDepartment(){
+        const department=await db.query(`
+        select * from department`) 
+        return department.rows;
+    }
+  static async getAllPayGradeLevel(){
+        
+        const payGrade=await db.query(`
+        select * from pay_grade `)
+        return payGrade.rows;
+    }
+  static async getEmployeeStatus(){
+        const employee_status=await db.query(`
+        select * from employee_status`)
+        return employee_status.rows;
+    }
+  static async getCustomAttributes(){
+        
+        return (await db.query('select * from customattributes')).rows
+    }
+
+  static async getEmpDATA(id){
+    const result=await db.query(`
+    select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id) 
+    where employee_id = $1`,[id])
+    return result.rows;
+    }
+
   static async addEmployee(value) {
     try{
     await pool1.query("BEGIN")
-    console.log(value)
      const addressrow= await User.addressTable(value.address_id,value.city,value.postal_code, value.country);
      const personalDetails =(await pool1.query(` insert into  personal_information(NIC, first_name, middle_name, last_name, gender,birth_day, address_id, email, password) values ($1, $2, $3, $4, $5,$6,$7,$8,$9 ) 
                                           returning *`,[value.NIC,value.first_name,value.middle_name,value.last_name,value.gender,value.birthday,addressrow[0].address_id,value.email,value.password]
@@ -179,6 +214,8 @@ class hrManager {
       throw error;
     }   
     }
+
+  
 
 
   }
