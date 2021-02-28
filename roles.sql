@@ -33,33 +33,48 @@ ALTER TABLE personal_information_custom
 -- hr role
 
 CREATE ROLE jupitorhr WITH LOGIN PASSWORD 'passwordjupitorhr';
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE address TO jupitor2;
-GRANT SELECT, TRIGGER ON TABLE branch TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE city TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE country TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE customattributes TO jupitor2;
-GRANT SELECT, TRIGGER ON TABLE department TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE employee TO jupitor2;
-GRANT UPDATE, INSERT, SELECT, TRIGGER ON TABLE employee_phone_number TO jupitor2;
-GRANT SELECT, TRIGGER ON TABLE employee_status TO jupitor2;
-GRANT SELECT, TRIGGER ON TABLE job_type TO jupitor2;
-GRANT SELECT, TRIGGER ON TABLE leave TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE leave_record TO jupitor2;
-GRANT SELECT, TRIGGER ON TABLE pay_grade TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE personal_information TO jupitor2;
-GRANT ALL ON TABLE session TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE supervisor TO jupitor2;
-GRANT ALL ON SEQUENCE address_address_id_seq TO jupitor2;
-GRANT ALL ON SEQUENCE city_city_id_seq TO jupitor2;
-GRANT ALL ON SEQUENCE country_country_id_seq TO jupitor2;
-GRANT ALL ON SEQUENCE leave_record_leave_id_seq TO jupitor2;
-GRANT ALL ON SEQUENCE personal_information_employee_id_seq TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE personal_information_custom TO jupitor2;
-GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE full_employee_detail TO jupitor2;
-GRANT EXECUTE ON FUNCTION changeempcount() TO jupitor2;
-GRANT EXECUTE ON FUNCTION changeempcount1() TO jupitor2;
-GRANT EXECUTE ON FUNCTION emp_leave() TO jupitor2;
-GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitor2;
-GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitor2;
-GRANT EXECUTE ON FUNCTION getleavebydate(date, date) TO jupitor2;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE address TO jupitorhr;
+GRANT SELECT, TRIGGER ON TABLE branch TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE city TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE country TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE customattributes TO jupitorhr;
+GRANT SELECT, TRIGGER ON TABLE department TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE employee TO jupitorhr;
+GRANT UPDATE, INSERT, SELECT, TRIGGER ON TABLE employee_phone_number TO jupitorhr;
+GRANT SELECT, TRIGGER ON TABLE employee_status TO jupitorhr;
+GRANT SELECT, TRIGGER ON TABLE job_type TO jupitorhr;
+GRANT SELECT, TRIGGER ON TABLE leave TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE leave_record TO jupitorhr;
+GRANT SELECT, TRIGGER ON TABLE pay_grade TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE personal_information TO jupitorhr;
+GRANT ALL ON TABLE session TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE supervisor TO jupitorhr;
+GRANT ALL ON SEQUENCE address_address_id_seq TO jupitorhr;
+GRANT ALL ON SEQUENCE city_city_id_seq TO jupitorhr;
+GRANT ALL ON SEQUENCE country_country_id_seq TO jupitorhr;
+GRANT ALL ON SEQUENCE leave_record_leave_id_seq TO jupitorhr;
+GRANT ALL ON SEQUENCE personal_information_employee_id_seq TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE personal_information_custom TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE full_employee_detail TO jupitorhr;
+GRANT EXECUTE ON FUNCTION changeempcount() TO jupitorhr;
+GRANT EXECUTE ON FUNCTION changeempcount1() TO jupitorhr;
+GRANT EXECUTE ON FUNCTION emp_leave() TO jupitorhr;
+GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitorhr;
+GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitorhr;
+GRANT EXECUTE ON FUNCTION getleavebydate(date, date) TO jupitorhr;
+
+-- Supervisor Role --------------
+CREATE ROLE jupitorSupervisor WITH LOGIN PASSWORD 'password123';
+GRANT  SELECT  ON TABLE personal_information TO jupitorSupervisor;
+GRANT  SELECT  ON TABLE supervisor TO jupitorSupervisor;
+GRANT  SELECT,UPDATE, TRIGGER ON TABLE leave_record TO jupitorSupervisor;
+GRANT  SELECT ON TABLE employee_leave TO jupitorSupervisor;
+GRANT  SELECT ON TABLE leave TO jupitorSupervisor;
+GRANT  SELECT ON TABLE employee TO jupitorSupervisor;
+GRANT ALL ON TABLE session TO jupitorSupervisor;
+
+GRANT EXECUTE ON FUNCTION getAttendence(s_id numeric, today date ) TO jupitorSupervisor;
+GRANT EXECUTE ON FUNCTION getEmployee(e_id numeric) TO jupitorSupervisor;
+GRANT EXECUTE ON FUNCTION getEmployees1(s_id numeric) TO jupitorSupervisor;
+GRANT EXECUTE ON FUNCTION getleavea(s_id numeric) TO jupitorSupervisor;
 

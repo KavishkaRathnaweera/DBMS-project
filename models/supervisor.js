@@ -1,10 +1,13 @@
-const {pool1} = require("../connection");
+const { pool1 } = require("../connection");
 
 class Supervisor {
   // get all leaving requests
-  static async findEmployee(id){
-    const user =await pool1.query(`
-    select * from supervisor left join personal_information on personal_information.employee_id=supervisor.supervisor_id where personal_information.employee_id = $1`, [id])
+  static async findEmployee(id) {
+    const user = await pool1.query(
+      `
+    select * from supervisor left join personal_information on personal_information.employee_id=supervisor.supervisor_id where personal_information.employee_id = $1`,
+      [id]
+    );
     return user.rows[0];
   }
 
@@ -18,9 +21,9 @@ class Supervisor {
 
   // get leaving requests count
   static async getLeavingRequestCount(id) {
-    
-    const count = (await pool1.query(` select count(*) from getleavea($1) `, [id]))
-      .rows;
+    const count = (
+      await pool1.query(` select count(*) from getleavea($1) `, [id])
+    ).rows;
     return count;
   }
 
@@ -67,11 +70,10 @@ class Supervisor {
 
   // get all employees
   static async getEmployees(id) {
-    
     const res = (
       await pool1.query(
         `
-            select * from getEmployees($1)`,
+            select * from getEmployees1($1)`,
         [id]
       )
     ).rows;
@@ -84,11 +86,10 @@ class Supervisor {
 
   // get employees count
   static async getEmployees_Count(id) {
-    
     const emp_count = (
       await pool1.query(
         `
-            select count(*) from getEmployees($1)`,
+            select count(*) from getEmployees1($1)`,
         [id]
       )
     ).rows;
@@ -121,14 +122,14 @@ class Supervisor {
     console.log(date - 1);
     // console.log(year + "-" + month + "-" + date);
     const today = year + "-" + month + "-" + date;
-    console.log("gfgf")
+    console.log("gfgf");
     const res = (
       await pool1.query(`select * from getAttendence($1,$2)`, [
         supervisor_id,
         today,
       ])
     ).rows;
-     console.log("gfgf")
+    console.log("gfgf");
     console.log(res);
     return res;
   }
@@ -141,7 +142,6 @@ class Supervisor {
     let year = date_ob.getFullYear();
     let arr = [];
     if (date <= 5) {
-      
       const lim = date;
       console.log(lim);
       for (var i = 0; i < lim; i++) {
