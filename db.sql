@@ -737,6 +737,7 @@ END;
 $$;
 
 
+
 create or replace function restrictedAdmin() returns trigger as $$
 	declare 
 	c_admin integer;
