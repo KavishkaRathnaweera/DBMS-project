@@ -9,18 +9,9 @@ class employeeController {
   }
 
   static async applyLeave(req, res) {
-    const id = req.session.user.uid;
-    res.render("employee/applyLeave", {
-      userId: id,
-    });
+    res.render("employee/applyLeave", {});
   }
 
-  static async leaveRecords(req, res) {
-    const history = await Employee.getLeaveHistory();
-    //console.log(history[0].leave_id);
-    res.render("employee/leaveRecords", { history: history });
-  }
-  // old page
   static async attendance(req, res) {
     const history = await Employee.getLeavingHistory(req.session.user.uid);
     // console.log(history[0].leave_id);
@@ -46,7 +37,6 @@ class employeeController {
       console.log(error);
     }
   }
-  
 
   static async leavesHistory(req, res) {
     res.render("employee/leavesHistory", {});

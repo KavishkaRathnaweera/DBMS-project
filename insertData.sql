@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 --insert into job_type (job_title) values('HR') ,('Manager');
 --insert into department (dept_name) values('HR');
 
@@ -17,3 +18,6 @@ INSERT INTO public.department(
 	('sewing', '200', 'sewing');
 
 
+=======
+insert into job_type (job_title) values('HR') ,('Manager');
+>>>>>>> parent of 2e9ca89 (inserdata)
