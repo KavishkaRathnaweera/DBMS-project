@@ -13,7 +13,7 @@ class employeeController {
   }
 
   static async attendance(req, res) {
-    const history = await Employee.getLeavingHistory(2);
+    const history = await Employee.getLeavingHistory(req.session.user.uid);
     // console.log(history[0].leave_id);
     res.render("employee/attendance", { history: history });
   }
@@ -23,10 +23,10 @@ class employeeController {
   //   res.render("employee/employeeInfo", { information: information });
   // }
   static async employeeInfo(req, res) {
-    const id = 2;
+    const id = req.session.user.uid;
     // console.log(id);
     try {
-      const empDATA = await Employee.getEmpDATA(1);
+      const empDATA = await Employee.getEmpDATA(id);
       const customAttributes = await OrganizationServices.getCustomAttributes();
       // console.log(empDATA)
       res.render("./employee/employeeInfo", {

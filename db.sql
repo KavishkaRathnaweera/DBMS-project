@@ -119,7 +119,6 @@ CREATE TABLE department
 (
     dept_name varchar(100)  NOT NULL,
     employee_count integer NOT NULL DEFAULT 0,
-    building varchar(100) ,
     CONSTRAINT department_pkey PRIMARY KEY (dept_name)
 );
 
