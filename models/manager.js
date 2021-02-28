@@ -1,5 +1,4 @@
 const {pool4} =require('../connection');
-
 class manager{
 
     static async getAllBranches(){

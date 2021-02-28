@@ -119,7 +119,6 @@ CREATE TABLE department
 (
     dept_name varchar(100)  NOT NULL,
     employee_count integer NOT NULL DEFAULT 0,
-    building varchar(100) ,
     CONSTRAINT department_pkey PRIMARY KEY (dept_name)
 );
 
@@ -446,7 +445,8 @@ returns table(
 as $$
 begin
  	return query 
- 		select l.leave_id,l.employee_id,p.first_name,p.last_name,l.leave_type from supervisor s left outer join leave_record  l on l.employee_id = s.employee_id
+ 		select l.leave_id,l.employee_id,p.first_name,p.last_name,l.leave_type
+        from supervisor s left outer join leave_record  l on l.employee_id = s.employee_id
  		left outer join personal_information p on s.employee_id = p.employee_id
  		where s.supervisor_id = s_id AND l.approval_state = 'No' ;
 end;$$;
@@ -517,7 +517,7 @@ end;$$;
 
 
 
-CREATE FUNCTION emp_leave()
+CREATE or replace FUNCTION emp_leave()
     RETURNS trigger
     LANGUAGE 'plpgsql'
 AS $BODY$
