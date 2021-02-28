@@ -123,5 +123,35 @@ class hrServices {
     const deptLeave = await hrManager.getDepartmentLeaves(startDate,endDate);
     return deptLeave;
   }
+
+  static async getAllBranches(){
+        const branches=await hrManager.getAllBranches()
+        return branches;
+    }
+  static async getAllJobTitle(){
+        const Jobtype=await hrManager.getAllJobTitle()
+        return Jobtype;
+    }
+   static async getAllDepartment(){
+        const department=await hrManager.getAllDepartment();
+        return department;
+    }
+   static async getAllPayGradeLevel(){
+        const payGrade=await hrManager.getAllPayGradeLevel();
+        return payGrade;
+    }
+  static async getEmployeeStatus(){
+        const employee_status=await hrManager.getEmployeeStatus();
+        return employee_status; 
+    }
+   static async getCustomAttributes(){
+    
+        return await hrManager.getCustomAttributes()
+    }
+  static async getEmpDATA(id){
+    const result=await hrManager.getEmpDATA(id);
+    return result; 
+    }
+
 }
 module.exports = hrServices;
