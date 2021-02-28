@@ -7,10 +7,14 @@ const ifAdmin=require("../middleware/ifAdmin")
 const RootController = require('../controllers/rootController')
 
 
-router.get('/login', ifLoggedIn, adminContoller.loginPage)
+// router.get('/login', ifLoggedIn, adminContoller.loginPage)
+// router.get('/', adminContoller.home)
+// router.get('/signup', ifLoggedIn,adminContoller.signupPage)
+// router.get('/addHR',ifNotLoggedIn, ifAdmin, adminContoller.addHRPage)
+// router.get('/login', adminContoller.loginPage)
 router.get('/', adminContoller.home)
-router.get('/signup', ifLoggedIn,adminContoller.signupPage)
-router.get('/addHR',ifNotLoggedIn, ifAdmin, adminContoller.addHRPage)
+router.get('/signup',adminContoller.signupPage)
+router.get('/addHR', adminContoller.addHRPage)
 router.get('/jupitorLeaves',  adminContoller.viewLeaves)
 router.get('/editLeave/:paygrade_level', adminContoller.editLeavePage)
 router.get('/jupitorBranches', adminContoller.viewBranches);
@@ -25,14 +29,16 @@ router.get('/editEmployeeStatus/:EmployeeStatus', adminContoller.editEmployeeSta
 router.get('/editJobType/:jobType',adminContoller.editJobTypePage)
 router.get('/jupitorJobs', adminContoller.jobTypePage)
 router.get('/branch/:branch', adminContoller.getBranch)
-router.get('/dashboard', adminContoller.dashboard)
+// router.get('/dashboard', adminContoller.dashboard)
 router.get('/jupitorDepartments', adminContoller.viewDepartments)
 // router.get('/logout',ifNotLoggedIn, ifAdmin, RootController.logout)
 
 
 
-router.post('/login',ifLoggedIn, adminContoller.login)
-router.post('/addHR', ifNotLoggedIn, ifAdmin, adminContoller.addHR)
+// router.post('/login',ifLoggedIn, adminContoller.login)
+// router.post('/addHR', ifNotLoggedIn, ifAdmin, adminContoller.addHR)
+router.post('/addHR',  adminContoller.addHR)
+
 router.post('/addBranch', adminContoller.addBranch)
 router.post('/editBranch/:branch_name', adminContoller.editBranch)
 router.post('/editLeave/:paygrade_level', adminContoller.editLeave)
@@ -45,6 +51,8 @@ router.post('/addJobType', adminContoller.addJobType)
 router.post('/editJobType/:jobType', adminContoller.editJobType)
 router.post('/addDepartment', adminContoller.addDepartment)
 router.post('/signup', ifLoggedIn, adminContoller.signup)
+
+// router.post('/signup', ifLoggedIn, adminContoller.signup)
 
 
 module.exports=router

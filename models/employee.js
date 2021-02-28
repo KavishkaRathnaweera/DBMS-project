@@ -1,4 +1,4 @@
-const db = require("../connection");
+const{ pool1 }= require("../connection");
 
 class Employee {
   static async applyLeave1({ ID, leaveType, startdate, duration, reason }) {
@@ -9,7 +9,7 @@ class Employee {
     const today = year + "-" + month + "-" + date;
     let state = "No";
     const res = (
-      await db.query(
+      await pool1.query(
         `INSERT INTO leave_record (
 employee_id, leave_type, apply_date, start_date, duration, reason, approval_state)  VALUES ($1,$2,$3,$4,$5,$6,$7)`,
         [ID, leaveType, today, startdate, duration, reason, state]
@@ -20,7 +20,7 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
   static async getLeavingHistory(employee_id) {
     // let employee_id = 180336;
     const res = (
-      await db.query(`select * from leave_record where employee_id = $1`, [
+      await pool1.query(`select * from leave_record where employee_id = $1`, [
         employee_id,
       ])
     ).rows;
@@ -54,7 +54,7 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
     // let employee_id = 180336;
 
     const res = (
-      await db.query(`SELECT 
+      await pool1.query(`SELECT 
       personal_information.photo,
       personal_information.first_name,
         personal_information.middle_name,
