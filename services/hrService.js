@@ -1,16 +1,13 @@
 const Error = require("../helpers/error");
 const hrManager = require("../models/hrManager");
-const user = require("../models/user");
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
-
 class hrServices {
   static async addEmployee(value) {
-    const isEmailRegistered = await user.findUserByEmail(value.email);
+    const isEmailRegistered = await hrManager.findUserByEmail(value.email);
     if (isEmailRegistered) {
       throw new Error.BadRequest("email is already registered");
     }
-    const isNICRegistered = await User.findUserByNIC(value.NIC);
+    const isNICRegistered = await hrManager.findUserByNIC(value.NIC);
     if (isNICRegistered) {
       throw new Error.BadRequest("NIC is already registered");
     }
@@ -123,5 +120,35 @@ class hrServices {
     const deptLeave = await hrManager.getDepartmentLeaves(startDate,endDate);
     return deptLeave;
   }
+
+  static async getAllBranches(){
+        const branches=await hrManager.getAllBranches()
+        return branches;
+    }
+  static async getAllJobTitle(){
+        const Jobtype=await hrManager.getAllJobTitle()
+        return Jobtype;
+    }
+   static async getAllDepartment(){
+        const department=await hrManager.getAllDepartment();
+        return department;
+    }
+   static async getAllPayGradeLevel(){
+        const payGrade=await hrManager.getAllPayGradeLevel();
+        return payGrade;
+    }
+  static async getEmployeeStatus(){
+        const employee_status=await hrManager.getEmployeeStatus();
+        return employee_status; 
+    }
+   static async getCustomAttributes(){
+    
+        return await hrManager.getCustomAttributes()
+    }
+  static async getEmpDATA(id){
+    const result=await hrManager.getEmpDATA(id);
+    return result; 
+    }
+
 }
 module.exports = hrServices;

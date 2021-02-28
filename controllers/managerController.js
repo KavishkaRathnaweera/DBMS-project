@@ -1,6 +1,6 @@
 const e = require('cors');
 const managerServices =require('../services/managerServices');
-const OrganizationServices = require("../services/organizationServices");
+
 
 var user;
 var userBranch;
@@ -30,7 +30,7 @@ class  MnagerController{
             // userBranch=empDATA[0].branch_name;
             // userDepartment=empDATA[0].dept_name;
             res.render('./manager/managerDashboard', {
-                
+                user:req.session.user
             })
         }
 
@@ -59,16 +59,7 @@ class  MnagerController{
             employeeList= await managerServices.getEmployeeList(branch,department,jobtype,user);
             res.redirect('/manager/search');
         }
-        static async applyLeave(req,res){
-            res.render('./manager/applyLeave', {
-                
-            })
-        }
-        static async viewPersonalDetails(req,res){
-            res.render('./manager/viewPersonalData', {
-                
-            })
-        }
+     
         static async addSupervisorView(req,res){
             canBeSupervisors= await managerServices.getCanbeSupervisors(userBranch,userDepartment,user);
           
@@ -194,7 +185,7 @@ static async viewData(req,res){
             const departments=await managerServices.getAllDepartments();
             const payGrades = await managerServices.getAllPayGradeLevel();
             const employee_statuses = await managerServices.getEmployeeStatus();
-            const customAttributes=await OrganizationServices.getCustomAttributes();
+            const customAttributes=await managerServices.getCustomAttributes();
 
             // console.log(empDATA)
             res.render("./manager/viewData", {

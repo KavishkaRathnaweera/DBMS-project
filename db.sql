@@ -281,7 +281,6 @@ CREATE TABLE customattributes
 CREATE TABLE personal_information_custom
 (
     employee_id integer NOT NULL,
-    nationality character varying(50) ,
     CONSTRAINT personal_information_custom_pkey PRIMARY KEY (employee_id)
 );
 
@@ -447,13 +446,14 @@ returns table(
 as $$
 begin
  	return query 
- 		select l.leave_id,l.employee_id,p.first_name,p.last_name,l.leave_type from supervisor s left outer join leave_record  l on l.employee_id = s.employee_id
+ 		select l.leave_id,l.employee_id,p.first_name,p.last_name,l.leave_type
+        from supervisor s left outer join leave_record  l on l.employee_id = s.employee_id
  		left outer join personal_information p on s.employee_id = p.employee_id
  		where s.supervisor_id = s_id AND l.approval_state = 'No' ;
 end;$$;
 
 -- get all employees--------------------------------
-create or replace function getEmployees ( s_id numeric)
+create or replace function getEmployees1 ( s_id numeric)
 returns table(
  		employee_id int,
  		first_name varchar ,
@@ -518,7 +518,7 @@ end;$$;
 
 
 
-CREATE FUNCTION emp_leave()
+CREATE or replace FUNCTION emp_leave()
     RETURNS trigger
     LANGUAGE 'plpgsql'
 AS $BODY$
@@ -736,3 +736,22 @@ BEGIN
 	
 END;
 $$;
+
+
+
+create or replace function restrictedAdmin() returns trigger as $$
+	declare 
+	c_admin integer;
+	begin
+		select count(*) into c_admin from admin;
+		if c_admin>0 then
+			        RAISE EXCEPTION 'permission denied';
+		end if;
+		return new;
+	end;
+$$ LANGUAGE plpgsql;
+
+
+Drop TRIGGER IF EXISTS checkAdminTable on admin;
+
+create trigger checkAdminTable before insert on admin for each row execute procedure restrictedAdmin();

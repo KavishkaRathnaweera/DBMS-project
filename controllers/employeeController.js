@@ -1,4 +1,6 @@
 const Employee = require("../models/employee");
+const OrganizationServices = require("../services/organizationServices");
+
 class employeeController {
   static async index(req, res) {
     res.render("employee/index", {
@@ -7,7 +9,10 @@ class employeeController {
   }
 
   static async applyLeave(req, res) {
-    res.render("employee/applyLeave", {});
+    const id = req.session.user.uid;
+    res.render("employee/applyLeave", {
+      userId: id,
+    });
   }
 
   static async leaveRecords(req, res) {
@@ -22,11 +27,30 @@ class employeeController {
     res.render("employee/attendance", { history: history });
   }
 
+  // static async employeeInfo(req, res) {
+  //   const information = await Employee.getEmployeeInfo(req.session.user.uid);
+  //   res.render("employee/employeeInfo", { information: information });
+  // }
   static async employeeInfo(req, res) {
-    const information = await Employee.getEmployeeInfo(req.session.user.uid);
-    res.render("employee/employeeInfo", {information:information});
+    const id = req.session.user.uid;
+    // console.log(id);
+    try {
+      const empDATA = await Employee.getEmpDATA(id);
+      const customAttributes = await OrganizationServices.getCustomAttributes();
+      // console.log(empDATA)
+      res.render("./employee/employeeInfo", {
+        empDATA: empDATA,
+        customAttributes: customAttributes,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
   
+
+  static async leavesHistory(req, res) {
+    res.render("employee/leavesHistory", {});
+  }
 
   static async requestLeave(req, res) {
     // console.log(req.body);

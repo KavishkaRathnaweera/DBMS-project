@@ -10,17 +10,19 @@ const admin = require("../models/admin");
 
 
 // get requests
-router.get("/", ifLoggedIn, RootController.indexPage);
-router.get("/login", ifLoggedIn, RootController.loginPage);
-router.get("/signup", ifLoggedIn, RootController.signupPage);
-router.get("/logout", ifNotLoggedIn, RootController.logout);
+router.get("/", RootController.indexPage);
+router.get("/employeelogin", RootController.employeeloginPage);
+router.get("/login", RootController.loginPage);
+router.get("/signup", RootController.signupPage);
+router.get("/logout",  RootController.logout);
 router.get("/abc", HRController.abc)
 
 
 
 // post requests
-router.post('/login', ifLoggedIn, RootController.login)
-router.post('/signup', ifLoggedIn, RootController.signup)
+router.post('/employeelogin', RootController.employeelogin)
+router.post('/login', RootController.login)
+router.post('/signup', RootController.signup)
 
 
 // include admin.js, HR.js, employee.js, supervisor.js

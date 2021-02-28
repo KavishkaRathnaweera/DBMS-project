@@ -8,8 +8,8 @@ const RootController = require("../controllers/rootController");
 
 
 
-router.get("/", HRController.loginHR);
-router.get("/home", HRController.index);
+router.get("/login", HRController.loginHR);
+router.get("/", HRController.index);
 router.get('/addEmployeePage', HRController.addEmployeePage);
 router.get('/viewData/:id', HRController.viewData);
 router.get('/viewData', HRController.viewData);

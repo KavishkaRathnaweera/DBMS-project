@@ -23,7 +23,7 @@
                     <h1 class="text-center" style="color:#007bff;">Apply Leave</h1>
                     <form action="/employee/requestLeave" method="POST">
                         <div class="form-group mb-3"><input class="form-control" type="text" name="ID" placeholder="ID"
-                                value=""></div>
+                                value="<%= userId[0] %>"></div>
 
                         <div class="form-group mb-3">
                             Leave Type

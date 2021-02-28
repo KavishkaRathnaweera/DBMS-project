@@ -1,4 +1,5 @@
 --insert into job_type (job_title) values('HR') ,('Manager');
+--insert into department (dept_name) values('HR');
 
 INSERT INTO public.job_type(
 	job_title, description, req_qualification, prerequisites)
@@ -14,3 +15,5 @@ INSERT INTO public.department(
 	('cutting', '30', 'cutting'),
 	('stock', '30', 'stock'),
 	('sewing', '200', 'sewing');
+
+
