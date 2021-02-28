@@ -281,7 +281,6 @@ CREATE TABLE customattributes
 CREATE TABLE personal_information_custom
 (
     employee_id integer NOT NULL,
-    nationality character varying(50) ,
     CONSTRAINT personal_information_custom_pkey PRIMARY KEY (employee_id)
 );
 
@@ -453,7 +452,7 @@ begin
 end;$$;
 
 -- get all employees--------------------------------
-create or replace function getEmployees ( s_id numeric)
+create or replace function getEmployees1 ( s_id numeric)
 returns table(
  		employee_id int,
  		first_name varchar ,
@@ -737,37 +736,21 @@ BEGIN
 END;
 $$;
 
--------------------- role manager----------------------------------------------------------------------------------------
-CREATE ROLE jupitormanager WITH LOGIN PASSWORD 'passwordmanager';
-GRANT SELECT ON TABLE public.branch TO jupitormanager;
-GRANT SELECT ON TABLE public.job_type TO jupitormanager;
-GRANT SELECT ON TABLE public.department TO jupitormanager;
-GRANT SELECT ON TABLE public.customattributes TO jupitormanager;
-GRANT SELECT ON TABLE public.EmployeeData_View TO jupitormanager;
-GRANT SELECT ON TABLE public.pay_grade TO jupitormanager;
-GRANT SELECT ON TABLE public.employee_status TO jupitormanager;
-GRANT SELECT, UPDATE ON TABLE public.personal_information TO jupitormanager;
-GRANT SELECT, UPDATE ON TABLE public.personal_information_custom TO jupitormanager;
-GRANT SELECT, UPDATE, TRIGGER ON TABLE public.employee TO jupitormanager;
-GRANT SELECT, INSERT ON TABLE public.city TO jupitormanager;
-GRANT SELECT, INSERT ON TABLE public.country TO jupitormanager;
-GRANT SELECT, UPDATE, INSERT ON TABLE public.address TO jupitormanager;
-GRANT SELECT, UPDATE, INSERT ON TABLE public.supervisor TO jupitormanager;
-GRANT SELECT, UPDATE, INSERT ON TABLE public.employee_phone_number TO jupitormanager;
-GRANT SELECT, UPDATE, INSERT ON TABLE public.emergency_contact_details TO jupitormanager;
 
 
-GRANT ALL ON TABLE public.session TO jupitormanager;
-GRANT ALL ON SEQUENCE public.address_address_id_seq TO jupitormanager;
-GRANT ALL ON SEQUENCE public.city_city_id_seq TO jupitormanager;
-GRANT ALL ON SEQUENCE public.country_country_id_seq TO jupitormanager;
-GRANT ALL ON SEQUENCE public.personal_information_employee_id_seq TO jupitormanager;
+create or replace function restrictedAdmin() returns trigger as $$
+	declare 
+	c_admin integer;
+	begin
+		select count(*) into c_admin from admin;
+		if c_admin>0 then
+			        RAISE EXCEPTION 'permission denied';
+		end if;
+		return new;
+	end;
+$$ LANGUAGE plpgsql;
 
-GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer, arraylength integer) TO jupitormanager;
-GRANT EXECUTE ON FUNCTION public.updateSupervisorTable() TO jupitormanager;
-GRANT EXECUTE ON FUNCTION public.getsupervisors(branch character varying, department character varying, jobtitle character varying) TO jupitormanager;
-GRANT EXECUTE ON FUNCTION public.getnosupervisoremployees(branch character varying, department character varying, jobtitle character varying) TO jupitormanager;
-GRANT EXECUTE ON FUNCTION public.setcity(cityname character varying, countryid numeric) TO jupitormanager;
-GRANT EXECUTE ON FUNCTION public.setaddress(addressname character varying, cityid numeric, postalcode numeric) TO jupitormanager;
-GRANT EXECUTE ON FUNCTION public.setcountry(c character varying) TO jupitormanager;
----------------------------------------------------------------------------------------------------------------------
+
+Drop TRIGGER IF EXISTS checkAdminTable on admin;
+
+create trigger checkAdminTable before insert on admin for each row execute procedure restrictedAdmin();

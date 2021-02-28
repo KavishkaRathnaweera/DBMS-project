@@ -2,7 +2,6 @@ const {adminRegisterValidator, addHRvalidatorWrapper} =require('../validaters/re
 const {adminLoginValidator} =require('../validaters/loginValidater')
 const adminServices =require('../services/adminServices');
 const idForm=require("../helpers/idChecker")
-const OrganizationServices=require('../services/organizationServices')
 const {leaveCountValidator}=require('../validaters/leaveValidator');
 const {branchValidator,payGradeValidator,payGradeEditValidator,employeeStatusValidator,EmployeeStatusEditValidator, jobTypeEditValidator, jobTypeValidator, branchEditValidator, DepartmentValidator}=require('../validaters/organizationValidator');
 const { getAllBranches } = require('../models/organization');
@@ -10,11 +9,11 @@ const { getAllBranches } = require('../models/organization');
 
 class  AdminController{
 
-        static async dashboard(req,res){
-            res.render('admin/dashboard',{
-                user:req.session.user
-            })
-        }
+        // static async dashboard(req,res){
+        //     res.render('admin/dashboard',{
+        //         user:req.session.user
+        //     })
+        // }
 
         static async signupPage(req,res){
             res.render('admin/adminSignup',{
@@ -41,7 +40,7 @@ class  AdminController{
                 const {error, value} =await adminRegisterValidator.validate(req.body)
                 if(error) throw error;
                 await adminServices.adminRegister(value)
-                res.redirect('/admin/login?success=admin register sucessfull')
+                res.redirect('/login?success=admin register sucessfull')
 
             } catch (error) {
                 res.render('admin/adminSignup',{
@@ -62,44 +61,44 @@ class  AdminController{
                 })
             }
         }
-        static async loginPage(req,res){
-            res.render('admin/adminLogin',{
-                error:req.query.error? req.query.error:"",
-                userName:"",
-                password:"",
-                user:'',
-                success:req.query.success?req.query.success:"" 
-            })
-        }
-        static async login(req,res){
-            try{
-                    const {error, value}= await adminLoginValidator.validate(req.body)
-                    if(error) throw error;
-                    const admin=await adminServices.adminLogin(value)
-                    req.session.user={}
-                    req.session.user.type='admin'
-                    req.session.user.uid=admin.employee_id,
-                    req.session.user.NIC=admin.NIC,
-                    req.session.user.first_name=admin.first_name,
-                    req.session.user.middle_name=admin.middle_name,
-                    req.session.user.last_name=admin.last_name,
-                    req.session.user.email=admin.email
+        // static async loginPage(req,res){
+        //     res.render('admin/adminLogin',{
+        //         error:req.query.error? req.query.error:"",
+        //         userName:"",
+        //         password:"",
+        //         user:'',
+        //         success:req.query.success?req.query.success:"" 
+        //     })
+        // }
+        // static async login(req,res){
+        //     try{
+        //             const {error, value}= await adminLoginValidator.validate(req.body)
+        //             if(error) throw error;
+        //             const admin=await adminServices.adminLogin(value)
+        //             req.session.user={}
+        //             req.session.user.type='admin'
+        //             req.session.user.uid=admin.employee_id,
+        //             req.session.user.NIC=admin.NIC,
+        //             req.session.user.first_name=admin.first_name,
+        //             req.session.user.middle_name=admin.middle_name,
+        //             req.session.user.last_name=admin.last_name,
+        //             req.session.user.email=admin.email
                     
-                    res.redirect('/admin/home?success=admin login successfull')
+        //             res.redirect('/admin/home?success=admin login successfull')
 
 
 
 
-            }catch(error){
-                    res.render('admin/adminLogin',{
-                        error:error,
-                        username: req.body.user_name,
-                        password:req.body.password,
-                        user:'',
-                        success:''
-                    })
-            }
-        }
+        //     }catch(error){
+        //             res.render('admin/adminLogin',{
+        //                 error:error,
+        //                 username: req.body.user_name,
+        //                 password:req.body.password,
+        //                 user:'',
+        //                 success:''
+        //             })
+        //     }
+        // }
 
 
         
@@ -114,12 +113,12 @@ class  AdminController{
 
         static async addHRPage(req,res){
             try {
-                const branches=await OrganizationServices.getAllBranches()
-                const Jobtypes=await OrganizationServices.getAllJobTitle()
-                const departments=await OrganizationServices.getAllDepartment();
-                const payGrades=await OrganizationServices.getAllPayGradeLevel()
-                const employee_statuses=await OrganizationServices.getEmployeeStatus();
-                const customAttributes=await OrganizationServices.getCustomAttributes();
+                const branches=await adminServices.getAllBranches()
+                const Jobtypes=await adminServices.getAllJobTitle()
+                const departments=await adminServices.getAllDepartment();
+                const payGrades=await adminServices.getAllPayGradeLevel()
+                const employee_statuses=await adminServices.getEmployeeStatus();
+                const customAttributes=await adminServices.getCustomAttributes();
                 const HR={}
                 HR.NIC=req.query.NIC
                 HR.first_name=req.query.first_name
@@ -201,7 +200,7 @@ class  AdminController{
 
         static async viewLeaves(req,res){
             try {
-                    const leaves=await OrganizationServices.getLeaves()
+                    const leaves=await adminServices.getLeaves()
                     
                     res.render('admin/viewLeaves',{
                         user:req.session.user,
@@ -221,7 +220,7 @@ class  AdminController{
 
         static async editLeavePage(req,res){
             try {
-                const leave=await OrganizationServices.getLeave(req.params.paygrade_level)
+                const leave=await adminServices.getLeave(req.params.paygrade_level)
                 res.render('admin/editLeave',{
                     paygrade_level:req.params.paygrade_level,
                     user:req.session.user,
@@ -242,7 +241,7 @@ class  AdminController{
                 const {error , value}=await leaveCountValidator.validate(req.body)
                 if(error) throw error
 
-                await OrganizationServices.setLeave(req.params.paygrade_level, value);
+                await adminServices.setLeave(req.params.paygrade_level, value);
                 res.redirect(`/admin/jupitorLeaves`)
             } catch (error) {
                 console.log(error)
@@ -251,7 +250,7 @@ class  AdminController{
         }
         static async viewBranches(req,res){
             try {
-                const branches=await OrganizationServices.getAllBranchesWithAdress();
+                const branches=await adminServices.getAllBranchesWithAdress();
                 res.render('admin/viewBranches',{
                     user:req.session.user,
                     success:'',
@@ -272,7 +271,7 @@ class  AdminController{
             try {
                 const {error, value}= await branchValidator.validate(req.body)
                 if(error) throw error
-                await OrganizationServices.addBranch(value)
+                await adminServices.addBranch(value)
                 res.redirect(`/admin/jupitorBranches`)
 
             } catch (error) {
@@ -281,7 +280,7 @@ class  AdminController{
         }
         static async editBranchPage(req,res){
             try {
-                const Branch=await OrganizationServices.getBranch(req.params.branch_name)
+                const Branch=await adminServices.getBranch(req.params.branch_name)
                 console.log(Branch)
                 res.render('admin/editBranch',{
                     user:req.session.user,
@@ -301,7 +300,7 @@ class  AdminController{
                 const {error , value}=await branchEditValidator.validate(req.body)
                 if(error) throw error
 
-                await OrganizationServices.setBranch(req.params.branch_name,value);
+                await adminServices.setBranch(req.params.branch_name,value);
                 res.redirect(`/admin/jupitorBranches`)
             } catch (error) {
                 res.redirect(`/admin/editBranch/${req.params.branch_name}?error=${error}`)
@@ -328,7 +327,7 @@ class  AdminController{
         }
         static async viewCustomAttributes(req,res){
             try {
-                const customAttributes=await OrganizationServices.getCustomAttributes();
+                const customAttributes=await adminServices.getCustomAttributes();
                 res.render('admin/viewCustomAttributes',{
                     user:req.session.user,
                     error:req.query.error,
@@ -346,7 +345,7 @@ class  AdminController{
         }
         static async deleteCustomAttribute(req,res){
             try {
-                await OrganizationServices.deleteCustomAttribute(req.params.columnName)
+                await adminServices.deleteCustomAttribute(req.params.columnName)
                 res.redirect('/admin/viewCustomAttributes')
             } catch (error) {
                 res.redirect(`/admin/viewCustomAttributes?error=${error}`)
@@ -354,7 +353,7 @@ class  AdminController{
         }
         static async payGradePage(req,res){
             try {
-                const payGrades=await OrganizationServices.getAllPayGradeLevel()
+                const payGrades=await adminServices.getAllPayGradeLevel()
                 res.render('admin/payGrades',{
                     user:req.session.user,
                     payGrades:payGrades,
@@ -374,7 +373,7 @@ class  AdminController{
             try {
                 const {error, value}= await payGradeValidator.validate(req.body)
                 if(error) throw error
-                await OrganizationServices.addPayGrade(value)
+                await adminServices.addPayGrade(value)
                 res.redirect(`/admin/jupitorPayGrades`)
 
             } catch (error) {
@@ -383,7 +382,7 @@ class  AdminController{
         }
         static async editPayGradePage(req,res){
             try {
-                const payGrade=await OrganizationServices.getPayGrade(req.params.paygrade_level)
+                const payGrade=await adminServices.getPayGrade(req.params.paygrade_level)
                 res.render('admin/editPayGrade',{
                     user:req.session.user,
                     error:req.query.error,
@@ -402,7 +401,7 @@ class  AdminController{
                 const {error , value}=await payGradeEditValidator.validate(req.body)
                 if(error) throw error
 
-                await OrganizationServices.setPayGrade(req.params.paygrade_level,value);
+                await adminServices.setPayGrade(req.params.paygrade_level,value);
                 res.redirect(`/admin/jupitorPayGrades`)
             } catch (error) {
                 res.redirect(`/admin/editPayGrade/${req.params.paygrade_level}?error=${error}`)
@@ -411,7 +410,7 @@ class  AdminController{
         
         static async employeeStatusPage(req,res){
             try {
-                const employeeStatus=await OrganizationServices.getEmployeeStatus()
+                const employeeStatus=await adminServices.getEmployeeStatus()
                 res.render('admin/employeeStatus',{
                     user:req.session.user,
                     employeeStatus:employeeStatus,
@@ -431,7 +430,7 @@ class  AdminController{
             try {
                 const {error, value}= await employeeStatusValidator.validate(req.body)
                 if(error) throw error
-                await OrganizationServices.addEmployeeStatus(value)
+                await adminServices.addEmployeeStatus(value)
                 res.redirect(`/admin/jupitorEmployeeStatus`)
 
             } catch (error) {
@@ -440,7 +439,7 @@ class  AdminController{
         }
         static async editEmployeeStatusPage(req,res){
             try {
-                const EmployeeStatus=await OrganizationServices.getEmployeeState(req.params.EmployeeStatus)
+                const EmployeeStatus=await adminServices.getEmployeeState(req.params.EmployeeStatus)
                 res.render('admin/editEmployeeStatus',{
                     user:req.session.user,
                     error:req.query.error,
@@ -458,7 +457,7 @@ class  AdminController{
             try {
                 const {error , value}=await EmployeeStatusEditValidator.validate(req.body)
                 if(error) throw error
-                await OrganizationServices.setEmployeeStatus(req.params.EmployeeStatus,value);
+                await adminServices.setEmployeeStatus(req.params.EmployeeStatus,value);
                 res.redirect(`/admin/jupitorEmployeeStatus`)
             } catch (error) {
                 res.redirect(`/admin/editEmployeeStatus/${req.params.EmployeeStatus}?error=${error}`)
@@ -466,7 +465,7 @@ class  AdminController{
         }
         static async jobTypePage(req,res){
             try {
-                const jobTypes=await OrganizationServices.getAllJobTitle()
+                const jobTypes=await adminServices.getAllJobTitle()
                 res.render('admin/jobTypes',{
                     user:req.session.user,
                     jobTypes:jobTypes,
@@ -484,7 +483,7 @@ class  AdminController{
         } 
         static async editJobTypePage(req,res){
             try {
-                const jobType=await OrganizationServices.getJobType(req.params.jobType)
+                const jobType=await adminServices.getJobType(req.params.jobType)
                 res.render('admin/editjobType',{
                     user:req.session.user,
                     error:req.query.error,
@@ -502,7 +501,7 @@ class  AdminController{
             try {
                 const {error , value}=await jobTypeEditValidator.validate(req.body)
                 if(error) throw error
-                await OrganizationServices.setJobType(req.params.jobType,value);
+                await adminServices.setJobType(req.params.jobType,value);
                 res.redirect(`/admin/jupitorjobs`)
             } catch (error) {
                 res.redirect(`/admin/editjobType/${req.params.jobType}?error=${error}`)
@@ -512,7 +511,7 @@ class  AdminController{
             try {
                 const {error, value}= await jobTypeValidator.validate(req.body)
                 if(error) throw error
-                await OrganizationServices.addJobType(value)
+                await adminServices.addJobType(value)
                 res.redirect(`/admin/jupitorjobs`)
 
             } catch (error) {
@@ -521,10 +520,10 @@ class  AdminController{
         }
         static async getBranch(req,res){
             try {
-                const branch=await OrganizationServices.getBranch(req.params.branch)
-                const HR=await OrganizationServices.getHRData(req.params.branch)
-                const empCount=await OrganizationServices.getEmplyeeCount(req.params.branch)
-                const departments=await OrganizationServices.getAllDepartment()
+                const branch=await adminServices.getBranch(req.params.branch)
+                const HR=await adminServices.getHRData(req.params.branch)
+                const empCount=await adminServices.getEmplyeeCount(req.params.branch)
+                const departments=await adminServices.getAllDepartment()
                
                 res.render('admin/branch',{
                     user:req.session.user,
@@ -550,7 +549,7 @@ class  AdminController{
         }
         static async viewDepartments(req,res){
             try {
-                const departments=await OrganizationServices.getAllDepartment();
+                const departments=await adminServices.getAllDepartment();
                 res.render('admin/jupitorDepartment',{
                     user:req.session.user,
                     success:'',
@@ -570,7 +569,7 @@ class  AdminController{
             try {
                 const {error, value}= await DepartmentValidator.validate(req.body)
                 if(error) throw error
-                await OrganizationServices.addDepartment(value)
+                await adminServices.addDepartment(value)
                 res.redirect(`/admin/jupitorDepartments`)
 
             } catch (error) {
