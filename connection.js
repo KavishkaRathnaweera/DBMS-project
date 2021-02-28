@@ -7,4 +7,9 @@ const pool2 = new Pool({
     connectionString: process.env.DATABASE_URL_admin,
 });
 
-module.exports ={ pool1,pool2 } ;
+
+const pool3 = new Pool({
+    connectionString: process.env.DATABASE_URL_hr,
+});
+
+module.exports ={ pool1,pool2,pool3 } ;

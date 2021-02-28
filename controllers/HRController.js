@@ -1,9 +1,8 @@
-const sql = require("../connection");
+const {pool3} = require("../connection");
 const hrService = require("../services/hrService");
 const {adminRegisterValidator,addHRvalidator,} = require("../validaters/registerValidator");
 // const hrService = require("../services/hrService");
 // const hrService =require('../services/hrService');
-const { end } = require("../connection");
 
 var employeeSet = { column: [], details: [], selectTypes:[] };
 var departmentSet = [];
@@ -21,7 +20,7 @@ class HRController {
   }
   static async abc(req, res) {
     const a = 1;
-    const r = await sql`select * from get_leaverequests('jjj')`;
+    const r = await pool3`select * from get_leaverequests('jjj')`;
     res.send(r);
     console.log(r);
   }

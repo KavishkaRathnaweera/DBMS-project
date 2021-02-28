@@ -1,16 +1,13 @@
 const Error = require("../helpers/error");
 const hrManager = require("../models/hrManager");
-const user = require("../models/user");
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
-
 class hrServices {
   static async addEmployee(value) {
-    const isEmailRegistered = await user.findUserByEmail(value.email);
+    const isEmailRegistered = await hrManager.findUserByEmail(value.email);
     if (isEmailRegistered) {
       throw new Error.BadRequest("email is already registered");
     }
-    const isNICRegistered = await User.findUserByNIC(value.NIC);
+    const isNICRegistered = await hrManager.findUserByNIC(value.NIC);
     if (isNICRegistered) {
       throw new Error.BadRequest("NIC is already registered");
     }
