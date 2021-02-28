@@ -150,23 +150,6 @@ static async updateEmployee(value) {
    
     try{
         await pool4.query("BEGIN");
-
-        // let addressID = (await pool4.query(`SELECT address_id from address where address = $1`,[address])).rows;
-        // // console.log(addressID);
-        // if(!addressID[0]){
-        //     let cityID=(await pool4.query(`SELECT city_id from city where city.city= $1`,[city])).rows;
-        //     if(!cityID[0]){
-        //         // console.log(branch);
-        //         // console.log(cityID[0]);
-        //         const countryId = (await pool4.query(`SELECT country_id from branch inner join address using(address_id) inner join city using(city_id) 
-        //         where branch_name= $1`,[branch])).rows;
-        //         // console.log(countryId);
-        //         cityID = (await pool4.query(`INSERT INTO city(city,country_id) VALUES($1,$2) returning city_id`,[city,countryId[0].country_id])).rows;
-        //         // console.log(cityID[0]);
-               
-        //     }
-        //     addressID = (await pool4.query(`INSERT INTO address(address,city_id,postal_code) VALUES($1,$2,$3) returning address_id`,[address,cityID[0].city_id,postal_code])).rows;
-        // }
         
         console.log(value)
         const addressrow= await manager.addressTable(value.address_id,value.city,value.postal_code, value.country);
@@ -186,8 +169,6 @@ static async updateEmployee(value) {
               await pool4.query("ROLLBACK");
               throw error
         }   
-
-
 
   }
 

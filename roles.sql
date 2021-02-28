@@ -39,6 +39,7 @@ GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE city TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE country TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE customattributes TO jupitorhr;
 GRANT SELECT, TRIGGER ON TABLE department TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE emergency_contact_details TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE employee TO jupitorhr;
 GRANT UPDATE, INSERT, SELECT, TRIGGER ON TABLE employee_phone_number TO jupitorhr;
 GRANT SELECT, TRIGGER ON TABLE employee_status TO jupitorhr;
@@ -62,6 +63,9 @@ GRANT EXECUTE ON FUNCTION emp_leave() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION getleavebydate(date, date) TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.employeedata_view TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.full_employee_detail TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.employee_leave TO jupitorhr;
 
 
 -------------------- role manager----------------------------------------------------------------------------------------
