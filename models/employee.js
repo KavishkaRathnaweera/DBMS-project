@@ -1,4 +1,4 @@
-const{ pool1 }= require("../connection");
+const { pool1 } = require("../connection");
 
 class Employee {
   static async applyLeave1({ ID, leaveType, startdate, duration, reason }) {
@@ -54,7 +54,8 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
     // let employee_id = 180336;
 
     const res = (
-      await pool1.query(`SELECT 
+      await pool1.query(
+        `SELECT 
       personal_information.photo,
       personal_information.first_name,
         personal_information.middle_name,
@@ -98,7 +99,7 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
   }
 
   static async getEmpDATA(id) {
-    const result = await db.query(
+    const result = await pool1.query(
       `
     select * from EmployeeData_View left outer join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id)
     where employee_id = $1`,

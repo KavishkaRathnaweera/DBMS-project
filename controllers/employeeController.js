@@ -9,7 +9,10 @@ class employeeController {
   }
 
   static async applyLeave(req, res) {
-    res.render("employee/applyLeave", {});
+    const id = req.session.user.uid;
+    res.render("employee/applyLeave", {
+      userId: id,
+    });
   }
 
   static async attendance(req, res) {
