@@ -124,4 +124,5 @@ GRANT SELECT ON TABLE employee_phone_number TO jupitorEmployee;
 GRANT SELECT ON TABLE address TO jupitorEmployee;
 GRANT SELECT ON TABLE city TO jupitorEmployee;
 GRANT SELECT ON TABLE country TO jupitorEmployee;
+GRANT ALL ON SEQUENCE leave_record_leave_id_seq TO jupitorEmployee;
 
