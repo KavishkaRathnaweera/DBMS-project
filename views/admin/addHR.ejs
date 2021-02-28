@@ -35,7 +35,13 @@
                             <div class="form-group mb-3 "><label for="">First Name:</label><input class="form-control" type="text" name="first_name" placeholder="First Name" value="<%=HR.first_name%>"></div>
                             <div class="form-group mb-3"><label for="">Middle Name:</label><input class="form-control" type="text" name="middle_name" placeholder="Middle Name" value="<%=HR.middle_name%>"></div>
                             <div class="form-group mb-3"><label for="">Last Name:</label><input class="form-control" type="text" name="last_name" placeholder="Last Name" value="<%=HR.last_name%>"></div>
-                            <div class="form-group mb-3"><label for="">Gender:</label><input class="form-control" type="text" name="gender" placeholder="Gender" value="<%=HR.gender%>"></div>
+
+                            <div class="form-group mb-3" ><label for="">Gender:</label><select class="form-control" id="exampleFormControlSelect1" name="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option></select>
+                           </div>
+
+
                             <div class="form-group mb-3"><label for="">Birthday:</label><input class="form-control" type="Date" name="birthday" placeholder="Birthday" value="<%=HR.birthday%>"></div>
 
                             <div class="form-group mb-3"><label for="">Address:</label><input class="form-control" type="text" name="address" placeholder="Address" value="<%=HR.address%>"></div>

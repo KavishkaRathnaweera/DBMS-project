@@ -1,12 +1,9 @@
-const sql = require("../connection");
-const OrganizationServices = require("../services/organizationServices");
-const {
-  adminRegisterValidator,
-  addHRvalidator,
-} = require("../validaters/registerValidator");
+
+const {pool3} = require("../connection");
 const hrService = require("../services/hrService");
-const managerServices = require("../services/managerServices");
-const { end } = require("../connection");
+const {adminRegisterValidator,addHRvalidator,} = require("../validaters/registerValidator");
+// const hrService = require("../services/hrService");
+// const hrService =require('../services/hrService');
 
 var employeeSet = { column: [], details: [], selectTypes: [] };
 var departmentSet = [];
@@ -24,19 +21,20 @@ class HRController {
   }
   static async abc(req, res) {
     const a = 1;
-    const r = await sql`select * from get_leaverequests('jjj')`;
+    const r = await pool3`select * from get_leaverequests('jjj')`;
     res.send(r);
     console.log(r);
   }
 
   static async addEmployeePage(req, res) {
     try {
-      const branches = await OrganizationServices.getAllBranches();
-      const Jobtypes = await OrganizationServices.getAllJobTitle();
-      const departments = await OrganizationServices.getAllDepartment();
-      const payGrades = await OrganizationServices.getAllPayGradeLevel();
-      const employee_statuses = await OrganizationServices.getEmployeeStatus();
-      const customAttributes = await OrganizationServices.getCustomAttributes();
+
+      const branches = await hrService.getAllBranches();
+      const Jobtypes = await hrService.getAllJobTitle();
+      const departments = await hrService.getAllDepartment();
+      const payGrades = await hrService.getAllPayGradeLevel();
+      const employee_statuses = await hrService.getEmployeeStatus();
+      const customAttributes=await hrService.getCustomAttributes();
 
       res.render("HR/add_employee", {
         user: req.session.user,
@@ -61,12 +59,13 @@ class HRController {
   }
 
   static async submitEmployee(req, res) {
-    const branches = await OrganizationServices.getAllBranches();
-    const Jobtypes = await OrganizationServices.getAllJobTitle();
-    const departments = await OrganizationServices.getAllDepartment();
-    const payGrades = await OrganizationServices.getAllPayGradeLevel();
-    const employee_statuses = await OrganizationServices.getEmployeeStatus();
-    const customAttributes = await OrganizationServices.getCustomAttributes();
+
+    const branches = await hrService.getAllBranches();
+    const Jobtypes = await hrService.getAllJobTitle();
+    const departments = await hrService.getAllDepartment();
+    const payGrades = await hrService.getAllPayGradeLevel();
+    const employee_statuses = await hrService.getEmployeeStatus();
+    const customAttributes=await hrService.getCustomAttributes();
 
     const HR = {};
     HR.NIC = req.body.NIC;
@@ -103,6 +102,48 @@ class HRController {
 
   static async viewData(req, res) {
     const id = req.params.id;
+
+  
+    if(!id){
+              res.render("HR/viewData", {
+                user: req.session.user,
+                error: req.query.error,
+                success: req.query.success,
+                branches: {},
+                Jobtypes: {},
+                departments:{},
+                payGrades: {},
+                employee_statuses:{},
+                empDATA:{},
+                user:user,
+                customAttributes:{}
+              
+              });
+    }
+    else{
+        // console.log(id);
+        try{
+            const empDATA = await hrService.getEmpDATA(id);
+            const branches=await hrService.getAllBranches();
+            const Jobtypes=await hrService.getAllJobTitles();
+            const departments=await hrService.getAllDepartments();
+            const payGrades = await hrService.getAllPayGradeLevel();
+            const employee_statuses = await hrService.getEmployeeStatus();
+            const customAttributes=await hrService.getCustomAttributes();
+          console.log(empDATA)
+            // console.log(empDATA)
+            res.render("HR/viewData", {
+                user: req.session.user,
+                error: req.query.error,
+                success: req.query.success,
+                branches: branches,
+                Jobtypes: Jobtypes,
+                departments: departments,
+                payGrades: payGrades,
+                employee_statuses: employee_statuses,
+                empDATA:empDATA,
+                user:user,
+                customAttributes:customAttributes,            
 
     if (!id) {
       res.render("HR/viewData", {
@@ -161,20 +202,24 @@ class HRController {
     try {
       const empAdd = await managerServices.updateEmployee(req.body);
 
-      const success = "Successfully Update the Employee";
-
-      res.redirect(`${req.body.ID}?${success}`);
-    } catch (error) {
-      console.log(error);
+static async updateEmployee(req,res){
+    try{
+        const empAdd = await hrService.updateEmployee(req.body);
+      
+        const success= "Successfully Update the Employee";
+         
+        res.redirect(`${req.body.ID}?${success}`);
+    }catch(error){
+        console.log(error);
     }
   }
 
   static async report(req, res) {
-    const branches = await OrganizationServices.getAllBranches();
-    const Jobtypes = await OrganizationServices.getAllJobTitle();
-    const departments = await OrganizationServices.getAllDepartment();
-    const payGrades = await OrganizationServices.getAllPayGradeLevel();
-    const employee_statuses = await OrganizationServices.getEmployeeStatus();
+    const branches = await hrService.getAllBranches();
+    const Jobtypes = await hrService.getAllJobTitle();
+    const departments = await hrService.getAllDepartment();
+    const payGrades = await hrService.getAllPayGradeLevel();
+    const employee_statuses = await hrService.getEmployeeStatus();
 
     res.render("HR/employeeReports", {
       user: req.session.user,
@@ -211,11 +256,11 @@ class HRController {
     } catch (error) {}
   }
   static async customreport(req, res) {
-    const branches = await OrganizationServices.getAllBranches();
-    const Jobtypes = await OrganizationServices.getAllJobTitle();
-    const departments = await OrganizationServices.getAllDepartment();
-    const payGrades = await OrganizationServices.getAllPayGradeLevel();
-    const employee_statuses = await OrganizationServices.getEmployeeStatus();
+    const branches = await hrService.getAllBranches();
+    const Jobtypes = await hrService.getAllJobTitle();
+    const departments = await hrService.getAllDepartment();
+    const payGrades = await hrService.getAllPayGradeLevel();
+    const employee_statuses = await hrService.getEmployeeStatus();
     const fieds = await hrService.getEmpFields();
 
     res.render("HR/customizeReports", {

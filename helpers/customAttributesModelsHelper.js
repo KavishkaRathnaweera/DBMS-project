@@ -8,7 +8,8 @@ const customAttributesModelsHelper=async(value)=>{
     const attributes=await OrganizationServices.getCustomAttributes();
     var c=1
     attributes.forEach(function(attribute) {
-       bind+=`, $${c+1} `
+       c=c+1
+       bind+=`, $${c} `
        data.push(value[attribute.name])
     });
     console.log(bind, data)

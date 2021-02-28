@@ -281,7 +281,6 @@ CREATE TABLE customattributes
 CREATE TABLE personal_information_custom
 (
     employee_id integer NOT NULL,
-    nationality character varying(50) ,
     CONSTRAINT personal_information_custom_pkey PRIMARY KEY (employee_id)
 );
 
@@ -453,7 +452,7 @@ begin
 end;$$;
 
 -- get all employees--------------------------------
-create or replace function getEmployees ( s_id numeric)
+create or replace function getEmployees1 ( s_id numeric)
 returns table(
  		employee_id int,
  		first_name varchar ,
@@ -736,3 +735,21 @@ BEGIN
 	
 END;
 $$;
+
+
+create or replace function restrictedAdmin() returns trigger as $$
+	declare 
+	c_admin integer;
+	begin
+		select count(*) into c_admin from admin;
+		if c_admin>0 then
+			        RAISE EXCEPTION 'permission denied';
+		end if;
+		return new;
+	end;
+$$ LANGUAGE plpgsql;
+
+
+Drop TRIGGER IF EXISTS checkAdminTable on admin;
+
+create trigger checkAdminTable before insert on admin for each row execute procedure restrictedAdmin();

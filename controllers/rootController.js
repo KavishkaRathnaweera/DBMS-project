@@ -65,7 +65,6 @@ class RootController{
             const user=await userServices.login(value); 
             let type;
             if(user.job_title=="admin") {
-                // console.log(user)
                 type='admin'
             }
             else if(user.job_title=="HR"){
