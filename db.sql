@@ -119,7 +119,6 @@ CREATE TABLE department
 (
     dept_name varchar(100)  NOT NULL,
     employee_count integer NOT NULL DEFAULT 0,
-    building varchar(100) ,
     CONSTRAINT department_pkey PRIMARY KEY (dept_name)
 );
 
@@ -659,7 +658,7 @@ $$;
 -- call updateJupitorLeaves('level 1', 3 ,3 ,4 ,7)
 
 --Kavishka's Functions--
-CREATE OR REPLACE VIEW public.full_employee_detail
+CREATE OR REPLACE VIEW full_employee_detail
     AS
      SELECT personal_information.employee_id,
     personal_information.nic,
@@ -755,3 +754,111 @@ $$ LANGUAGE plpgsql;
 Drop TRIGGER IF EXISTS checkAdminTable on admin;
 
 create trigger checkAdminTable before insert on admin for each row execute procedure restrictedAdmin();
+
+GRANT EXECUTE ON FUNCTION getattendence(s_id numeric, today date) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION getemployee(e_id numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION getemployees(s_id numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION getemployees1(s_id numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION getleavea(s_id numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION getleavebydate(startd date, endd date) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION getnosupervisoremployees(branch character varying, department character varying, jobtitle character varying) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION getsupervisors(branch character varying, department character varying, jobtitle character varying) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION setaddress(addressname character varying, cityid numeric, postalcode numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION setcity(cityname character varying, countryid numeric) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION setcountry(c character varying) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE addtosupervisort(employee_ids integer[], val_supervisor_id integer) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE addtosupervisort(employee_ids integer[], val_supervisor_id integer, arraylength integer) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE updatejupitorbranch(branchname character varying, add integer) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE updatejupitoremployeestatus(estatusname character varying, du character varying, des character varying) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE updatejupitorjobs(jobtitle character varying, des character varying, req character varying, prereq character varying) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE updatejupitorleaves(paygradelevel character varying, an integer, cas integer, mat integer, nopay integer) TO jupitor;
+
+GRANT EXECUTE ON PROCEDURE updatejupitorpaygrade(paygradelevel character varying, des character varying, req character varying) TO jupitor;
+
+GRANT EXECUTE ON FUNCTION changeempcount() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION changeempcount1() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION deletesupervisorgroup() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION emp_leave() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION emp_stamp6() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION restrictedadmin() TO jupitor;
+
+GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitor;
+
+GRANT ALL ON SEQUENCE address_address_id_seq TO jupitor;
+
+GRANT ALL ON SEQUENCE city_city_id_seq TO jupitor;
+
+GRANT ALL ON SEQUENCE country_country_id_seq TO jupitor;
+
+GRANT ALL ON SEQUENCE leave_record_leave_id_seq TO jupitor;
+
+GRANT ALL ON SEQUENCE personal_information_employee_id_seq TO jupitor;
+
+GRANT ALL ON TABLE address TO jupitor;
+
+GRANT ALL ON TABLE admin TO jupitor;
+
+GRANT ALL ON TABLE branch TO jupitor;
+
+GRANT ALL ON TABLE city TO jupitor;
+
+GRANT ALL ON TABLE country TO jupitor;
+
+GRANT ALL ON TABLE customattributes TO jupitor;
+
+GRANT ALL ON TABLE department TO jupitor;
+
+GRANT ALL ON TABLE emergency_contact_details TO jupitor;
+
+GRANT ALL ON TABLE employee TO jupitor;
+
+GRANT ALL ON TABLE employee_leave TO jupitor;
+
+GRANT ALL ON TABLE employee_phone_number TO jupitor;
+
+GRANT ALL ON TABLE employee_status TO jupitor;
+
+GRANT ALL ON TABLE job_type TO jupitor;
+
+GRANT ALL ON TABLE leave TO jupitor;
+
+GRANT ALL ON TABLE leave_record TO jupitor;
+
+GRANT ALL ON TABLE pay_grade TO jupitor;
+
+GRANT ALL ON TABLE personal_information TO jupitor;
+
+GRANT ALL ON TABLE personal_information_custom TO jupitor;
+
+GRANT ALL ON TABLE session TO jupitor;
+
+GRANT ALL ON TABLE supervisor TO jupitor;
+
+GRANT ALL ON TABLE employeedata_view TO jupitor;
+
+GRANT ALL ON TABLE full_employee_detail TO jupitor;
+
+

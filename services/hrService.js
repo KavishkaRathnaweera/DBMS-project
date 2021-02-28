@@ -113,11 +113,15 @@ class hrServices {
 
   static async getEmpFields() {
     const fields = await hrManager.getEmpFields();
-    return Object.keys(fields);
+    return fields;
   }
 
   static async getDepartmentLeaves(startDate,endDate) {
     const deptLeave = await hrManager.getDepartmentLeaves(startDate,endDate);
+    return deptLeave;
+  }
+  static async getDepartmentLeavesAP(startDate,endDate) {
+    const deptLeave = await hrManager.getDepartmentLeavesAP(startDate,endDate);
     return deptLeave;
   }
 
@@ -147,8 +151,28 @@ class hrServices {
     }
   static async getEmpDATA(id){
     const result=await hrManager.getEmpDATA(id);
+     console.log(5555555);
+    console.log(result);
     return result; 
     }
+
+  static async updateEmployee(value) { console.log(value)
+    const checkEmail = await hrManager.findUserIDByEmail(value.email);
+    // console.log(checkEmail)
+    const ID= parseInt(value.ID);
+    // console.log(ID)
+    if (checkEmail.length>0 && checkEmail[0].employee_id !==ID) {
+      throw new Error.BadRequest(`This email is already registered with employee id ${checkEmail[0].employee_id}`);
+    }
+    const checkNIC = await hrManager.findUserIDByNIC(value.NIC);
+    // console.log(checkNIC)
+    if (checkNIC.length>0 && checkNIC[0].employee_id !==ID) {
+      throw new Error.BadRequest(`This NIC is already registered with employee id ${checkNIC[0].employee_id}`);
+    }
+
+    const result = await hrManager.updateEmployee(value);
+    return result;
+  }
 
 }
 module.exports = hrServices;

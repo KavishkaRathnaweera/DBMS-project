@@ -8,6 +8,10 @@ class User{
             return user.rows[0];
            
     }
+    static async findAdmin(id){
+      const admin=await pool1.query("select * from admin left outer join personal_information using(employee_id) where employee_id=$1",[id])
+      return admin.rows[0];
+    }
 
 
     static async findUserByNIC(NIC){

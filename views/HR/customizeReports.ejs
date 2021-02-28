@@ -81,8 +81,8 @@
                     <label>Custom Fields</label>
                     <select name="field" class="form-control select2" style="width: 100%;"  multiple="multiple" required>
                         <% if(customFields){%>
-                        <% for (var i = 0; i < customFields.length; i++) { if(customFields[i]!='password') {%>
-                            <option value="<%= customFields[i] %>"><%= customFields[i] %></option>
+                        <% for (var i = 0; i < customFields.length; i++) { if(customFields[i].column_name!='password') {%>
+                            <option value="<%= customFields[i].column_name %>"><%= customFields[i].column_name %></option>
                       <% } }}%>
                     </select>
                 </div>
@@ -105,7 +105,7 @@
                     <h3 class="card-title">Categories</h3>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body">
+                <div class="card-body" >
                     <% for (var i = 0; i < employeeList.selectTypes.length; i++) { %>
                         <label><%= employeeList.selectTypes[i] %></label>
                         <br>
@@ -118,7 +118,7 @@
                 <a class="btn btn-primary float-right newSupply" href="HR/viewData">View PIM Data</a>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
+              <div class="card-body" style="background:linear-gradient(to bottom,rgb(246, 248, 255),rgb(255, 255, 255),rgb(242, 245, 255))">
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
 

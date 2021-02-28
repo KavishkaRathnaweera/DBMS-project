@@ -1,4 +1,4 @@
-const { pool1 } = require("../connection");
+const { pool6 } = require("../connection");
 
 class Employee {
   static async applyLeave1({ ID, leaveType, startdate, duration, reason }) {
@@ -9,7 +9,7 @@ class Employee {
     const today = year + "-" + month + "-" + date;
     let state = "No";
     const res = (
-      await pool1.query(
+      await pool6.query(
         `INSERT INTO leave_record (
 employee_id, leave_type, apply_date, start_date, duration, reason, approval_state)  VALUES ($1,$2,$3,$4,$5,$6,$7)`,
         [ID, leaveType, today, startdate, duration, reason, state]
@@ -20,7 +20,7 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
   static async getLeavingHistory(employee_id) {
     // let employee_id = 180336;
     const res = (
-      await pool1.query(`select * from leave_record where employee_id = $1`, [
+      await pool6.query(`select * from leave_record where employee_id = $1`, [
         employee_id,
       ])
     ).rows;
@@ -54,7 +54,7 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
     // let employee_id = 180336;
 
     const res = (
-      await pool1.query(
+      await pool6.query(
         `SELECT 
       personal_information.photo,
       personal_information.first_name,
@@ -98,7 +98,7 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
     return res;
   }
   static async getEmpDATA(id) {
-    const result = await pool1.query(
+    const result = await pool6.query(
       `
     select * from EmployeeData_View left outer join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id)
     where employee_id = $1`,

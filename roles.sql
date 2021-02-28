@@ -39,6 +39,7 @@ GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE city TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE country TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE customattributes TO jupitorhr;
 GRANT SELECT, TRIGGER ON TABLE department TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE emergency_contact_details TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE employee TO jupitorhr;
 GRANT UPDATE, INSERT, SELECT, TRIGGER ON TABLE employee_phone_number TO jupitorhr;
 GRANT SELECT, TRIGGER ON TABLE employee_status TO jupitorhr;
@@ -62,6 +63,9 @@ GRANT EXECUTE ON FUNCTION emp_leave() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION getleavebydate(date, date) TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.employeedata_view TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.full_employee_detail TO jupitorhr;
+GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.employee_leave TO jupitorhr;
 
 
 -------------------- role manager----------------------------------------------------------------------------------------
@@ -101,7 +105,7 @@ GRANT EXECUTE ON FUNCTION setcountry(c character varying) TO jupitormanager;
 
 
 -- Supervisor Role -------------------------------------------------------------------------------------------------
-CREATE ROLE jupitorSupervisor WITH LOGIN PASSWORD 'password123';
+CREATE ROLE jupitorSupervisor WITH LOGIN PASSWORD 'password';
 GRANT  SELECT  ON TABLE personal_information TO jupitorSupervisor;
 GRANT  SELECT  ON TABLE supervisor TO jupitorSupervisor;
 GRANT  SELECT,UPDATE, TRIGGER ON TABLE leave_record TO jupitorSupervisor;
@@ -117,8 +121,12 @@ GRANT EXECUTE ON FUNCTION getleavea(s_id numeric) TO jupitorSupervisor;
 
 ---------------------------------------------------------------------------------------------------------------------
 ----- Employee Role--------------------------------------------------------------------------------------------------
-CREATE ROLE jupitorEmployee WITH LOGIN PASSWORD 'password123';
+CREATE ROLE jupitorEmployee WITH LOGIN PASSWORD 'password';
 GRANT SELECT, UPDATE, INSERT, TRIGGER ON TABLE leave_record TO jupitorEmployee;
 GRANT SELECT ON TABLE EmployeeData_View TO jupitorEmployee;
-
+GRANT SELECT ON TABLE employee_phone_number TO jupitorEmployee;
+GRANT SELECT ON TABLE address TO jupitorEmployee;
+GRANT SELECT ON TABLE city TO jupitorEmployee;
+GRANT SELECT ON TABLE country TO jupitorEmployee;
+GRANT ALL ON SEQUENCE leave_record_leave_id_seq TO jupitorEmployee;
 
