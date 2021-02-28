@@ -1,5 +1,4 @@
 const db =require('../connection');
-const User = require("../models/user");
 class manager{
 
     static async getAllBranches(){
@@ -134,6 +133,19 @@ static async findUserIDByNIC(NIC){
     select employee_id from personal_information where NIC = $1`,[NIC])
     return result.rows;
 }
+static async getCustomAttributes(){
+        
+    return (await db.query('select * from customattributes')).rows
+}
+static async addressTable(address, city, postal_code, country){
+
+    const countryrow=(await db.query(`select * from setCountry($1)`, [country])).rows
+    const cityrow=(await db.query(`select * from setCity($1,$2)`,[city,countryrow[0].setcountry])).rows
+    const addressrow=(await db.query(`select setaddress as address_id from setaddress($1,$2,$3)`,[address, cityrow[0].setcity, postal_code])).rows
+
+   return addressrow;
+
+}
 static async updateEmployee(value) {
    
     try{
@@ -157,7 +169,7 @@ static async updateEmployee(value) {
         // }
         
         console.log(value)
-        const addressrow= await User.addressTable(value.address_id,value.city,value.postal_code, value.country);
+        const addressrow= await manager.addressTable(value.address_id,value.city,value.postal_code, value.country);
         const personal_information = (await db.query(`update Personal_information set NIC = $1, first_name=$2, middle_name=$3, last_name=$4, gender=$5, birth_day=$6, address_id=$7, email=$8
         where employee_id = $9`,[value.NIC, value.first_name, value.middle_name, value.last_name, value.gender, value.birthday, addressrow[0].address_id,  value.email,value.ID])).rows;
 

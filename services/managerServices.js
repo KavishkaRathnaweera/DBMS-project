@@ -125,7 +125,9 @@ static async updateEmployee(value) { console.log(value)
     const result = await manager.updateEmployee(value);
     return result;
   }
-
+static async getCustomAttributes(){
+    return await manager.getCustomAttributes()
+}
 
 }
 module.exports=managerServices;
