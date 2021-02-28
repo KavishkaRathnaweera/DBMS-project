@@ -78,9 +78,7 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
         employee.e_status_name,
         employee.supervisor,
       personal_information.registered_date
-    
-    
-       
+   
        
       FROM 
       (employee
@@ -90,20 +88,24 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
         USING (employee_id) 
       )
       JOIN employee_phone_number
-      USING (employee_id)  where employee_id = $1 ;`, [
-        employee_id
-      ])
+      USING (employee_id)  where employee_id = $1 ;`,
+        [employee_id]
+      )
     ).rows;
     console.log(res);
 
-
     return res;
-
   }
 
-
-
+  static async getEmpDATA(id) {
+    const result = await db.query(
+      `
+    select * from EmployeeData_View left outer join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id)
+    where employee_id = $1`,
+      [id]
+    );
+    return result.rows;
+  }
 }
 
 module.exports = Employee;
-
