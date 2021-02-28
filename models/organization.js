@@ -1,4 +1,3 @@
-
 const {pool1}=require('../connection')
 const User=require('../models/user')
 
@@ -27,28 +26,7 @@ class Organization{
         return await pool1.query(`
         insert into department (dept_name) values($1)`, [dept_name]) 
 
-  static async getAllPayGradeLevel() {
-    const payGrade = await db.query(`
-        select * from pay_grade `);
-    return payGrade.rows;
-  }
-  static async getEmployeeStatus() {
-    const employee_status = await db.query(`
-        select * from employee_status`);
-    return employee_status.rows;
-  }
-  static async getLeaves() {
-    const leaves = await db.query(`
-        select pay_grade.paygrade_level, leave.anual, leave.casual, leave.maternity, leave.no_pay from pay_grade left outer join leave using(paygrade_level)`);
-    return leaves.rows;
-  }
-  static async getLeave(paygrade_level) {
-    const leave = await db.query(
-      `
-        select * from leave where paygrade_level=$1`,
-      [paygrade_level]
-    );
-
+    }
 
     static async getAllPayGradeLevel(){
         
@@ -140,4 +118,4 @@ class Organization{
         return await pool1.query(`call updateJupitorBranch($1, $2)`,[branch_name,addressrow[0].address_id])
     }
 }
-module.exports = Organization;
+module.exports=Organization;
