@@ -100,7 +100,7 @@ GRANT EXECUTE ON FUNCTION setcountry(c character varying) TO jupitormanager;
 ---------------------------------------------------------------------------------------------------------------------
 
 
--- Supervisor Role --------------
+-- Supervisor Role -------------------------------------------------------------------------------------------------
 CREATE ROLE jupitorSupervisor WITH LOGIN PASSWORD 'password123';
 GRANT  SELECT  ON TABLE personal_information TO jupitorSupervisor;
 GRANT  SELECT  ON TABLE supervisor TO jupitorSupervisor;
@@ -114,3 +114,11 @@ GRANT EXECUTE ON FUNCTION getAttendence(s_id numeric, today date ) TO jupitorSup
 GRANT EXECUTE ON FUNCTION getEmployee(e_id numeric) TO jupitorSupervisor;
 GRANT EXECUTE ON FUNCTION getEmployees1(s_id numeric) TO jupitorSupervisor;
 GRANT EXECUTE ON FUNCTION getleavea(s_id numeric) TO jupitorSupervisor;
+
+---------------------------------------------------------------------------------------------------------------------
+----- Employee Role--------------------------------------------------------------------------------------------------
+CREATE ROLE jupitorEmployee WITH LOGIN PASSWORD 'password123';
+GRANT SELECT, UPDATE, INSERT, TRIGGER ON TABLE leave_record TO jupitorEmployee;
+GRANT SELECT ON TABLE EmployeeData_View TO jupitorEmployee;
+
+
