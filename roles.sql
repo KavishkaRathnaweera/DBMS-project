@@ -63,6 +63,43 @@ GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION getleavebydate(date, date) TO jupitorhr;
 
+
+-------------------- role manager----------------------------------------------------------------------------------------
+CREATE ROLE jupitormanager WITH LOGIN PASSWORD 'passwordmanager';
+GRANT SELECT ON TABLE branch TO jupitormanager;
+GRANT SELECT ON TABLE job_type TO jupitormanager;
+GRANT SELECT ON TABLE department TO jupitormanager;
+GRANT SELECT ON TABLE customattributes TO jupitormanager;
+GRANT SELECT ON TABLE EmployeeData_View TO jupitormanager;
+GRANT SELECT ON TABLE pay_grade TO jupitormanager;
+GRANT SELECT ON TABLE employee_status TO jupitormanager;
+GRANT SELECT, UPDATE ON TABLE personal_information TO jupitormanager;
+GRANT SELECT, UPDATE ON TABLE personal_information_custom TO jupitormanager;
+GRANT SELECT, UPDATE, TRIGGER ON TABLE employee TO jupitormanager;
+GRANT SELECT, INSERT ON TABLE city TO jupitormanager;
+GRANT SELECT, INSERT ON TABLE country TO jupitormanager;
+GRANT SELECT, UPDATE, INSERT ON TABLE address TO jupitormanager;
+GRANT SELECT, UPDATE, INSERT ON TABLE supervisor TO jupitormanager;
+GRANT SELECT, UPDATE, INSERT ON TABLE employee_phone_number TO jupitormanager;
+GRANT SELECT, UPDATE, INSERT ON TABLE emergency_contact_details TO jupitormanager;
+
+
+GRANT ALL ON TABLE session TO jupitormanager;
+GRANT ALL ON SEQUENCE address_address_id_seq TO jupitormanager;
+GRANT ALL ON SEQUENCE city_city_id_seq TO jupitormanager;
+GRANT ALL ON SEQUENCE country_country_id_seq TO jupitormanager;
+GRANT ALL ON SEQUENCE personal_information_employee_id_seq TO jupitormanager;
+
+GRANT EXECUTE ON PROCEDURE addtosupervisort(employee_ids integer[], val_supervisor_id integer, arraylength integer) TO jupitormanager;
+GRANT EXECUTE ON FUNCTION updateSupervisorTable() TO jupitormanager;
+GRANT EXECUTE ON FUNCTION getsupervisors(branch character varying, department character varying, jobtitle character varying) TO jupitormanager;
+GRANT EXECUTE ON FUNCTION getnosupervisoremployees(branch character varying, department character varying, jobtitle character varying) TO jupitormanager;
+GRANT EXECUTE ON FUNCTION setcity(cityname character varying, countryid numeric) TO jupitormanager;
+GRANT EXECUTE ON FUNCTION setaddress(addressname character varying, cityid numeric, postalcode numeric) TO jupitormanager;
+GRANT EXECUTE ON FUNCTION setcountry(c character varying) TO jupitormanager;
+---------------------------------------------------------------------------------------------------------------------
+
+
 -- Supervisor Role --------------
 CREATE ROLE jupitorSupervisor WITH LOGIN PASSWORD 'password123';
 GRANT  SELECT  ON TABLE personal_information TO jupitorSupervisor;
@@ -77,4 +114,3 @@ GRANT EXECUTE ON FUNCTION getAttendence(s_id numeric, today date ) TO jupitorSup
 GRANT EXECUTE ON FUNCTION getEmployee(e_id numeric) TO jupitorSupervisor;
 GRANT EXECUTE ON FUNCTION getEmployees1(s_id numeric) TO jupitorSupervisor;
 GRANT EXECUTE ON FUNCTION getleavea(s_id numeric) TO jupitorSupervisor;
-

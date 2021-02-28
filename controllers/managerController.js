@@ -1,6 +1,6 @@
 const e = require('cors');
 const managerServices =require('../services/managerServices');
-const OrganizationServices = require("../services/organizationServices");
+
 
 var user;
 var userBranch;
@@ -185,7 +185,7 @@ static async viewData(req,res){
             const departments=await managerServices.getAllDepartments();
             const payGrades = await managerServices.getAllPayGradeLevel();
             const employee_statuses = await managerServices.getEmployeeStatus();
-            const customAttributes=await OrganizationServices.getCustomAttributes();
+            const customAttributes=await managerServices.getCustomAttributes();
 
             // console.log(empDATA)
             res.render("./manager/viewData", {
