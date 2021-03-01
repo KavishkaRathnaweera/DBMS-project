@@ -78,7 +78,7 @@ GRANT SELECT, UPDATE, TRIGGER ON TABLE public.employee TO jupitormanager;
 GRANT SELECT, INSERT ON TABLE public.city TO jupitormanager;
 GRANT SELECT, INSERT ON TABLE public.country TO jupitormanager;
 GRANT SELECT, UPDATE, INSERT ON TABLE public.address TO jupitormanager;
-GRANT SELECT, UPDATE, INSERT ON TABLE public.supervisor TO jupitormanager;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.supervisor TO jupitormanager;
 GRANT SELECT, UPDATE, INSERT ON TABLE public.employee_phone_number TO jupitormanager;
 GRANT SELECT, UPDATE, INSERT ON TABLE public.emergency_contact_details TO jupitormanager;
 
