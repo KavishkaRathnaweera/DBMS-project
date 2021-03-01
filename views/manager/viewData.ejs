@@ -68,7 +68,7 @@
                                       <!-- text input -->
                                       <div class="form-group">
                                           <label>NIC</label>
-                                          <input type="text" class="form-control" placeholder="<%= empDATA.length>0 ? empDATA[0].nic : ''%>" id="NIC" name="NIC" value="<%= empDATA.length>0 ? empDATA[0].nic : ''%>" required readonly>
+                                          <input type="text" class="form-control" placeholder="<%= empDATA.length>0 ? empDATA[0].nic : ''%>" id="NIC" name="NIC" value="<%= empDATA.length>0 ? empDATA[0].nic : ''%>" required disabled>
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
@@ -80,7 +80,7 @@
                                                   <span class="input-group-text"><i
                                                           class="fas fa-envelope"></i></span>
                                               </div>
-                                              <input type="email" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].email : ''%>" id="email" name="email" value="<%=empDATA.length>0 ? empDATA[0].email : ''%>" required readonly>
+                                              <input type="email" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].email : ''%>" id="email" name="email" value="<%=empDATA.length>0 ? empDATA[0].email : ''%>" required disabled>
                                           </div>
                                       </div>
                                   </div>
@@ -88,21 +88,21 @@
                                       <!-- text input -->
                                       <div class="form-group">
                                           <label>First Name</label>
-                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].first_name : ''%>" id="first_name" name="first_name" value="<%=empDATA.length>0 ? empDATA[0].first_name : ''%>" required readonly>
+                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].first_name : ''%>" id="first_name" name="first_name" value="<%=empDATA.length>0 ? empDATA[0].first_name : ''%>" required disabled>
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
                                       <!-- text input -->
                                       <div class="form-group">
                                           <label>Middle Name</label>
-                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].middle_name : ''%>" id="middle_name" name="middle_name" value="<%=empDATA.length>0 ? empDATA[0].middle_name : ''%>" required readonly>
+                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].middle_name : ''%>" id="middle_name" name="middle_name" value="<%=empDATA.length>0 ? empDATA[0].middle_name : ''%>" required disabled>
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
                                       <!-- text input -->
                                       <div class="form-group">
                                           <label>Last Name</label>
-                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].last_name : ''%>" id="last_name" name="last_name" value="<%=empDATA.length>0 ? empDATA[0].last_name : ''%>" required readonly>
+                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].last_name : ''%>" id="last_name" name="last_name" value="<%=empDATA.length>0 ? empDATA[0].last_name : ''%>" required disabled>
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
@@ -113,7 +113,7 @@
                                               <div class="input-group-prepend">
                                                   <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                               </div>
-                                              <input type="number" class="form-control" id="phone" name="phone"  placeholder="<%=empDATA.length>0 ? empDATA[0].phone : ''%>" value="<%=empDATA.length>0 ? empDATA[0].phone : ''%>" required readonly>
+                                              <input type="number" class="form-control" id="phone" name="phone"  placeholder="<%=empDATA.length>0 ? empDATA[0].phone : ''%>" value="<%=empDATA.length>0 ? empDATA[0].phone : ''%>" required disabled>
                                           </div>
                                       </div>
                                   </div>
@@ -150,7 +150,7 @@
                                       <div class="form-group">
                                           <label>Birth Date:</label>
                                           <% birthday =  empDATA.length>0 ? `${empDATA[0].birth_day.getMonth()+1}/${empDATA[0].birth_day.getDate()}/${empDATA[0].birth_day.getFullYear()}` : '' %>
-                                          <input class="form-control datetimepicker-input" type="text" id="birthday" name="birthday" placeholder="<%= birthday %>" onfocus="(this.type='date')" value="<%= birthday %>" required readonly>
+                                          <input class="form-control datetimepicker-input" type="text" id="birthday" name="birthday" placeholder="<%= birthday %>" onfocus="(this.type='date')" value="<%= birthday %>" required disabled>
                                        </div>
                                   </div>
                               </div>
@@ -160,38 +160,38 @@
                                       <!-- text input -->
                                       <div class="form-group">
                                           <label>Address</label>
-                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].address : ''%>" id="address_id" name="address_id" value="<%=empDATA.length>0 ? empDATA[0].address : ''%>" required readonly>
+                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].address : ''%>" id="address_id" name="address_id" value="<%=empDATA.length>0 ? empDATA[0].address : ''%>" required disabled>
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label>City</label>
-                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].city : ''%>" id="city" name="city"  value="<%=empDATA.length>0 ? empDATA[0].city : ''%>" required readonly>
+                                          <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].city : ''%>" id="city" name="city"  value="<%=empDATA.length>0 ? empDATA[0].city : ''%>" required disabled>
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label>Postal Code</label>
-                                          <input type="number" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].postal_code : ''%>" id="postal_code" name="postal_code"  value="<%=empDATA.length>0 ? empDATA[0].postal_code : ''%>" required readonly> 
+                                          <input type="number" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].postal_code : ''%>" id="postal_code" name="postal_code"  value="<%=empDATA.length>0 ? empDATA[0].postal_code : ''%>" required disabled> 
                                       </div>
                                   </div>
                                   <div class="col-sm-6" style="display:none;">
                                       <div class="form-group">
                                           <label>Password</label>
-                                          <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="password" name="password" required readonly>
+                                          <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="password" name="password" required disabled>
                                       </div>
                                   </div>
                                   <div class="col-sm-6" style="display:none;">
                                       <div class="form-group">
                                           <label>Re-enter password</label>
-                                          <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="repassword" name="repassword" required readonly>
+                                          <input type="password" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].password : ''%>" value="<%=empDATA.length>0 ? empDATA[0].password : ''%>" id="repassword" name="repassword" required disabled>
                                       </div>
                                   </div>
 
                                   <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Country</label>
-                                        <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].country : ''%>" id="country"  name="country" value="<%=empDATA.length>0 ? empDATA[0].country : ''%>" required readonly>
+                                        <input type="text" class="form-control" placeholder="<%=empDATA.length>0 ? empDATA[0].country : ''%>" id="country"  name="country" value="<%=empDATA.length>0 ? empDATA[0].country : ''%>" required disabled>
                                     </div>
                                     </div>
 
@@ -220,7 +220,7 @@
                                       <!-- select -->
                                       <div class="form-group">
                                           <label>Branch</label>
-                                          <select class="form-control" id="branch"  name="branch" readonly>
+                                          <select class="form-control" id="branch"  name="branch" disabled>
                                             <% if(empDATA.length>0){ %>
                                                 <option value="<%= empDATA[0].branch_name %>"><%= empDATA[0].branch_name %></option>
                                              <% }  %>
@@ -231,12 +231,12 @@
                                       <!-- select -->
                                       <div class="form-group">
                                           <label>Job Title</label>
-                                          <select class="form-control" id="jobTitle"  name="jobTitle" readonly>
+                                          <select class="form-control" id="jobTitle"  name="jobTitle" disabled>
                                             <% if(empDATA.length>0){ %>
                                                 <option value="<%= empDATA[0].job_title %>"><%= empDATA[0].job_title %></option>
                                              <% } %>
                                               <% if(Jobtypes && Jobtypes[0]){ Jobtypes.forEach(function(Jobtype){ %>
-                                                <% if(Jobtype.job_title !== user && Jobtype.job_title !== empDATA[0].job_title) {%>
+                                                <% if(Jobtype.job_title !== user && Jobtype.job_title !== empDATA[0].job_title && Jobtype.job_title !== "HR") {%>
                                                   <option value="<%=Jobtype.job_title%>">
                                                       <%=Jobtype.job_title%>
                                                   </option>
@@ -250,7 +250,7 @@
                                       <!-- select -->
                                       <div class="form-group">
                                           <label>Department</label>
-                                          <select class="form-control" id="department" name="department" readonly>
+                                          <select class="form-control" id="department" name="department" disabled>
 
                                             <% if(empDATA.length>0){ %>
                                                 <option value="<%= empDATA[0].dept_name %>"><%= empDATA[0].dept_name %></option>
@@ -262,7 +262,7 @@
                                       <!-- select -->
                                       <div class="form-group">
                                           <label>Pay Grade Level</label>
-                                          <select class="form-control" id="payGrade"  name="payGrade" readonly>
+                                          <select class="form-control" id="payGrade"  name="payGrade" disabled>
                                             <% if(empDATA.length>0){ %>
                                                 <option value="<%= empDATA[0].paygrade_level %>"><%= empDATA[0].paygrade_level %></option>
                                              <% } %>
@@ -282,7 +282,7 @@
                                       <!-- select -->
                                       <div class="form-group">
                                           <label>Employee Status</label>
-                                          <select class="form-control" id="empStatus"  name="empStatus" readonly>
+                                          <select class="form-control" id="empStatus"  name="empStatus" disabled>
                                             <% if(empDATA.length>0){ %>
                                                 <option value="<%= empDATA[0].e_status_name %>"><%= empDATA[0].e_status_name %></option>
                                              <% } %>
@@ -326,7 +326,7 @@
                                         <div class="col-sm-6">
                                         <div class="form-group" name>
                                             <label for=""><%=customAttribute.name%>:</label>
-                                            <select class="form-control" id="customAttr" name="<%=customAttribute.name%>" readonly>
+                                            <select class="form-control" id="customAttr" name="<%=customAttribute.name%>" disabled>
                                                 <option value="<%= eval(valString)  %>"><%= eval(valString)  %></option>
                                             </select>
                                     </div>
@@ -336,14 +336,14 @@
                                         <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for=""><%=customAttribute.name%>:</label>
-                                            <input class="form-control" id="customAttr" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required readonly>
+                                            <input class="form-control" id="customAttr" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required disabled>
                                         </div>
                                         </div>
                                 <% }else if(customAttribute.type=="integer"){ %>
                                         <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for=""><%=customAttribute.name%>:</label>
-                                            <input class="form-control" id="customAttr" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required readonly>
+                                            <input class="form-control" id="customAttr" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required disabled>
                                         </div>
                                         </div>
                         <% }}) %> 
@@ -399,29 +399,29 @@
             var r = confirm("Do you want to edit this employee data?");
 
             if (r) {
-                $('#NIC').attr('readonly', false);
-                $('#email').attr('readonly', false);
-                $('#first_name').attr('readonly', false);
-                $('#middle_name').attr('readonly', false);
-                $('#last_name').attr('readonly', false);
-                $('#phone').attr('readonly', false);
+                $('#NIC').attr('disabled', false);
+                $('#email').attr('disabled', false);
+                $('#first_name').attr('disabled', false);
+                $('#middle_name').attr('disabled', false);
+                $('#last_name').attr('disabled', false);
+                $('#phone').attr('disabled', false);
                 $('#genderM').attr('disabled', false);
                 $('#genderF').attr('disabled', false);
-                $('#birthday').attr('readonly', false);
-                $('#address_id').attr('readonly', false);
-                $('#city').attr('readonly', false);
-                $('#postal_code').attr('readonly', false);
-                $('#country').attr('readonly', false);
+                $('#birthday').attr('disabled', false);
+                $('#address_id').attr('disabled', false);
+                $('#city').attr('disabled', false);
+                $('#postal_code').attr('disabled', false);
+                $('#country').attr('disabled', false);
                 $('#customFile').attr('disabled', false);
-                $('#branch').attr('readonly', false);
-                $('#jobTitle').attr('readonly', false);
-                $('#department').attr('readonly', false);
-                $('#payGrade').attr('readonly', false);
-                $('#empStatus').attr('readonly', false);
-                $('#salary').attr('readonly', false);
+                $('#branch').attr('disabled', false);
+                $('#jobTitle').attr('disabled', false);
+                $('#department').attr('disabled', false);
+                $('#payGrade').attr('disabled', false);
+                $('#empStatus').attr('disabled', false);
+                $('#salary').attr('disabled', false);
                 $('#savebtn').attr('disabled', false);
                 $('#sbmtbtn').attr('disabled', true);
-                $('#customAttr').attr('readonly', false);
+                $('#customAttr').attr('disabled', false);
 
             }
             
@@ -439,26 +439,26 @@
                     if(n-parseInt(bdate.substring(0,4))>18){
                         if(password.length>7 && password==repassword){
                             $('#sbmtbtn').attr('disabled', false);
-                            $('#NIC').attr('readonly', true);
-                            $('#email').attr('readonly', true);
-                            $('#first_name').attr('readonly', true);
-                            $('#middle_name').attr('readonly', true);
-                            $('#last_name').attr('readonly', true);
-                            $('#phone').attr('readonly', true);
+                            $('#NIC').attr('disabled', true);
+                            $('#email').attr('disabled', true);
+                            $('#first_name').attr('disabled', true);
+                            $('#middle_name').attr('disabled', true);
+                            $('#last_name').attr('disabled', true);
+                            $('#phone').attr('disabled', true);
                             $(':radio:not(:checked)').attr('disabled', true);
-                            $('#birthday').attr('readonly', true);
-                            $('#address_id').attr('readonly', true);
-                            $('#city').attr('readonly', true);
-                            $('#postal_code').attr('readonly', true);
-                            $('#country').attr('readonly', true);
-
-                            $('#branch').attr('readonly', true);
-                            $('#jobTitle').attr('readonly', true);
-                            $('#department').attr('readonly', true);
-                            $('#payGrade').attr('readonly', true);
-                            $('#empStatus').attr('readonly', true);
-                            $('#salary').attr('readonly', true);
-                            $('#customAttr').attr('readonly', true);
+                            $('#birthday').attr('disabled', true);
+                            $('#address_id').attr('disabled', true);
+                            $('#city').attr('disabled', true);
+                            $('#postal_code').attr('disabled', true);
+                            $('#country').attr('disabled', true);
+                            $('#customFile').attr('disabled', true);
+                            $('#branch').attr('disabled', true);
+                            $('#jobTitle').attr('disabled', true);
+                            $('#department').attr('disabled', true);
+                            $('#payGrade').attr('disabled', true);
+                            $('#empStatus').attr('disabled', true);
+                            $('#salary').attr('disabled', true);
+                            $('#customAttr').attr('disabled', true);
                             
                         }
                         else{
@@ -480,9 +480,29 @@
         }
         function disableButon(){
            // 
+            $('#NIC').attr('disabled', false);
+            $('#email').attr('disabled', false);
+            $('#first_name').attr('disabled', false);
+            $('#middle_name').attr('disabled', false);
+            $('#last_name').attr('disabled', false);
+            $('#phone').attr('disabled', false);
+            $('#genderM').attr('disabled', false);
+            $('#genderF').attr('disabled', false);
+            $('#birthday').attr('disabled', false);
+            $('#address_id').attr('disabled', false);
+            $('#city').attr('disabled', false);
+            $('#postal_code').attr('disabled', false);
+            $('#country').attr('disabled', false);
+            $('#customFile').attr('disabled', false);
+            $('#branch').attr('disabled', false);
+            $('#jobTitle').attr('disabled', false);
+            $('#department').attr('disabled', false);
+            $('#payGrade').attr('disabled', false);
+            $('#empStatus').attr('disabled', false);
+            $('#salary').attr('disabled', false);
+            $('#customAttr').attr('disabled', false);
            setTimeout(function () { 
-               $('#savebtn').attr('disabled', true);
-               $('#sbmtbtn').attr('disabled', true);
+                $('#sbmtbtn').attr('disabled', true);
              }, 1000);
         }
         
