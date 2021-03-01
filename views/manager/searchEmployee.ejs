@@ -42,7 +42,7 @@
                   <option selected="selected" value="allJobtypes">All</option>
                   <% if (Jobtypes.length> 0){ %>
                     <% Jobtypes.forEach(Jobtype=> { %>
-                      <% if (Jobtype.job_title != user){ %>
+                      <% if (Jobtype.job_title != user && Jobtype.job_title !="HR"){ %>
                       <option value="<%= Jobtype.job_title %>"><%= Jobtype.job_title %></option>
                       <% } %>
                     <% }) %>

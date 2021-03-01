@@ -540,7 +540,7 @@ $BODY$;
 Drop TRIGGER IF EXISTS emp_leave on employee;
 
 
-CREATE TRIGGER setLeave AFTER UPDATE ON employee FOR EACH ROW EXECUTE PROCEDURE emp_leave();
+CREATE TRIGGER setLeave AFTER INSERT ON employee FOR EACH ROW EXECUTE PROCEDURE emp_leave();
 
 
 -- Indunil's section---------------------------------------------------------------------------------------------------------------------
