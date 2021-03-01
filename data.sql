@@ -21,15 +21,6 @@ INSERT INTO public.branch(
 	branch_name, address_id)
 	VALUES ('new tel', 1);
 
-
-
-
-INSERT INTO public.customattributes(
-	name, type, size)
-	VALUES ('nationality', 'varchar', 20);
-
-
-
 INSERT INTO public.department(
 	dept_name)
 	VALUES ('HR'), ('software');
