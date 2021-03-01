@@ -6,6 +6,7 @@ const {adminRegisterValidator,addHRvalidator,} = require("../validaters/register
 
 var employeeSet = { column: [], details: [], selectTypes:[] };
 var departmentSet = [];
+var departmentSetAP=[];
 var user="HR Manager";
 
 class HRController {
@@ -81,7 +82,7 @@ class HRController {
 
     try {
       const empAdd = await hrService.addEmployee(req.body);
-      
+      console.log(empAdd);
       const success = "HR added sucessfully. you can logged in using emp";
       res.redirect("viewData/"+empAdd.employee_id);
     } catch (error) {
@@ -99,7 +100,7 @@ class HRController {
   }
 
   static async viewData(req, res) {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
   
     if(!id){
               res.render("HR/viewData", {
@@ -122,12 +123,12 @@ class HRController {
         try{
             const empDATA = await hrService.getEmpDATA(id);
             const branches=await hrService.getAllBranches();
-            const Jobtypes=await hrService.getAllJobTitles();
-            const departments=await hrService.getAllDepartments();
+            const Jobtypes=await hrService.getAllJobTitle();
+            const departments=await hrService.getAllDepartment();
             const payGrades = await hrService.getAllPayGradeLevel();
             const employee_statuses = await hrService.getEmployeeStatus();
             const customAttributes=await hrService.getCustomAttributes();
-          console.log(empDATA)
+            console.log(empDATA)
             // console.log(empDATA)
             res.render("HR/viewData", {
                 user: req.session.user,
@@ -217,7 +218,7 @@ static async updateEmployee(req,res){
     const payGrades = await hrService.getAllPayGradeLevel();
     const employee_statuses = await hrService.getEmployeeStatus();
     const fieds = await hrService.getEmpFields();
-
+    console.log(fieds);
     res.render("HR/customizeReports", {
       user: req.session.user,
       error: req.query.error,
@@ -259,10 +260,12 @@ static async updateEmployee(req,res){
     try {
       res.render("HR/leaveReport",{
       departmentlist: departmentSet,
+      departmentlistAp:departmentSetAP,
       dates:{},
       error:''
     });
     departmentSet=[]
+    departmentSetAP=[]
     } catch (error) {
       throw error
     }
@@ -277,19 +280,23 @@ static async updateEmployee(req,res){
     if(inpdate.startDate<inpdate.endDate && parseInt(inpdate.startDate.substring(0, 4))>2000){
       try {
       departmentSet = await hrService.getDepartmentLeaves(inpdate.startDate,inpdate.endDate);
+      departmentSetAP=await hrService.getDepartmentLeavesAP(inpdate.startDate,inpdate.endDate);
       res.render("HR/leaveReport",{
       departmentlist: departmentSet,
+      departmentlistAp:departmentSetAP,
       dates: inpdate,
       error:''
     });
     } catch (error) {
       departmentSet = [];
+      departmentSetAP=[];
       throw error
     }
     }
     else{
       res.render("HR/leaveReport",{
       departmentlist: [],
+      departmentlistAp:[],
       dates: {},
       error:'Invalid Date. Start Date must be greater than year 2000 and End Date must be greater than Start Date'
     });

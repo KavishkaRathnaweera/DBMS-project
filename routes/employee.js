@@ -8,7 +8,6 @@ router.use("/applyLeave", employeeController.applyLeave);
 router.get("/attendance", employeeController.attendance);
 router.use("/employeeInfo", employeeController.employeeInfo);
 router.use("/leavesHistory", employeeController.leavesHistory);
-
 router.post("/requestLeave", employeeController.requestLeave);
 
 module.exports = router;

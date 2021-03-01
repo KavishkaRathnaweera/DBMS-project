@@ -66,7 +66,10 @@ static async findUserByEmail(email){
     const result=await pool3.query(`
     select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id) 
     where employee_id = $1`,[id])
+    console.log("result");
+    console.log(result.rows);
     return result.rows;
+    
     }
 
   static async addEmployee(value) {
@@ -220,8 +223,9 @@ static async findUserByEmail(email){
   static async getEmpFields() {
     try{
       const fields=(await pool3.query(`
-            select * from full_employee_detail limit 1`)).rows;
-      return fields[0]
+            SELECT column_name  FROM information_schema.columns WHERE table_name = 'full_employee_detail'`)).rows;
+      console.log(fields);
+      return fields
     } catch (error) {
       throw error;
     }   
@@ -236,6 +240,54 @@ static async findUserByEmail(email){
       throw error;
     }   
     }
+
+  static async getDepartmentLeavesAP(startDate,endDate) {
+    try{
+      const fields=(await pool3.query(`
+            select dept_name, count(leave_id) from (select * from getleavebydate( $1,$2) WHERE approval_state='Yes') as emptable inner join employee using(employee_id) right outer join department using(dept_name) group by dept_name; `,[startDate,endDate])).rows;
+      return fields
+    } catch (error) {
+      throw error;
+    }   
+    }
+
+
+  static async updateEmployee(value) {
+   
+    try{
+        await pool3.query("BEGIN");
+        
+        console.log(value)
+        const addressrow= await hrManager.addressTable(value.address_id,value.city,value.postal_code, value.country);
+        const personal_information = (await pool3.query(`update Personal_information set NIC = $1, first_name=$2, middle_name=$3, last_name=$4, gender=$5, birth_day=$6, address_id=$7, email=$8
+        where employee_id = $9`,[value.NIC, value.first_name, value.middle_name, value.last_name, value.gender, value.birthday, addressrow[0].address_id,  value.email,value.ID])).rows;
+
+        const employee = (await pool3.query(`update Employee set branch_name=$1, job_title=$2, dept_name=$3, paygrade_level=$4, e_status_name=$5 
+        where employee_id=$6`,[value.branch, value.jobTitle, value.department, value.payGrade, value.empStatus, value.ID])).rows;
+
+        const empEmergency = (await pool3.query(`UPDATE emergency_contact_details set relative_name=$1, contact_no=$2 
+        where employee_id=$3`,[value.first_name, value.phone,value.ID])).rows;
+        const empPhone = (await pool3.query(`UPDATE employee_phone_number set phone=$1 
+        where employee_id=$2`,[value.phone,value.ID])).rows;
+        await pool3.query("COMMIT");
+
+        } catch (error) {
+              await pool3.query("ROLLBACK");
+              throw error
+        }   
+
+  }
+  static async findUserIDByEmail(email){
+    const result=await pool3.query(`
+    select employee_id from personal_information where email = $1`,[email])
+    return result.rows;
+  }
+  static async findUserIDByNIC(NIC){
+    const result=await pool3.query(`
+    select employee_id from personal_information where NIC = $1`,[NIC])
+    return result.rows;
+  }
+
 
   
 

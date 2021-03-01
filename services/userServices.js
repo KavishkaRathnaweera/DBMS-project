@@ -1,6 +1,5 @@
 const Error =require('../helpers/error')
 const User=require('../models/user')
-const Admin=require('../models/admin')
 const bcrypt=require('bcrypt')
 const idChecker=require("../helpers/idChecker")
 
@@ -15,7 +14,7 @@ class userServices {
 
         
         if(!user){
-             user=await Admin.findAdmin(isValidID)
+             user=await User.findAdmin(isValidID)
             if(!user){
                 throw new Error.BadRequest('you dont have permission to login');
             }
