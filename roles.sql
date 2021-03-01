@@ -87,6 +87,8 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.supervisor TO jupitormanage
 GRANT SELECT, UPDATE, INSERT ON TABLE public.employee_phone_number TO jupitormanager;
 GRANT SELECT, UPDATE, INSERT ON TABLE public.emergency_contact_details TO jupitormanager;
 
+-- GRANT SELECT ON TABLE public.leave TO jupitormanager;
+-- GRANT UPDATE, INSERT ON TABLE public.employee_leave TO jupitormanager;
 
 GRANT ALL ON TABLE public.session TO jupitormanager;
 GRANT ALL ON SEQUENCE public.address_address_id_seq TO jupitormanager;
