@@ -97,7 +97,6 @@ employee_id, leave_type, apply_date, start_date, duration, reason, approval_stat
 
     return res;
   }
-
   static async getEmpDATA(id) {
     const result = await pool6.query(
       `

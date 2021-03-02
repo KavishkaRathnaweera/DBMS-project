@@ -1,3 +1,4 @@
+const { Pool } = require('pg');
 const {pool1} = require('../connection');
 class User{
     
@@ -7,6 +8,13 @@ class User{
             const user= await pool1.query("select * from personal_information where employee_id = $1", [id])
             return user.rows[0];
            
+    }
+    static async findAdmin(id){
+      const admin=await pool1.query("select * from admin left outer join personal_information using(employee_id) where employee_id=$1",[id])
+      return admin.rows[0];
+    }
+    static async updatePassword(new_password,uid){
+          return await pool1.query("update personal_information set password =$1 where employee_id=$2", [new_password,uid])
     }
 
 

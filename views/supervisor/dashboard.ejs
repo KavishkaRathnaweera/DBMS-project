@@ -4,7 +4,9 @@
 
 
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper dashboard">
+    <img src="/assets/public/dist/img/manager4.jpg" alt="" srcset="">
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -13,9 +15,9 @@
                     <h1 class="m-0">Dashboard</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/supervisor">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
+                    <ol class="breadcrumb float-sm-right link">
+                        <li class="breadcrumb-item "><a href="/supervisor">Home</a></li>
+                        <li class="breadcrumb-item  ">Dashboard</li>
                     </ol>
                 </div>
             </div>
@@ -114,7 +116,11 @@
                             subtitle: 'Attendence of this week',
                         },
                         width: 600,
-                        colors: ['#04b32a', '#cf0620']
+                        colors: ['#04b32a', '#cf0620'],
+                        backgroundColor: '#E4E4E4',
+                        is3D: true
+
+
                     };
 
                     var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
@@ -123,10 +129,19 @@
                 }
             </script>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-4 barchart">
                     <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
                 </div>
-                <div id="element1" class="col-sm-8 calender">
+                <!-- <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="card mb-2 bg-gradient-dark">
+                        <img class="card-img-top" src="/assets/public/dist/img/manager4.jpg" alt="Dist Photo 1">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                            <h5 class="card-title text-white mt-5 pt-2"></h5>
+                            <p class="card-text text-white pb-2 pt-1"></p>
+                        </div>
+                    </div>
+                </div> -->
+                <div id="element" class="col-sm-8 calender">
                     <script>
                         // initialize the Calendar component
                         var calendar = new ej.calendars.Calendar();
@@ -143,7 +158,7 @@
     <!-- /.card -->
 </div><!-- /.container-fluid -->
 <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
+    <div class="float-right d-none d-sm-block footer-dark">
         <b>All rights reserved</b>
     </div>
     <strong>Copyright &copy; 2021 <a>DBMS Project-Group 15</a>.</strong>

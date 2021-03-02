@@ -1,10 +1,11 @@
 const {adminRegisterValidator, addHRvalidatorWrapper} =require('../validaters/registerValidator')
-const {adminLoginValidator} =require('../validaters/loginValidater')
+const passwordValidator =require('../validaters/passwordValidator')
 const adminServices =require('../services/adminServices');
 const idForm=require("../helpers/idChecker")
+const userServices=require('../services/userServices')
 const {leaveCountValidator}=require('../validaters/leaveValidator');
 const {branchValidator,payGradeValidator,payGradeEditValidator,employeeStatusValidator,EmployeeStatusEditValidator, jobTypeEditValidator, jobTypeValidator, branchEditValidator, DepartmentValidator}=require('../validaters/organizationValidator');
-const { getAllBranches } = require('../models/organization');
+const session = require('express-session');
 
 
 class  AdminController{
@@ -14,6 +15,21 @@ class  AdminController{
         //         user:req.session.user
         //     })
         // }
+        static async adminProfilePage(req,res){
+
+            try {
+                const admin=await adminServices.adminDetails(req.session.user.uid)
+                console.log(admin)
+                res.render('admin/account',{
+                    user:admin
+                })
+            } catch (error) {
+                console.log(error)
+                res.redirect('/admin?error="profile page error"')
+            }
+
+           
+        }
 
         static async signupPage(req,res){
             res.render('admin/adminSignup',{
@@ -28,6 +44,7 @@ class  AdminController{
                     postal_code:'',
                     country:'',
                     email:'',
+                    phone:'',
                     password:'',
                     error:'',
                     user:""
@@ -39,8 +56,8 @@ class  AdminController{
             try {
                 const {error, value} =await adminRegisterValidator.validate(req.body)
                 if(error) throw error;
-                await adminServices.adminRegister(value)
-                res.redirect('/login?success=admin register sucessfull')
+                const admin =await adminServices.adminRegister(value)
+                res.redirect('/login?success=admin register sucessfull.you can logged in using '+idForm.idForm(admin.employee_id))
 
             } catch (error) {
                 res.render('admin/adminSignup',{
@@ -55,6 +72,7 @@ class  AdminController{
                     postal_code:req.body.postal_code,
                     country:req.body.country,
                     email:req.body.email,
+                    phone:req.body.phone,
                     password:req.body.password,
                     error:error,
                     user:""
@@ -110,6 +128,24 @@ class  AdminController{
                 success:req.query.success
             })
         }
+        static async changePasswordPage(req,res){
+            res.render('admin/changePassword',{
+                user:req.session.user,
+                error:req.query.error,
+                success:req.query.success
+            })
+        }
+        static async changePassword(req,res){
+            try {
+                const {value,error} =await passwordValidator.validate(req.body)
+                if (error) throw error
+                await userServices.changePassword(req.session.user.uid,value);
+                res.redirect('/admin/changePassword?success=your password is sucessfully changed')
+    
+            } catch (error) {
+                res.redirect(`/admin/changePassword?error=${error}`)
+            }
+        }
 
         static async addHRPage(req,res){
             try {
@@ -131,6 +167,7 @@ class  AdminController{
                 HR.city=req.query.city
                 HR.postal_code=req.query.postal_code
                 HR.country=req.query.country
+                HR.phone=req.query.phone
 
                 HR.email=req.query.email,
                 HR.password=req.query.password
@@ -180,21 +217,21 @@ class  AdminController{
                 if(error) throw error
                 const HR =await adminServices.addHR(value); 
                 
-                const success="HR addedd sucessfully. you can logged in using emp"+idForm.idForm(HR.employee_id);
+                const success="HR addedd sucessfully. you can logged in using"+idForm.idForm(HR.employee_id);
               
 
                 
                 res.redirect(`/admin/addHR?success=${success}&NIC=${req.body.NIC}&first_name=${req.body.first_name}&
                 middle_name=${req.body.middle_name}&last_name=${req.body.last_name}&gender=${req.body.gender}&birthday=${req.body.birthday}&
                 address=${req.body.address}&city=${req.body.city}&postal_code=${req.body.postal_code}&country=${req.body.country}&email=${req.body.email}&password=${req.body.password}&branch_id=${req.body.branch_name}&job_title=${req.body.job_title}&
-                dept_name=${req.body.dept_name}&paygrade_level=${req.body.paygrade_level}&e_status_name=${req.body.e_status_name}`)
+                dept_name=${req.body.dept_name}&paygrade_level=${req.body.paygrade_level}&e_status_name=${req.body.e_status_name}&phone=${req.body.phone}`)
 
             } catch (error) {
                 console.log(error)
                 res.redirect(`/admin/addHR?error=${error}&NIC=${req.body.NIC}&first_name=${req.body.first_name}&
                 middle_name=${req.body.middle_name}&last_name=${req.body.last_name}&gender=${req.body.gender}&birthday=${req.body.birthday}&
                 address=${req.body.address}&city=${req.body.city}&postal_code=${req.body.postal_code}&country=${req.body.country}&email=${req.body.email}&password=${req.body.password}&branch_id=${req.body.branch_name}&job_title=${req.body.job_title}&
-                dept_name=${req.body.dept_name}&paygrade_level=${req.body.paygrade_level}&e_status_name=${req.body.e_status_name}`)
+                dept_name=${req.body.dept_name}&paygrade_level=${req.body.paygrade_level}&e_status_name=${req.body.e_status_name}&phone=${req.body.phone}`)
             }
         }
 

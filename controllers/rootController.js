@@ -3,7 +3,6 @@ const {registerValidator}=require("../validaters/registerValidator")
 const userServices=require('../services/userServices')
 const OrganizationServices=require('../services/organizationServices')
 const idForm=require("../helpers/idChecker")
-const { use } = require("../routes/admin")
 
 
 class RootController{
@@ -90,6 +89,8 @@ class RootController{
             req.session.user.department=user.dept_name
             req.session.user.branch_name=user.branch_name
             req.session.user.job_title=user.job_title
+            req.session.user.photo=user.photo
+
             res.redirect(`/${type}`)
             
 
@@ -175,6 +176,8 @@ class RootController{
             
         }
     }
+    
+    
 
    
     static async logout(req,res){

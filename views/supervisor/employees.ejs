@@ -54,7 +54,6 @@
                                             <th>Last Name</th>
                                             <th>Leaves Count </th>
                                             <th style="width: 40px">Label</th>
-                                            <th>Details</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,13 +96,6 @@
                                                 <% } %>
                                             </td>
 
-                                            <td><% if(employeeLst[i].total_leaves >= 60){ %>
-                                                <button type="button" class="btn btn-block btn-outline-success">view
-                                                    details</button> <% } else { %>
-                                                <button type="button" class="btn btn-block btn-outline-danger">view
-                                                    details</button>
-                                                <% } %>
-                                            </td>
                                         </tr>
                                         <% } %>
 

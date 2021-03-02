@@ -30,10 +30,13 @@ class adminServices{
     //     return user;
         
     // }
+    static async adminDetails(uid){
+        return await Admin.adminDetails(uid)
+    }
 
 
 
-    static async adminRegister({NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,password, photo, securityKey}){
+    static async adminRegister({NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email, phone,password, photo, securityKey}){
             
                 const isEmailRegistered=await Admin.findUserByEmail(email);
                 if(isEmailRegistered){
@@ -46,7 +49,7 @@ class adminServices{
               
                 const hashpwd= await bcrypt.hash(password, 10)
         
-                const admin=await Admin.adminRegister(NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,  hashpwd, photo)
+                const admin=await Admin.adminRegister(NIC, first_name, middle_name, last_name, gender, birthday, address,city, postal_code,country, email,phone ,  hashpwd, photo)
                 return admin;
     }
 

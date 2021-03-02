@@ -1,6 +1,5 @@
 const Error =require('../helpers/error')
 const User=require('../models/user')
-const Admin=require('../models/admin')
 const bcrypt=require('bcrypt')
 const idChecker=require("../helpers/idChecker")
 
@@ -15,7 +14,7 @@ class userServices {
 
         
         if(!user){
-             user=await Admin.findAdmin(isValidID)
+             user=await User.findAdmin(isValidID)
             if(!user){
                 throw new Error.BadRequest('you dont have permission to login');
             }
@@ -46,6 +45,17 @@ class userServices {
         const hashpwd=await bcrypt.hash(password, 10);
         const user=await  User.register(NIC,first_name, middle_name, last_name, gender, birthday,  address,city, postal_code,country, email, hashpwd, branch_name, job_title, dept_name, paygrade_level, e_status_name);
         return user
+    }
+    static async changePassword(id,value){
+        const user=await User.findUser(id);
+        const isPasswordCorrect =await bcrypt.compare(value.password,user.password)
+        if(!isPasswordCorrect){
+            throw new Error.BadRequest('entered current password is wrong');
+
+        }
+        const hashpwd=await bcrypt.hash(value.new_password, 10);
+        return await User.updatePassword(hashpwd,id);
+
     }
     
 }
