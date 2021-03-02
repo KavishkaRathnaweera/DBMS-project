@@ -11,12 +11,12 @@ INSERT INTO public.job_type(
 
 
 INSERT INTO public.department(
-	dept_name, employee_count)
-	VALUES ('HR', '20'),
-	('cutting', '30'),
-    ('software', '30'),
-	('stock', '30'),
-	('sewing', '200');
+	dept_name)
+	VALUES ('HR'),
+	('cutting'),
+    ('software'),
+	('stock'),
+	('sewing');
 
 INSERT INTO public.pay_grade(
 	paygrade_level, description, requirement)
