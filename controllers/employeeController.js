@@ -14,7 +14,6 @@ class employeeController {
       userId: id,
     });
   }
-
   static async attendance(req, res) {
     const history = await Employee.getLeavingHistory(req.session.user.uid);
     // console.log(history[0].leave_id);

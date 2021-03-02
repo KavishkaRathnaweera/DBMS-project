@@ -120,7 +120,7 @@ CREATE ROLE jupitorSupervisor WITH LOGIN PASSWORD 'password';
 GRANT  SELECT  ON TABLE personal_information TO jupitorSupervisor;
 GRANT  SELECT  ON TABLE supervisor TO jupitorSupervisor;
 GRANT  SELECT,UPDATE, TRIGGER ON TABLE leave_record TO jupitorSupervisor;
-GRANT  SELECT ON TABLE employee_leave TO jupitorSupervisor;
+GRANT  SELECT,UPDATE, TRIGGER  ON TABLE employee_leave TO jupitorSupervisor;
 GRANT  SELECT ON TABLE leave TO jupitorSupervisor;
 GRANT  SELECT ON TABLE employee TO jupitorSupervisor;
 GRANT ALL ON TABLE session TO jupitorSupervisor;
