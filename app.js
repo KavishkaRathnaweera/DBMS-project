@@ -39,6 +39,11 @@ app.use('/assets', express.static('assets'));
  //app.use(express.static(path.join(__dirname,'/')));
 app.use(require('./routes'))
 
+
+app.get('*', (req, res) => {
+    res.status(404).render('404');
+});
+
 app.listen(5000, function(){
     console.log("app is working on port 5000")
 })

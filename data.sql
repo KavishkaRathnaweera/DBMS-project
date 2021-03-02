@@ -1,87 +1,85 @@
 
-INSERT INTO public.country(
+INSERT INTO country(
 	country_id, country)
 	VALUES (1, 'Sri lanka');
 
-INSERT INTO public.city(
+INSERT INTO city(
 	city_id, city, country_id)
 	VALUES (1, 'kelaniya', 1);
 
 
 	
 	
-INSERT INTO public.address(
+INSERT INTO address(
 	address_id, address, city_id, postal_code)
 	VALUES (1, 'sinharamulla', 1, 11600);
 
 
 
 
-INSERT INTO public.branch(
+INSERT INTO branch(
 	branch_name, address_id)
 	VALUES ('new tel', 1);
 
-INSERT INTO public.department(
+INSERT INTO department(
 	dept_name)
 	VALUES ('HR'), ('software');
 	
 
 
-INSERT INTO public.employee_status(
+INSERT INTO employee_status(
 	e_status_name, duration, description)
-	VALUES ('permanent', '6 months', 'sdedf');
+	VALUES ('permanent', '6 months', 'this is dummy description');
 
 
 insert into job_type (job_title) values('HR') ,('Manager'), ('software engineer');
 
-INSERT INTO public.pay_grade(
+INSERT INTO pay_grade(
 	paygrade_level, description, requirement)
-	VALUES ('level 1', 'jvjjcjmmm5', '4 years'),  ('level 2', 'jvjjcjmmm5','4 years' );
+	VALUES ('level 1', 'this is dummy description', '4 years'),  ('level 2', 'this is dummy description','4 years' );
 
-INSERT INTO public.leave(
+INSERT INTO leave(
 	paygrade_level, anual, casual, maternity, no_pay)
 	VALUES ('level 1', 104, 22, 255, 22);
 
 
 -- real password 12345678
 
-INSERT INTO public.personal_information(
+INSERT INTO personal_information(
 	employee_id, nic, first_name, gender, birth_day, address_id, email, password, photo, registered_date)
-	VALUES (4	,'4578999977',	'indunil','male','2016-02-02',1	,'indunil773@gmail.com'	,'$2b$10$jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe'	,'http://res.cloudinary.com/dm36weewi/image/upload/v1614495778/kv55okywbeukso22oapv.png','2021-02-27'),
-	(9,'4578998899'	,'indunil','male','2021-02-02',1,'udayangana19958@gmail.com','$2b$10$jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe'	,'http://res.cloudinary.com/dm36weewi/image/upload/v1614499399/rrbbntdyu7zpz0ntgq5f.png','2021-02-28'),
-	(13,'524789655V','indunil','Male','1989-01-02'	,1	,'indunil348@gmail.com'	,'$2b$10$jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe','','2021-02-28'),
-	(14	,'124578986V','indunil','Male'	,'1986-12-28',	1,	'indunil553@gmail.com',	'$2b$10$jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe','','2021-02-28');
+	VALUES (1	,'4578999977',	'indunil','male','2016-02-02',1	,'indunil773@gmail.com'	,'$2b$10$jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe'	,'http://res.cloudinary.com/dm36weewi/image/upload/v1614495778/kv55okywbeukso22oapv.png','2021-02-27'),
+	(2,'4578998899'	,'indunil','male','2021-02-02',1,'udayangana19958@gmail.com','$2b$10$jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe'	,'http://res.cloudinary.com/dm36weewi/image/upload/v1614499399/rrbbntdyu7zpz0ntgq5f.png','2021-02-28'),
+	(3,'524789655V','indunil','Male','1989-01-02'	,1	,'indunil348@gmail.com'	,'$2b$10$jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe','','2021-02-28'),
+	(4	,'124578986V','indunil','Male'	,'1986-12-28',	1,	'indunil553@gmail.com',	'$2b$10$jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe','','2021-02-28');
 	
 
 
-INSERT INTO public.admin(
+INSERT INTO admin(
 	employee_id)
-	VALUES (4);
+	VALUES (1);
 
-INSERT INTO public.employee(
+INSERT INTO employee(
 	employee_id, branch_name, job_title, dept_name, paygrade_level, e_status_name, supervisor)
-	VALUES (9,'new tel','HR','HR','level 1','permanent'	,false), (13	,'new tel',	'Manager'	,'software',	'level 1',	'permanent'	,false),
-    (14	,'new tel'	,'software engineer',	'software'	,'level 1',	'permanent'	,true);
-INSERT INTO public.personal_information_custom(
+	VALUES (2,'new tel','HR','HR','level 1','permanent'	,false),
+	 (3	,'new tel',	'Manager'	,'software',	'level 1',	'permanent'	,false),
+    (4	,'new tel'	,'software engineer',	'software'	,'level 1',	'permanent'	,true);
+INSERT INTO personal_information_custom(
 	employee_id)
-	VALUES (9), (13), (14);
+	VALUES (2), (3), (4);
 
-INSERT INTO public.supervisor(
+INSERT INTO supervisor(
 	employee_id, supervisor_id)
-	VALUES (14, 13);
+	VALUES (4, 3);
 
-INSERT INTO public.leave_record(
+INSERT INTO leave_record(
 	leave_id, employee_id, leave_type, apply_date, start_date, duration, reason, approval_state)
-	VALUES (1,13,'anual','2021-02-28','2021-02-09',5,'nidimathai','No');
+	VALUES (1,3,'anual','2021-02-28','2021-02-09',5,'nidimathai','No');
 
-INSERT INTO public.emergency_contact_details(
-	employee_id, relative_name, contact_no)
-	VALUES (13,'indunil','0147896534'), (14,'indunil','0714569875');
 
-INSERT INTO public.employee_phone_number(
+INSERT INTO employee_phone_number(
 	employee_id, phone)
-	VALUES (13,'0147896534'
-), (14,'0714569875');
+	VALUES (3,'0147896534'
+), (4,'0714569875');
 	
 
 

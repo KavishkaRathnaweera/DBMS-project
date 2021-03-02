@@ -1,3 +1,5 @@
+
+
 -- admin role
 
 CREATE ROLE admin WITH LOGIN PASSWORD 'passwordAdmin';
@@ -13,8 +15,17 @@ Grant select,insert,update on job_type to admin;
 Grant select,insert,update on pay_grade to admin;
 Grant select,insert,update on department to admin;
 Grant select,insert,update on employee_status to admin;
+Grant select,insert,update on employee_phone_number to admin;
 Grant select,update on leave to admin;
+GRANT ALL ON TABLE admin TO admin;
 Grant select on information_schema.columns to admin;
+GRANT ALL ON SEQUENCE address_address_id_seq TO admin;
+GRANT ALL ON SEQUENCE city_city_id_seq TO admin;
+GRANT ALL ON SEQUENCE country_country_id_seq TO admin;
+GRANT ALL ON SEQUENCE personal_information_employee_id_seq TO admin;
+GRANT SELECT ON TABLE public.address_view TO admin;
+GRANT SELECT ON TABLE public.contact_details_view TO admin;
+GRANT SELECT ON TABLE public.personal_information_view TO admin;
 GRANT EXECUTE ON PROCEDURE updatejupitorleaves(paygradelevel character varying, an integer, cas integer, mat integer, nopay integer) TO admin;
 GRANT EXECUTE ON PROCEDURE updatejupitorbranch(branchname character varying, add integer) TO admin;
 GRANT EXECUTE ON PROCEDURE updatejupitoremployeestatus(estatusname character varying, du character varying, des character varying) TO admin;
@@ -129,4 +140,3 @@ GRANT SELECT ON TABLE address TO jupitorEmployee;
 GRANT SELECT ON TABLE city TO jupitorEmployee;
 GRANT SELECT ON TABLE country TO jupitorEmployee;
 GRANT ALL ON SEQUENCE leave_record_leave_id_seq TO jupitorEmployee;
-
