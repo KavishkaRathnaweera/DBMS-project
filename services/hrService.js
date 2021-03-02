@@ -120,6 +120,10 @@ class hrServices {
     const deptLeave = await hrManager.getDepartmentLeaves(startDate,endDate);
     return deptLeave;
   }
+  static async getDepartmentLeavesByType() {
+    const deptLeavebyType = await hrManager.getDepartmentLeavesByType();
+    return deptLeavebyType;
+  }
   static async getDepartmentLeavesAP(startDate,endDate) {
     const deptLeave = await hrManager.getDepartmentLeavesAP(startDate,endDate);
     return deptLeave;

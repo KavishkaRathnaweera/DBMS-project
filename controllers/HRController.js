@@ -7,6 +7,7 @@ const {adminRegisterValidator,addHRvalidator,} = require("../validaters/register
 var employeeSet = { column: [], details: [], selectTypes:[] };
 var departmentSet = [];
 var departmentSetAP=[];
+var departmentBYleave=[];
 var user="HR Manager";
 
 class HRController {
@@ -258,10 +259,12 @@ static async updateEmployee(req,res){
   static async leaveReport(req, res) {
     
     try {
+      departmentBYleave =  await hrService.getDepartmentLeavesByType();
       res.render("HR/leaveReport",{
       departmentlist: departmentSet,
       departmentlistAp:departmentSetAP,
       dates:{},
+      departmentleave:departmentBYleave,
       error:''
     });
     departmentSet=[]
@@ -284,6 +287,7 @@ static async updateEmployee(req,res){
       res.render("HR/leaveReport",{
       departmentlist: departmentSet,
       departmentlistAp:departmentSetAP,
+      departmentleave:departmentBYleave,
       dates: inpdate,
       error:''
     });
@@ -298,6 +302,7 @@ static async updateEmployee(req,res){
       departmentlist: [],
       departmentlistAp:[],
       dates: {},
+      departmentleave:departmentBYleave,
       error:'Invalid Date. Start Date must be greater than year 2000 and End Date must be greater than Start Date'
     });
     }
