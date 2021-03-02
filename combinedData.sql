@@ -11,12 +11,12 @@ INSERT INTO public.job_type(
 
 
 INSERT INTO public.department(
-	dept_name, employee_count, building)
-	VALUES ('HR', '20', 'main'),
-	('cutting', '30', 'cutting'),
-    ('software', '30', 'cutting'),
-	('stock', '30', 'stock'),
-	('sewing', '200', 'sewing');
+	dept_name, employee_count)
+	VALUES ('HR', '20'),
+	('cutting', '30'),
+    ('software', '30'),
+	('stock', '30'),
+	('sewing', '200');
 
 INSERT INTO public.pay_grade(
 	paygrade_level, description, requirement)
@@ -94,7 +94,7 @@ INSERT INTO public.leave(
 	INSERT INTO public.personal_information(
 	employee_id, nic, first_name, middle_name, last_name, gender, birth_day, address_id, email, password, photo, registered_date)
 	VALUES (1, '971650834v', 'admin', '', '', 'male', '1997/06/13', '1', 'theekshanamadumal@gmail.com', 'jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe', '', '2020/05/05'),
-	(2, 'jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe1v', 'theekshana', 'madumal', 'samaradiwakara', 'male', '1997/05/23', '6', 'theekshana@gmail.com', 'jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe', '', '2020/05/05'),
+	(2, '457899889V', 'theekshana', 'madumal', 'samaradiwakara', 'male', '1997/05/23', '6', 'theekshana@gmail.com', 'jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe', '', '2020/05/05'),
 	(3, '222222222v', 'sadaruwan', 'kalum', 'dissanayaka', 'male', '1998/06/04', '7', 'sadaruwan11@gmail.com', 'jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe', '', '2020/05/05'),
 	(4, '333333333v', 'idunil', 'udayanga', 'ariyapala', 'male', '1998/06/13', '8', 'udatangaaruya@gmail.com', 'jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe', '', '2020/05/05'),
 	(5, '444444444v', 'idunil', 'priyashan', 'rathnavibhushana', 'male', '1998/06/28', '9', 'andunilpriya12@gmail.com', 'jQHLWUqTH16JsVo0VyIw1eJZBWrovYg80BbMI58IM4zdA3JbUMECe', '', '2020/05/05'),
@@ -115,19 +115,7 @@ INSERT INTO public.leave(
 	(7, 'gampaha', 'operator', 'sewing', 'level 6', 'permanent',true),
 	(8, 'nikaweratiya', 'HR', 'HR', 'level 2', 'permanent', false),
 	(9, 'kelaniya', 'HR', 'HR', 'level 2', 'permanent', false),
-	(10, 'kurunegala', 'HR', 'HR', 'level 2', 'permanent', false)	;
-	
-INSERT INTO public.personal_information_custom(
-	employee_id, nationality)
-	VALUES (2, 'SriLankan'),
-	(3, 'SriLankan'),
-	(4, 'SriLankan'),
-	(5, 'SriLankan'),
-	(6, 'SriLankan'),
-	(7, 'SriLankan'),
-	(8, 'SriLankan'),
-	(9, 'SriLankan'),
-	(10, 'SriLankan')	;
+	(10, 'gampaha', 'HR', 'HR', 'level 2', 'permanent', false)	;
 
                                                                 
 INSERT INTO public.supervisor(
