@@ -38,6 +38,7 @@ const adminRegisterValidator=Joi.object().options({abortEarly:false}).keys({
     city:Joi.string().required().label('city'),
     postal_code:Joi.string().required().label('postal_code'),
     country:Joi.string().required().label('country'),
+    phone:Joi.string().trim().required().length(10, 'utf8').message('"phone" must be 10 digits'),
 
     email:Joi.string().required().label('email'),
     password:Joi.string().required().label('password'),
@@ -63,6 +64,8 @@ const  addHRvalidatorWrapper=async(params)=> {
         country:Joi.string().required().label('country'),
     
         email:Joi.string().required().label('email'),
+        phone:Joi.string().trim().required().length(10, 'utf8').message('"phone" must be 10 digits'),
+
         password:Joi.string().required().label('password'),
 
         photo:Joi.string().required().label('photo'),

@@ -50,6 +50,19 @@
                             <div class="form-group mb-3"><label for="">Country:</label><input class="form-control" type="text" name="country" placeholder="country" value="<%=HR.country%>"></div>
 
                             <div class="form-group mb-3"><label for="">Email:</label><input class="form-control" type="text" name="email" placeholder="email" value="<%=HR.email%>"></div>
+
+                            <div class="form-group">
+                                <label>phone:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="phone"  value="<%=HR.phone%>" required>
+                                </div>
+                            </div>
+
+
+
                             <div class="form-group mb-3"><label for="">Password:</label><input class="form-control" type="password" name="password" placeholder="password" value="<%=HR.password%>"></div>
                       
                             <div class="form-group mb-3"><input class="form-control" id="url" type="hidden" name="photo" placeholder="photo" value=""></div>
@@ -175,7 +188,7 @@
                                  
 
 
-                            <button class="btn btn-primary" type="submit">Button</button>
+                            <button class="btn btn-primary" type="submit">Submit</button>
                         </form>
                 </div>
 

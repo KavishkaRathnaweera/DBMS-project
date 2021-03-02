@@ -46,6 +46,17 @@ class userServices {
         const user=await  User.register(NIC,first_name, middle_name, last_name, gender, birthday,  address,city, postal_code,country, email, hashpwd, branch_name, job_title, dept_name, paygrade_level, e_status_name);
         return user
     }
+    static async changePassword(id,value){
+        const user=await User.findUser(id);
+        const isPasswordCorrect =await bcrypt.compare(value.password,user.password)
+        if(!isPasswordCorrect){
+            throw new Error.BadRequest('entered current password is wrong');
+
+        }
+        const hashpwd=await bcrypt.hash(value.new_password, 10);
+        return await User.updatePassword(hashpwd,id);
+
+    }
     
 }
 

@@ -3,11 +3,17 @@ const customAttributesModelsHelper=require('../helpers/customAttributesModelsHel
 
 
 class Admin{
+    static async adminDetails(uid){
+      return (await pool2.query('select * from personal_information_view left outer join address_view using(address_id) left outer join contact_details_view using(employee_id) where employee_id=$1;',[uid])).rows[0]
+    }
+
+
       static async findUserByNIC(NIC){
 
             const user =await pool2.query('select * from personal_information where NIC= $1', [NIC])
             return user.rows[0];
       }
+      
 
       static async findUserByEmail(email){
             const user =await pool2.query('select * from personal_information where email= $1', [email])
@@ -26,7 +32,7 @@ class Admin{
             return addressrow;
 
       }
-      static async adminRegister(NIC,first_name, middle_name, last_name,  gender, birthday, address,city, postal_code,country,email, password ,photo){
+      static async adminRegister(NIC,first_name, middle_name, last_name,  gender, birthday, address,city, postal_code,country,email,phone, password ,photo){
             try {
                   await pool2.query("BEGIN")
                   const addressrow= await Admin.addressTable(address,city,postal_code, country);
@@ -35,6 +41,11 @@ class Admin{
                   insert into Personal_information (NIC, first_name, middle_name, last_name, gender,birth_day, address_id, email, password, photo) values ($1, $2, $3, $4, $5,$6,$7,$8,$9,$10 ) 
                   returning *`,[NIC,first_name,middle_name,last_name,gender,birthday,addressrow[0].address_id,email,password, photo]
                   )).rows[0];
+
+
+                  const empPhone = (await pool2.query(`INSERT INTO employee_phone_number(employee_id,phone) values($1,$2)
+                  `,[personal_information.employee_id,phone]));
+
                   
                   const admin=(await pool2.query(`
                   insert into admin (employee_id) values($1)
@@ -64,6 +75,9 @@ class Admin{
                   const employee=(await pool2.query(`insert into Employee (employee_id ,branch_name, job_title, dept_name, paygrade_level, e_status_name) values($1,$2, $3, $4, $5, $6)
                                     `,[hr.employee_id,value.branch_name,value.job_title,value.dept_name,value.paygrade_level,value.e_status_name]))
 
+
+                  const empPhone = (await pool2.query(`INSERT INTO employee_phone_number(employee_id,phone) values($1,$2)
+                  `,[hr.employee_id,value.phone]));
                                     await pool2.query("COMMIT")
                                     return hr
 
@@ -121,12 +135,12 @@ class Admin{
        }
     static async getAllJobTitle(){
         const jobTitle=await pool2.query(`
-        select * from job_type where job_title='HR'`)
+        select * from job_type`)
         return jobTitle.rows;
       }
     static async getAllDepartment(){
         const department=await pool2.query(`
-        select * from department where dept_name='HR'`) 
+        select * from department `) 
         return department.rows;
       }
     static async addDepartment(dept_name){
@@ -161,7 +175,7 @@ class Admin{
         return (await pool2.query(`select * from branch left outer join address using(address_id) left outer join city using(city_id) left outer join country using(country_id)`)).rows
     }
 
-    static async adpool2ranch(branch_name, address, city, postal_code, country){
+    static async addBranch(branch_name, address, city, postal_code, country){
 
       try{
         await pool2.query("BEGIN")
