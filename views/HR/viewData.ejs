@@ -196,11 +196,14 @@
                                       <div class="form-group">
                                           <label>Branch</label>
                                           <select class="form-control" id="branch"  name="branch" disabled>
+                                            <% if(empDATA.length>0){ %>
+                                                <option value="<%= empDATA[0].branch_name %>">
+                                                    <%= empDATA[0].branch_name %>
+                                                </option>
+                                                <% } %>
                                                 <% if(branches && branches[0]){ branches.forEach(function(branch){ %>
 
-                                                    <option value="<%=branch.branch_name%>">
-                                                        <%=branch.branch_name%>
-                                                    </option>
+                                                    <option value="<%=branch.branch_name%>"><%=branch.branch_name%></option>
 
                                                     <% })} %>
                                       
@@ -213,6 +216,11 @@
                                       <div class="form-group">
                                           <label>Job Title</label>
                                           <select class="form-control" id="jobTitle"  name="jobTitle" disabled>
+                                            <% if(empDATA.length>0){ %>
+                                                <option value="<%= empDATA[0].job_title %>">
+                                                    <%= empDATA[0].job_title %>
+                                                </option>
+                                                <% } %>
                                               <% if(Jobtypes && Jobtypes[0]){ Jobtypes.forEach(function(Jobtype){ %>
                                                 <% if(Jobtype.job_title !== user) {%>
                                                   <option value="<%=Jobtype.job_title%>">
@@ -229,6 +237,11 @@
                                       <div class="form-group">
                                           <label>Department</label>
                                           <select class="form-control" id="department" name="department" disabled>
+                                            <% if(empDATA.length>0){ %>
+                                                <option value="<%= empDATA[0].dept_name %>">
+                                                    <%= empDATA[0].dept_name %>
+                                                </option>
+                                                <% } %>
                                                 <% if(departments && departments[0]){ departments.forEach(function(department){%>
                                                     <option value="<%=department.dept_name%>">
                                                         <%=department.dept_name%>
@@ -243,6 +256,11 @@
                                       <div class="form-group">
                                           <label>Pay Grade Level</label>
                                           <select class="form-control" id="payGrade"  name="payGrade" disabled>
+                                            <% if(empDATA.length>0){ %>
+                                                <option value="<%= empDATA[0].paygrade_level %>">
+                                                    <%= empDATA[0].paygrade_level %>
+                                                </option>
+                                                <% } %>
                                               <% if(payGrades && payGrades[0]){ payGrades.forEach(function(payGrade){%>
                                                   <option value="<%=payGrade.paygrade_level%>">
                                                       <%=payGrade.paygrade_level%>
@@ -258,6 +276,11 @@
                                       <div class="form-group">
                                           <label>Employee Status</label>
                                           <select class="form-control" id="empStatus"  name="empStatus" disabled>
+                                            <% if(empDATA.length>0){ %>
+                                                <option value="<%= empDATA[0].e_status_name %>">
+                                                    <%= empDATA[0].e_status_name %>
+                                                </option>
+                                                <% } %>
                                               <% if(employee_statuses && employee_statuses[0]){ employee_statuses.forEach(function(employee_status){ %>
                                                   <option value="<%=employee_status.e_status_name%>">
                                                       <%=employee_status.e_status_name%>

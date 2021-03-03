@@ -245,10 +245,10 @@ static async findUserByEmail(email){
     try{
         await pool3.query(`select refresh_mvw1()`)
         await pool3.query("BEGIN")
-        const anualleaves=(await pool3.query(`select * from dept_anual right outer join department using(dept_name)`)).rows;
-        const casualleaves=(await pool3.query(`select * from dept_casual right outer join department using(dept_name)`)).rows;
-        const maternityleaves=(await pool3.query(`select * from dept_maternity right outer join department using(dept_name)`)).rows;
-        const no_payleaves=(await pool3.query(`select * from dept_no_pay right outer join department using(dept_name)`)).rows;
+        const anualleaves=(await pool3.query(`select * from dept_anual right outer join department using(dept_name) order by dept_name`)).rows;
+        const casualleaves=(await pool3.query(`select * from dept_casual right outer join department using(dept_name) order by dept_name`)).rows;
+        const maternityleaves=(await pool3.query(`select * from dept_maternity right outer join department using(dept_name) order by dept_name`)).rows;
+        const no_payleaves=(await pool3.query(`select * from dept_no_pay right outer join department using(dept_name) order by dept_name`)).rows;
         const alldeptLeaves = [anualleaves,casualleaves,maternityleaves,no_payleaves];
                                           
         await pool3.query("COMMIT")

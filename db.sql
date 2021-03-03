@@ -743,6 +743,109 @@ RETURN QUERY
 END;
 $BODY$;
 
+--materialized View with olap
+CREATE MATERIALIZED VIEW public.departmentleavesummery
+TABLESPACE pg_default
+AS
+ SELECT department.dept_name,
+    leave_record.leave_type,
+    count(leave_record.leave_id) AS leavecountbydep
+   FROM ((leave_record
+     JOIN employee USING (employee_id))
+     RIGHT JOIN department USING (dept_name))
+  GROUP BY CUBE(department.dept_name, leave_record.leave_type)
+  ORDER BY department.dept_name
+WITH DATA;
+
+ALTER TABLE public.departmentleavesummery
+    OWNER TO jupitor;
+
+GRANT ALL ON TABLE public.departmentleavesummery TO jupitor WITH GRANT OPTION;
+GRANT ALL ON TABLE public.departmentleavesummery TO jupitorhr WITH GRANT OPTION;
+
+--Materialized view refresh function and necessory views
+CREATE OR REPLACE FUNCTION public.refresh_mvw1(
+	)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE SECURITY DEFINER PARALLEL UNSAFE
+AS $BODY$
+BEGIN
+REFRESH MATERIALIZED VIEW departmentleavesummery with data;
+RETURN;
+END;
+$BODY$;
+
+ALTER FUNCTION public.refresh_mvw1()
+    OWNER TO postgres;
+
+GRANT EXECUTE ON FUNCTION public.refresh_mvw1() TO PUBLIC;
+
+GRANT EXECUTE ON FUNCTION public.refresh_mvw1() TO jupitorhr WITH GRANT OPTION;
+
+GRANT EXECUTE ON FUNCTION public.refresh_mvw1() TO postgres;
+
+
+CREATE OR REPLACE VIEW public.dept_anual
+ AS
+ SELECT departmentleavesummery.dept_name,
+    departmentleavesummery.leave_type,
+    departmentleavesummery.leavecountbydep
+   FROM departmentleavesummery
+  WHERE ((departmentleavesummery.leave_type)::text = 'anual'::text);
+
+ALTER TABLE public.dept_anual
+    OWNER TO postgres;
+
+GRANT ALL ON TABLE public.dept_anual TO postgres;
+GRANT ALL ON TABLE public.dept_anual TO jupitorhr;
+
+CREATE OR REPLACE VIEW public.dept_casual
+ AS
+ SELECT departmentleavesummery.dept_name,
+    departmentleavesummery.leave_type,
+    departmentleavesummery.leavecountbydep
+   FROM departmentleavesummery
+  WHERE ((departmentleavesummery.leave_type)::text = 'casual'::text);
+
+ALTER TABLE public.dept_casual
+    OWNER TO postgres;
+
+GRANT ALL ON TABLE public.dept_casual TO postgres;
+GRANT ALL ON TABLE public.dept_casual TO jupitorhr;
+
+CREATE OR REPLACE VIEW public.dept_maternity
+ AS
+ SELECT departmentleavesummery.dept_name,
+    departmentleavesummery.leave_type,
+    departmentleavesummery.leavecountbydep
+   FROM departmentleavesummery
+  WHERE ((departmentleavesummery.leave_type)::text = 'maternity'::text);
+
+ALTER TABLE public.dept_maternity
+    OWNER TO postgres;
+
+GRANT ALL ON TABLE public.dept_maternity TO postgres;
+GRANT ALL ON TABLE public.dept_maternity TO jupitorhr;
+
+CREATE OR REPLACE VIEW public.dept_no_pay
+ AS
+ SELECT departmentleavesummery.dept_name,
+    departmentleavesummery.leave_type,
+    departmentleavesummery.leavecountbydep
+   FROM departmentleavesummery
+  WHERE ((departmentleavesummery.leave_type)::text = 'no_pay'::text);
+
+ALTER TABLE public.dept_no_pay
+    OWNER TO postgres;
+
+GRANT ALL ON TABLE public.dept_no_pay TO postgres;
+GRANT ALL ON TABLE public.dept_no_pay TO jupitorhr;
+
+
+
+
 
 
 GRANT EXECUTE ON FUNCTION getattendence(s_id numeric, today date) TO jupitor;
@@ -856,6 +959,7 @@ GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE city TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE country TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE customattributes TO jupitorhr;
 GRANT SELECT, TRIGGER ON TABLE department TO jupitorhr;
+GRANT ALL ON TABLE public.department TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE emergency_contact_details TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE employee TO jupitorhr;
 GRANT UPDATE, INSERT, SELECT, TRIGGER ON TABLE employee_phone_number TO jupitorhr;

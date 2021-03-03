@@ -130,6 +130,75 @@
                 </div><!-- /.container-fluid -->
             </section>
             <!-- /.content -->
+            <br><br>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-header" style="background-color: rgb(180, 180, 180);">
+                            <h3 class="card-title">All leaves by Type</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body"
+                            style="background:linear-gradient(to bottom,rgb(246, 248, 255),rgb(255, 255, 255),rgb(242, 245, 255))">
+                            <table id="example2" class="table table-bordered table-striped">
+                                <thead>
+            
+                                    <tr>
+                                        <th style="width: 40px">Type of Leave</th>
+                                        <% for (var i=0; i < departmentleave[0].length; i++) { %>
+                                            <th style="background-color: rgb(221, 240, 240);">
+                                                <%= departmentleave[0][i].dept_name %>
+                                            </th>
+                                        <% } %>
+                                    </tr>
+            
+                                </thead>
+            
+                                <tbody>
+                                    <% for (var i=0; i < departmentleave.length; i++) { %>
+                                        <% if(i==0){ %>
+                                            <tr data-id="Anual">
+                                            
+                                            <td>
+                                                <label for="">Anual</label>
+                                            </td>
+                                        <% }else if(i==1){ %>
+                                            <tr data-id="Casual">
+                                               
+                                                <td>
+                                                    <label for="">Casual</label>
+                                                </td>
+                                        <% }else if(i==2){ %>
+                                            <tr data-id="Maternity">
+                                               
+                                                <td>
+                                                    <label for="">Maternity</label>
+                                                </td>
+                                        <% }else if(i==3){ %>
+                                            <tr data-id="No_Pay">
+                                                
+                                                <td>
+                                                    <label for="">No Pay</label>
+                                                </td>
+                                        <% } %>
+                                           
+                                            <% for (var j=0; j < departmentleave[i].length; j++) { %>
+                                                <% if(departmentleave[i][j].leavecountbydep != null){ %>
+                                                    <td><%= departmentleave[i][j].leavecountbydep %></td>
+                                                <% }else{ %>
+                                                     <td><%= 0 %></td>
+                                                <% } %>
+                                            <% } %>
+                                        </tr>
+                                        <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+            
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
         </div>
         <!-- /.content-wrapper -->
 
