@@ -1,4 +1,5 @@
 const {pool4} =require('../connection');
+const customAttributesUpdateHelper=require('../helpers/customAttributesUpdateHelper')
 class manager{
 
     static async getAllBranches(){
@@ -44,6 +45,13 @@ class manager{
       };
      
   }
+  static async customAttributesUpdate(employee_id,value){
+    console.log(value)
+    const {r_bind, r_data}= await customAttributesUpdateHelper(value)
+    const sql=`update personal_information_custom set ${r_bind} where employee_id=${employee_id} `
+    console.log(sql)
+    await pool3.query(sql, r_data)
+  } 
   static async getCanbeSupervisors(branch,department,user){
     //get all supervisor list in relevent branch and department but not a manager
     const result1=(await pool4.query(`
@@ -163,6 +171,8 @@ static async updateEmployee(value) {
         where employee_id=$3`,[value.first_name, value.phone,value.ID])).rows;
         const empPhone = (await pool4.query(`UPDATE employee_phone_number set phone=$1 
         where employee_id=$2`,[value.phone,value.ID])).rows;
+        await manager.customAttributes(value)
+
         await pool4.query("COMMIT");
 
         } catch (error) {

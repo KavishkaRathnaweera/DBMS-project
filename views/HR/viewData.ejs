@@ -315,7 +315,8 @@
                                         <div class="form-group" name>
                                             <label for=""><%=customAttribute.name%>:</label>
                                             <select class="form-control" id="customAttr" name="<%=customAttribute.name%>" disabled>
-                                                <option value="<%= eval(valString)  %>"><%= eval(valString)  %></option>
+                                                <option value="<%= eval(valString)? ture : false  %>"><%= eval(valString)? ture : false  %></option>
+                                                <option value="<%= eval(valString)? false: true  %>"><%= eval(valString)? false: true   %></option>
                                             </select>
                                     </div>
                                     </div>
@@ -326,16 +327,16 @@
                                             <label for=""><%=customAttribute.name%>:</label>
                                             <input class="form-control" id="customAttr" type="text" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString)  %>" required disabled>
 
- </div>
-                                                            </div>
-                                                    <% }else if(customAttribute.type=="integer"){ %>
-                                                            <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label for=""><%=customAttribute.name%>:</label>
-                                                                <input class="form-control" id="customAttr" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required disabled>
-                                                            </div>
-                                                            </div>
-                                            <% }}) %> 
+                                        </div>
+                                        </div>
+                                    <% }else if(customAttribute.type=="integer"){ %>
+                                            <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for=""><%=customAttribute.name%>:</label>
+                                                <input class="form-control" id="customAttr" type="number" name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>" required disabled>
+                                            </div>
+                                            </div>
+                            <% }}) %> 
                                             </div>
                                         </div>
                                         </div>

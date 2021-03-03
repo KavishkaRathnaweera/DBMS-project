@@ -1,5 +1,7 @@
 const {pool3} = require("../connection");
 const customAttributesModelsHelper=require('../helpers/customAttributesModelsHelper')
+const customAttributesUpdateHelper=require('../helpers/customAttributesUpdateHelper')
+
 class hrManager {
   static async findUserByNIC(NIC){
 
@@ -19,6 +21,13 @@ static async findUserByEmail(email){
       const sql=`insert into personal_information_custom values(${r_bind}) `
       await pool3.query(sql, r_data)
   } 
+  static async customAttributesUpdate(employee_id,value){
+    console.log(value)
+    const {r_bind, r_data}= await customAttributesUpdateHelper(value)
+    const sql=`update personal_information_custom set ${r_bind} where employee_id=${employee_id} `
+    console.log(sql)
+    await pool3.query(sql, r_data)
+} 
 
   static async addressTable(address, city, postal_code, country){
 
@@ -64,7 +73,7 @@ static async findUserByEmail(email){
 
   static async getEmpDATA(id){
     const result=await pool3.query(`
-    select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id) 
+    select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id) left join personal_information_custom using(employee_id)
     where employee_id = $1`,[id])
     console.log("result");
     console.log(result.rows);
@@ -289,6 +298,9 @@ static async findUserByEmail(email){
         where employee_id=$3`,[value.first_name, value.phone,value.ID])).rows;
         const empPhone = (await pool3.query(`UPDATE employee_phone_number set phone=$1 
         where employee_id=$2`,[value.phone,value.ID])).rows;
+
+        hrManager.customAttributesUpdate(value.ID,value);
+        console.log(value, "djhdjhdfh")
         await pool3.query("COMMIT");
 
         } catch (error) {

@@ -327,8 +327,8 @@
                                         <div class="form-group" name>
                                             <label for=""><%=customAttribute.name%>:</label>
                                             <select class="form-control" id="customAttr" name="<%=customAttribute.name%>" disabled>
-                                                <option value="<%= eval(valString)  %>"><%= eval(valString)  %></option>
-                                            </select>
+                                                <option value="<%= eval(valString)? ture : false  %>"><%= eval(valString)? ture : false  %></option>
+                                                <option value="<%= eval(valString)? false: true  %>"><%= eval(valString)? false: true   %></option>                                            </select>
                                     </div>
                                     </div>
                                     
