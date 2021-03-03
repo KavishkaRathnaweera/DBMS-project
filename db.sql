@@ -725,10 +725,6 @@ create trigger checkAdminTable before insert on admin for each row execute proce
 -- call updateJupitorLeaves('level 1', 3 ,3 ,4 ,7)
 
 
-
-
-
-
 --Kavishka's Functions--
 CREATE OR REPLACE VIEW full_employee_detail
     AS
@@ -870,9 +866,7 @@ GRANT ALL ON TABLE public.dept_no_pay TO postgres;
 GRANT ALL ON TABLE public.dept_no_pay TO jupitorhr;
 
 
-
-
-
+-- jupitor 
 
 GRANT EXECUTE ON FUNCTION getattendence(s_id numeric, today date) TO jupitor;
 GRANT EXECUTE ON FUNCTION getemployee(e_id numeric) TO jupitor;
