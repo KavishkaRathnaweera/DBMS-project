@@ -159,6 +159,7 @@ CREATE TABLE job_type
 );
 insert into job_type (job_title) values('HR') ,('Manager');
 
+
 CREATE TABLE pay_grade
 (
     paygrade_level varchar(50)  NOT NULL,
@@ -204,6 +205,9 @@ CREATE TABLE employee
 );
 
 CREATE INDEX department_name ON employee(dept_name);  
+CREATE INDEX job_type_index ON employee(job_title);  
+CREATE INDEX paygrade_index ON employee(paygrade_level);  
+
 
 CREATE TABLE employee_leave
 (
@@ -270,6 +274,8 @@ CREATE TABLE supervisor
     supervisor_id integer ,
     CONSTRAINT supervisor_pkey PRIMARY KEY (employee_id)
 );
+
+CREATE INDEX employee_index ON supervisor(supervisor_id);  
 
 CREATE TABLE customattributes
 (
