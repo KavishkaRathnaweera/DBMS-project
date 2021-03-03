@@ -1,7 +1,7 @@
 
 -- CREATE DATABASE jupitor;
 
--- CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
+CREATE ROLE jupitor WITH LOGIN PASSWORD 'password';
 
 -- GRANT ALL PRIVILEGES ON DATABASE jupitor TO jupitor;
 
@@ -850,7 +850,6 @@ GRANT ALL ON TABLE public.dept_no_pay TO jupitorhr;
 
 GRANT EXECUTE ON FUNCTION getattendence(s_id numeric, today date) TO jupitor;
 GRANT EXECUTE ON FUNCTION getemployee(e_id numeric) TO jupitor;
-GRANT EXECUTE ON FUNCTION getemployees(s_id numeric) TO jupitor;
 GRANT EXECUTE ON FUNCTION getemployees1(s_id numeric) TO jupitor;
 GRANT EXECUTE ON FUNCTION getleavea(s_id numeric) TO jupitor;
 GRANT EXECUTE ON FUNCTION getleavebydate(startd date, endd date) TO jupitor;
@@ -859,7 +858,6 @@ GRANT EXECUTE ON FUNCTION getsupervisors(branch character varying, department ch
 GRANT EXECUTE ON FUNCTION setaddress(addressname character varying, cityid numeric, postalcode numeric) TO jupitor;
 GRANT EXECUTE ON FUNCTION setcity(cityname character varying, countryid numeric) TO jupitor;
 GRANT EXECUTE ON FUNCTION setcountry(c character varying) TO jupitor;
-GRANT EXECUTE ON PROCEDURE addtosupervisort(employee_ids integer[], val_supervisor_id integer) TO jupitor;
 GRANT EXECUTE ON PROCEDURE addtosupervisort(employee_ids integer[], val_supervisor_id integer, arraylength integer) TO jupitor;
 GRANT EXECUTE ON PROCEDURE updatejupitorbranch(branchname character varying, add integer) TO jupitor;
 GRANT EXECUTE ON PROCEDURE updatejupitoremployeestatus(estatusname character varying, du character varying, des character varying) TO jupitor;
@@ -868,10 +866,8 @@ GRANT EXECUTE ON PROCEDURE updatejupitorleaves(paygradelevel character varying, 
 GRANT EXECUTE ON PROCEDURE updatejupitorpaygrade(paygradelevel character varying, des character varying, req character varying) TO jupitor;
 GRANT EXECUTE ON FUNCTION changeempcount() TO jupitor;
 GRANT EXECUTE ON FUNCTION changeempcount1() TO jupitor;
-GRANT EXECUTE ON FUNCTION deletesupervisorgroup() TO jupitor;
 GRANT EXECUTE ON FUNCTION emp_leave() TO jupitor;
 GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitor;
-GRANT EXECUTE ON FUNCTION emp_stamp6() TO jupitor;
 GRANT EXECUTE ON FUNCTION restrictedadmin() TO jupitor;
 GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitor;
 GRANT ALL ON SEQUENCE address_address_id_seq TO jupitor;
@@ -1032,7 +1028,7 @@ CREATE ROLE jupitorSupervisor WITH LOGIN PASSWORD 'password';
 GRANT  SELECT  ON TABLE personal_information TO jupitorSupervisor;
 GRANT  SELECT  ON TABLE supervisor TO jupitorSupervisor;
 GRANT  SELECT,UPDATE, TRIGGER ON TABLE leave_record TO jupitorSupervisor;
-GRANT  SELECT ON TABLE employee_leave TO jupitorSupervisor;
+GRANT  SELECT,UPDATE, TRIGGER  ON TABLE employee_leave TO jupitorSupervisor;
 GRANT  SELECT ON TABLE leave TO jupitorSupervisor;
 GRANT  SELECT ON TABLE employee TO jupitorSupervisor;
 GRANT ALL ON TABLE session TO jupitorSupervisor;
