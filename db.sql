@@ -63,6 +63,19 @@ CREATE TABLE address
         ON DELETE CASCADE
 );
 
+-- function for birthday
+create or replace function check_age(birthday date) returns boolean
+language plpgsql
+as $$
+begin
+	if not date_part('year', current_date)- date_part('year',birthday)>=18 then
+		RAISE EXCEPTION 'your age should be greater than or equal to 18';
+	end if;
+		return 1;
+
+end;
+$$;
+
 CREATE TABLE personal_information
 (
     employee_id SERIAL NOT NULL ,
@@ -71,7 +84,7 @@ CREATE TABLE personal_information
     middle_name varchar(100) ,
     last_name varchar(100) ,
     gender varchar(50) ,
-    birth_day date,
+    birth_day date check (check_age(birth_day)),
     address_id integer NOT NULL,
     email varchar(100)  NOT NULL,
     password varchar(250) ,
@@ -84,12 +97,14 @@ CREATE TABLE personal_information
     
 );
 
+
 CREATE TABLE admin
 (
     employee_id integer NOT NULL,
     CONSTRAINT admin_pkey PRIMARY KEY (employee_id),
     CONSTRAINT admin_employee_id_fkey FOREIGN KEY (employee_id)
-        REFERENCES personal_information (employee_id) ON UPDATE CASCADE
+        REFERENCES personal_information (employee_id)
+        ON UPDATE CASCADE
         ON DELETE CASCADE
 );
 
@@ -112,6 +127,8 @@ CREATE TABLE department
     employee_count integer NOT NULL DEFAULT 0,
     CONSTRAINT department_pkey PRIMARY KEY (dept_name)
 );
+INSERT INTO department(dept_name)VALUES ('HR');
+	
 
 CREATE TABLE emergency_contact_details
 (
@@ -141,6 +158,7 @@ CREATE TABLE job_type
     prerequisites varchar(50) ,
     CONSTRAINT job_type_pkey PRIMARY KEY (job_title)
 );
+insert into job_type (job_title) values('HR') ,('Manager');
 
 
 CREATE TABLE pay_grade
@@ -273,6 +291,8 @@ CREATE TABLE personal_information_custom(
     CONSTRAINT personal_information_custom_pkey PRIMARY KEY (employee_id),
     CONSTRAINT personal_information_custom_employee_id_fkey FOREIGN KEY (employee_id)
     REFERENCES employee (employee_id) 
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 
 
@@ -870,6 +890,7 @@ GRANT EXECUTE ON PROCEDURE updatejupitorleaves(paygradelevel character varying, 
 GRANT EXECUTE ON PROCEDURE updatejupitorpaygrade(paygradelevel character varying, des character varying, req character varying) TO jupitor;
 GRANT EXECUTE ON FUNCTION changeempcount() TO jupitor;
 GRANT EXECUTE ON FUNCTION changeempcount1() TO jupitor;
+GRANT EXECUTE ON FUNCTION check_age(birthday date) TO jupitor;
 GRANT EXECUTE ON FUNCTION emp_leave() TO jupitor;
 GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitor;
 GRANT EXECUTE ON FUNCTION restrictedadmin() TO jupitor;
@@ -935,6 +956,7 @@ GRANT ALL ON SEQUENCE personal_information_employee_id_seq TO admin;
 GRANT SELECT ON TABLE public.address_view TO admin;
 GRANT SELECT ON TABLE public.contact_details_view TO admin;
 GRANT SELECT ON TABLE public.personal_information_view TO admin;
+GRANT EXECUTE ON FUNCTION check_age(birthday date) TO admin;
 GRANT EXECUTE ON PROCEDURE updatejupitorleaves(paygradelevel character varying, an integer, cas integer, mat integer, nopay integer) TO admin;
 GRANT EXECUTE ON PROCEDURE updatejupitorbranch(branchname character varying, add integer) TO admin;
 GRANT EXECUTE ON PROCEDURE updatejupitoremployeestatus(estatusname character varying, du character varying, des character varying) TO admin;
@@ -982,6 +1004,7 @@ GRANT EXECUTE ON FUNCTION changeempcount() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION changeempcount1() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION emp_leave() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION emp_stamp() TO jupitorhr;
+GRANT EXECUTE ON FUNCTION check_age(birthday date) TO jupitorhr;
 GRANT EXECUTE ON FUNCTION updatesupervisortable() TO jupitorhr;
 GRANT EXECUTE ON FUNCTION getleavebydate(date, date) TO jupitorhr;
 GRANT INSERT, SELECT, UPDATE, TRIGGER ON TABLE public.employeedata_view TO jupitorhr;
@@ -1017,7 +1040,7 @@ GRANT ALL ON SEQUENCE public.address_address_id_seq TO jupitormanager;
 GRANT ALL ON SEQUENCE public.city_city_id_seq TO jupitormanager;
 GRANT ALL ON SEQUENCE public.country_country_id_seq TO jupitormanager;
 GRANT ALL ON SEQUENCE public.personal_information_employee_id_seq TO jupitormanager;
-
+GRANT EXECUTE ON FUNCTION check_age(birthday date) TO jupitormanager;
 GRANT EXECUTE ON PROCEDURE public.addtosupervisort(employee_ids integer[], val_supervisor_id integer, arraylength integer) TO jupitormanager;
 GRANT EXECUTE ON FUNCTION public.updateSupervisorTable() TO jupitormanager;
 GRANT EXECUTE ON FUNCTION public.getsupervisors(branch character varying, department character varying, jobtitle character varying) TO jupitormanager;
@@ -1036,7 +1059,6 @@ GRANT  SELECT,UPDATE, TRIGGER  ON TABLE employee_leave TO jupitorSupervisor;
 GRANT  SELECT ON TABLE leave TO jupitorSupervisor;
 GRANT  SELECT ON TABLE employee TO jupitorSupervisor;
 GRANT ALL ON TABLE session TO jupitorSupervisor;
-
 GRANT EXECUTE ON FUNCTION getAttendence(s_id numeric, today date ) TO jupitorSupervisor;
 GRANT EXECUTE ON FUNCTION getEmployee(e_id numeric) TO jupitorSupervisor;
 GRANT EXECUTE ON FUNCTION getEmployees1(s_id numeric) TO jupitorSupervisor;

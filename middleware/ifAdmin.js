@@ -8,7 +8,7 @@ const ifAdmin=(req,res,next)=>{
         }
     }
     else{
-        res.redirect("/login")
+        res.redirect("/")
     }
 }
 module.exports=ifAdmin;

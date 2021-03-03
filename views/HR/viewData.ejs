@@ -366,7 +366,10 @@
                                             <label for=""><%=customAttribute.name%>:</label>
                                             <select class="form-control" id="customAttr"
                                                 name="<%=customAttribute.name%>" disabled>
-                                                <option value="<%= eval(valString)  %>"><%= eval(valString)  %></option>
+                                                <option value="<%= eval(valString)? ture : false  %>">
+                                                    <%= eval(valString)? ture : false  %></option>
+                                                <option value="<%= eval(valString)? false: true  %>">
+                                                    <%= eval(valString)? false: true   %></option>
                                             </select>
                                         </div>
                                     </div>
@@ -394,49 +397,61 @@
                                 </div>
                             </div>
                         </div>
-
-                        <% } %>
-                        <!-- end of the custom attributes -->
-
-
-
-
-                        <% if(empDATA.length>0) { %>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-block btn-primary"
-                                        onclick="enableEdit()">Edit</button>
-
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-block btn-primary" id="savebtn"
-                                        onclick="check1()" disabled>Save</button>
-
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-
-                                    <button type="Submit" class="btn btn-block btn-primary" name="submitButton"
-                                        id="sbmtbtn" onclick="disableButon()" disabled>Submit</button>
-                                </div>
+                        <% }else if(customAttribute.type=="integer"){ %>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for=""><%=customAttribute.name%>:</label>
+                                <input class="form-control" id="customAttr" type="number"
+                                    name="<%=customAttribute.name%>" placeholder="" value="<%=eval(valString) %>"
+                                    required disabled>
                             </div>
                         </div>
-                        <% } %>
-
-
-
-
-
-                    </form>
+                        <% }}) %>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+        </div>
+
+        <% } %>
+        <!-- end of the custom attributes -->
+
+
+
+
+        <% if(empDATA.length>0) { %>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <button type="button" class="btn btn-block btn-primary" onclick="enableEdit()">Edit</button>
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <button type="button" class="btn btn-block btn-primary" id="savebtn" onclick="check1()"
+                        disabled>Save</button>
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+
+                    <button type="Submit" class="btn btn-block btn-primary" name="submitButton" id="sbmtbtn"
+                        onclick="disableButon()" disabled>Submit</button>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+
+
+
+
+        </form>
+</div>
+</div>
+</div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
@@ -482,7 +497,7 @@
         const bdate = document.getElementsByName('birthday')[0].value;
 
         if ((nic.length == 10 && nic.charAt(9) == 'V' && !isNaN(nic.substring(0, 9))) || nic.length == 12 && !isNaN(
-            nic)) {
+                nic)) {
 
             var d = new Date();
             var n = d.getFullYear();

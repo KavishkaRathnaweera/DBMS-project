@@ -1,5 +1,7 @@
-const { pool3 } = require("../connection");
-const customAttributesModelsHelper = require("../helpers/customAttributesModelsHelper");
+const {pool3} = require("../connection");
+const customAttributesModelsHelper=require('../helpers/customAttributesModelsHelper')
+const customAttributesUpdateHelper=require('../helpers/customAttributesUpdateHelper')
+
 class hrManager {
   static async findUserByNIC(NIC) {
     const user = await pool3.query(
@@ -9,13 +11,26 @@ class hrManager {
     return user.rows[0];
   }
 
-  static async findUserByEmail(email) {
-    const user = await pool3.query(
-      "select * from personal_information where email= $1",
-      [email]
-    );
-    return user.rows[0];
-  }
+}
+
+static async findUserByEmail(email){
+    const user =await pool3.query('select * from personal_information where email= $1', [email])
+    return user.rows[0]
+
+}
+  
+  static async customAttributes(value){
+      const {r_bind, r_data}= await customAttributesModelsHelper(value)
+      const sql=`insert into personal_information_custom values(${r_bind}) `
+      await pool3.query(sql, r_data)
+  } 
+  static async customAttributesUpdate(employee_id,value){
+    console.log(value)
+    const {r_bind, r_data}= await customAttributesUpdateHelper(value)
+    const sql=`update personal_information_custom set ${r_bind} where employee_id=${employee_id} `
+    console.log(sql)
+    await pool3.query(sql, r_data)
+} 
 
   static async customAttributes(value) {
     const { r_bind, r_data } = await customAttributesModelsHelper(value);
@@ -73,13 +88,10 @@ class hrManager {
     return (await pool3.query("select * from customattributes")).rows;
   }
 
-  static async getEmpDATA(id) {
-    const result = await pool3.query(
-      `
-    select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id) 
-    where employee_id = $1`,
-      [id]
-    );
+  static async getEmpDATA(id){
+    const result=await pool3.query(`
+    select * from EmployeeData_View join employee_phone_number using(employee_id) join address using(address_id) join city using(city_id) join country using(country_id) left join personal_information_custom using(employee_id)
+    where employee_id = $1`,[id])
     console.log("result");
     console.log(result.rows);
     return result.rows;
@@ -455,68 +467,32 @@ class hrManager {
   }
 
   static async updateEmployee(value) {
-    try {
-      await pool3.query("BEGIN");
+   
+    try{
+        await pool3.query("BEGIN");
+        
+        console.log(value)
+        const addressrow= await hrManager.addressTable(value.address_id,value.city,value.postal_code, value.country);
+        const personal_information = (await pool3.query(`update Personal_information set NIC = $1, first_name=$2, middle_name=$3, last_name=$4, gender=$5, birth_day=$6, address_id=$7, email=$8
+        where employee_id = $9`,[value.NIC, value.first_name, value.middle_name, value.last_name, value.gender, value.birthday, addressrow[0].address_id,  value.email,value.ID])).rows;
 
-      console.log(value);
-      const addressrow = await hrManager.addressTable(
-        value.address_id,
-        value.city,
-        value.postal_code,
-        value.country
-      );
-      const personal_information = (
-        await pool3.query(
-          `update Personal_information set NIC = $1, first_name=$2, middle_name=$3, last_name=$4, gender=$5, birth_day=$6, address_id=$7, email=$8
-        where employee_id = $9`,
-          [
-            value.NIC,
-            value.first_name,
-            value.middle_name,
-            value.last_name,
-            value.gender,
-            value.birthday,
-            addressrow[0].address_id,
-            value.email,
-            value.ID,
-          ]
-        )
-      ).rows;
+        const employee = (await pool3.query(`update Employee set branch_name=$1, job_title=$2, dept_name=$3, paygrade_level=$4, e_status_name=$5 
+        where employee_id=$6`,[value.branch, value.jobTitle, value.department, value.payGrade, value.empStatus, value.ID])).rows;
 
-      const employee = (
-        await pool3.query(
-          `update Employee set branch_name=$1, job_title=$2, dept_name=$3, paygrade_level=$4, e_status_name=$5 
-        where employee_id=$6`,
-          [
-            value.branch,
-            value.jobTitle,
-            value.department,
-            value.payGrade,
-            value.empStatus,
-            value.ID,
-          ]
-        )
-      ).rows;
+        const empEmergency = (await pool3.query(`UPDATE emergency_contact_details set relative_name=$1, contact_no=$2 
+        where employee_id=$3`,[value.first_name, value.phone,value.ID])).rows;
+        const empPhone = (await pool3.query(`UPDATE employee_phone_number set phone=$1 
+        where employee_id=$2`,[value.phone,value.ID])).rows;
 
-      const empEmergency = (
-        await pool3.query(
-          `UPDATE emergency_contact_details set relative_name=$1, contact_no=$2 
-        where employee_id=$3`,
-          [value.first_name, value.phone, value.ID]
-        )
-      ).rows;
-      const empPhone = (
-        await pool3.query(
-          `UPDATE employee_phone_number set phone=$1 
-        where employee_id=$2`,
-          [value.phone, value.ID]
-        )
-      ).rows;
-      await pool3.query("COMMIT");
-    } catch (error) {
-      await pool3.query("ROLLBACK");
-      throw error;
-    }
+        hrManager.customAttributesUpdate(value.ID,value);
+        console.log(value, "djhdjhdfh")
+        await pool3.query("COMMIT");
+
+        } catch (error) {
+              await pool3.query("ROLLBACK");
+              throw error
+        }   
+
   }
   static async findUserIDByEmail(email) {
     const result = await pool3.query(
