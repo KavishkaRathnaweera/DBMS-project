@@ -529,7 +529,6 @@ class hrManager {
       ).rows;
 
       hrManager.customAttributesUpdate(value.ID, value);
-      console.log(value, "djhdjhdfh");
       await pool3.query("COMMIT");
     } catch (error) {
       await pool3.query("ROLLBACK");

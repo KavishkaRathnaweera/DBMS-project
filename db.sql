@@ -725,10 +725,6 @@ create trigger checkAdminTable before insert on admin for each row execute proce
 -- call updateJupitorLeaves('level 1', 3 ,3 ,4 ,7)
 
 
-
-
-
-
 --Kavishka's Functions--
 CREATE OR REPLACE VIEW full_employee_detail
     AS
