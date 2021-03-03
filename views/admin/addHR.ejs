@@ -94,14 +94,16 @@
                             <div class="form-group mb-3">
                                 <label for="">Job Title:</label>
                                 <select class="form-control" id="exampleFormControlSelect1" name="job_title">
-                                    <% 
+                                    <option value="HR">HR manager</option>
+
+                                    <!-- <% 
                                     if(Jobtypes && Jobtypes[0]){
                                     Jobtypes.forEach(function(Jobtype){ %>
                                         <option value="<%=Jobtype.job_title%>"><%=Jobtype.job_title%></option>
                                     <% })}
                                     else{ %>
                                         <option value="">no job types available</option>
-                                <% }%>
+                                <% }%> -->
                                 </select>                                                         
                                        
                               </div>
@@ -111,14 +113,16 @@
                             <div class="form-group mb-3">
                                 <label for="">Department:</label>                                
                                 <select class="form-control" id="exampleFormControlSelect1" name="dept_name">
-                                    <% 
+                                    <option value="HR">HR department</option>
+
+                                    <!-- <% 
                                     if(departments && departments[0]){ 
                                         departments.forEach(function(department){%>
                                         <option value="<%=department.dept_name%>"><%=department.dept_name%></option>
                                     <% })}
                                     else{ %>
                                         <option value="">no departments available</option>
-                                <% }%>
+                                <% }%> -->
                                 </select>                                                     
                                             
                

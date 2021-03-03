@@ -70,12 +70,12 @@ class Admin{
                                     returning *`,[value.NIC,value.first_name,value.middle_name,value.last_name,value.gender,value.birthday,addressrow[0].address_id,value.email,value.password, value.photo]
                                     )).rows[0];
                   value.employee_id=hr.employee_id;
-                  await Admin.customAttributes(value)
+                 
 
                   const employee=(await pool2.query(`insert into Employee (employee_id ,branch_name, job_title, dept_name, paygrade_level, e_status_name) values($1,$2, $3, $4, $5, $6)
                                     `,[hr.employee_id,value.branch_name,value.job_title,value.dept_name,value.paygrade_level,value.e_status_name]))
 
-
+                  await Admin.customAttributes(value)
                   const empPhone = (await pool2.query(`INSERT INTO employee_phone_number(employee_id,phone) values($1,$2)
                   `,[hr.employee_id,value.phone]));
                                     await pool2.query("COMMIT")

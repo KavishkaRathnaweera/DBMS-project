@@ -6,12 +6,15 @@ const ifLoggedIn=(req,res, next)=>{
         else if(req.session.user.type=="HR"){
             res.redirect("/HR/home")
         }
+        else if(req.session.user.type=="Manager"){
+            res.redirect("/Manager")
+        }
         else if(req.session.user.type=="employee"){
             res.redirect("/employee")
         }
         else{
             req.session.user=null
-            res.redirect("/login")
+            res.redirect("/")
         }
 
 
