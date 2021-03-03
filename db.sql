@@ -63,27 +63,6 @@ CREATE TABLE address
         ON DELETE CASCADE
 );
 
-CREATE TABLE personal_information
-(
-    employee_id SERIAL NOT NULL ,
-    nic varchar(50)  NOT NULL,
-    first_name varchar(100) ,
-    middle_name varchar(100) ,
-    last_name varchar(100) ,
-    gender varchar(50) ,
-    birth_day date check (check_age(dob)),
-    address_id integer NOT NULL,
-    email varchar(100)  NOT NULL,
-    password varchar(250) ,
-    photo varchar(200),
-    registered_date date DEFAULT CURRENT_DATE,
-    CONSTRAINT personal_information_pkey PRIMARY KEY (employee_id),
-    CONSTRAINT address_id_fkey FOREIGN KEY (address_id)
-        REFERENCES address (address_id)  ON UPDATE CASCADE
-        ON DELETE CASCADE
-    
-);
-
 -- function for birthday
 create or replace function check_age(birthday date) returns boolean
 language plpgsql
@@ -96,6 +75,28 @@ begin
 
 end;
 $$;
+
+CREATE TABLE personal_information
+(
+    employee_id SERIAL NOT NULL ,
+    nic varchar(50)  NOT NULL,
+    first_name varchar(100) ,
+    middle_name varchar(100) ,
+    last_name varchar(100) ,
+    gender varchar(50) ,
+    birth_day date check (check_age(birth_day)),
+    address_id integer NOT NULL,
+    email varchar(100)  NOT NULL,
+    password varchar(250) ,
+    photo varchar(200),
+    registered_date date DEFAULT CURRENT_DATE,
+    CONSTRAINT personal_information_pkey PRIMARY KEY (employee_id),
+    CONSTRAINT address_id_fkey FOREIGN KEY (address_id)
+        REFERENCES address (address_id)  ON UPDATE CASCADE
+        ON DELETE CASCADE
+    
+);
+
 
 CREATE TABLE admin
 (
